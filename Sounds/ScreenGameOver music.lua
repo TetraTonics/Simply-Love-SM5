@@ -1,3 +1,3 @@
 local audio_file = "Your Stars.ogg"
 
-return THEME:GetPathS("", audio_file)
+--return THEME:GetPathS("", audio_file)

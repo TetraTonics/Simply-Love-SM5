@@ -391,10 +391,12 @@ SetGameModePreferences = function()
 	-- so turn Decents and WayOffs off now.
 	if SL.Global.GameMode == "Casual" then
 		SL.Global.ActiveModifiers.WorstTimingWindow = 3
+		PREFSMAN:SetPreference("TimingWindowScale", 2.5);
 
 	-- Otherwise, we want all TimingWindows enabled by default.
 	else
- 		SL.Global.ActiveModifiers.WorstTimingWindow = 5
+		 SL.Global.ActiveModifiers.WorstTimingWindow = 5
+		 PREFSMAN:SetPreference("TimingWindowScale", 1);
 	end
 
 	-- loop through human players and apply whatever mods need to be set now

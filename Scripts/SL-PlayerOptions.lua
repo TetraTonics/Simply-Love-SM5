@@ -190,7 +190,7 @@ local Overrides = {
 	},
 	-------------------------------------------------------------------------
 	BackgroundFilter = {
-		Values = { 'Off','Dark','Darker','Darkest' },
+		Values = { 'Off','Dark','Darker','Darkest','Darkerest' },
 	},
 	-------------------------------------------------------------------------
 	Mini = {
