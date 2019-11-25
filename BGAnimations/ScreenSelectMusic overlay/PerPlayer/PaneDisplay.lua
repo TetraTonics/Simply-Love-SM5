@@ -316,6 +316,17 @@ af[#af+1] = LoadFont("Common Normal")..{
 	InitCommand=function(self) self:x(highscorenameX):y(156):zoom(zoom_factor):diffuse(Color.Black):horizalign(left):maxwidth(80) end
 }
 
+--Average specificity
+af[#af+1] = Def.BitmapText{
+	Font="_miso",
+	Name="npsLabelBar",
+	-- I'm unsure why labelX_col3 doesn't simply get the job done, but eh this does the trick as well
+	InitCommand=cmd(zoom, zoom_factor; x, labelX_col3-npsL; y, 141; diffuse, Color.Black; shadowlength, 0.2; halign, 0; queuecommand, "Set"),
+	SetCommand=function(self)
+		self:settext("__")
+
+	end
+}
 --Notes per second Label
 af[#af+1] = Def.BitmapText{
 	Font="_miso",
@@ -323,7 +334,7 @@ af[#af+1] = Def.BitmapText{
 	-- I'm unsure why labelX_col3 doesn't simply get the job done, but eh this does the trick as well
 	InitCommand=cmd(zoom, zoom_factor; x, labelX_col3-npsL; y, 156; diffuse, Color.Black; shadowlength, 0.2; halign, 0; queuecommand, "Set"),
 	SetCommand=function(self)
-		self:settext("N/s")
+		self:settext("Nps")
 
 	end
 }
