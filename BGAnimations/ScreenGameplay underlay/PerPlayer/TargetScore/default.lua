@@ -10,6 +10,14 @@ if SL.Global.GameMode == "Casual" then return end
 
 local player = ...
 local pn = ToEnumShortString(player)
+
+-- there are three possible reasons the rest of this file should proceed to execute
+local WantsTargetGraph = SL[pn].ActiveModifiers.DataVisualizations == "Target Score Graph"
+local FailOnMissedTarget = PREFSMAN:GetPreference("EventMode") and SL[pn].ActiveModifiers.ActionOnMissedTarget == "Fail"
+local RestartOnMissedTarget = PREFSMAN:GetPreference("EventMode") and SL[pn].ActiveModifiers.ActionOnMissedTarget == "Restart"
+-- if none of them apply, bail now
+if (not WantsTargetGraph) and (not FailOnMissedTarget) and (not RestartOnMissedTarget) then return end
+
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 
 -- ---------------------------------------------------------------
@@ -67,9 +75,6 @@ local isTwoPlayers = (GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayer
 local bothWantBars = isTwoPlayers and (SL.P1.ActiveModifiers.DataVisualizations == "Target Score Graph") and (SL.P2.ActiveModifiers.DataVisualizations == "Target Score Graph")
 local notefield_is_centered = (GetNotefieldX(player) == _screen.cx)
 local use_smaller_graph = isTwoPlayers or notefield_is_centered
-
-local FailOnMissedTarget = PREFSMAN:GetPreference("EventMode") and SL[pn].ActiveModifiers.ActionOnMissedTarget == "Fail"
-local RestartOnMissedTarget = PREFSMAN:GetPreference("EventMode") and SL[pn].ActiveModifiers.ActionOnMissedTarget == "Restart"
 
 -- ---------------------------------------------------------------
 -- calculate size and positioning of graph(s)
@@ -192,7 +197,7 @@ local graph_bg = Def.ActorFrame{
 	}
 }
 
--- adds alternating grey-black bars to represent each grade and sub-grade
+-- adds alternating grey-black bars to represent each grade
 -- (A-, A, A+, etc)
 for i=1,16 do
 	local tierStart = THEME:GetMetric("PlayerStageStats", "GradePercentTier" .. string.format("%02d", i))
@@ -274,7 +279,7 @@ local player_af = Def.ActorFrame{
 
 	InitCommand=function(self)
 		-- this makes for a more convenient coordinate system
-		-- (what does that^ mean? -dguzek)
+		-- (what does that^ mean? --quietly-turning)
 		self:align(0,0)
 	end,
 	OnCommand=function(self)
@@ -514,7 +519,7 @@ if SL[pn].ActiveModifiers.Pacemaker or FailOnMissedTarget or RestartOnMissedTarg
 				self:shadowlength(1) -- match other playfield counters
 			else
 				noteY = 56
-				noteX = width / 4 -- this serendipitiously works for doubles, somehow
+				noteX = width / 4 -- this serendipitously works for doubles, somehow
 
 				-- antisymmetry kludge; nudge PLAYER_2's pacemaker text to the left so that it
 				-- doesn't possibly overlap with the percent score text.  this is necessary because

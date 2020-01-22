@@ -107,6 +107,7 @@ SL = {
 	P1 = setmetatable( {}, PlayerDefaults),
 	P2 = setmetatable( {}, PlayerDefaults),
 	Global = setmetatable( {}, GlobalDefaults),
+
 	-- Colors that Simply Love's background can be
 	Colors = {
 		"#FF3C23",
@@ -162,11 +163,11 @@ SL = {
 			RegenComboAfterMiss=0,
 			MaxRegenComboAfterMiss=0,
 			MinTNSToHideNotes="TapNoteScore_W3",
-			HarshHotLifePenalty=1,
+			HarshHotLifePenalty=true,
 
-			PercentageScoring=1,
+			PercentageScoring=true,
 			AllowW1="AllowW1_Everywhere",
-			SubSortByNumSteps=1,
+			SubSortByNumSteps=true,
 
 			TimingWindowSecondsW1=0.021500,
 			TimingWindowSecondsW2=0.043000,
@@ -182,11 +183,11 @@ SL = {
 			RegenComboAfterMiss=5,
 			MaxRegenComboAfterMiss=10,
 			MinTNSToHideNotes="TapNoteScore_W3",
-			HarshHotLifePenalty=1,
+			HarshHotLifePenalty=true,
 
-			PercentageScoring=1,
+			PercentageScoring=true,
 			AllowW1="AllowW1_Everywhere",
-			SubSortByNumSteps=1,
+			SubSortByNumSteps=true,
 
 			TimingWindowSecondsW1=0.021500,
 			TimingWindowSecondsW2=0.043000,
@@ -202,11 +203,11 @@ SL = {
 			RegenComboAfterMiss=5,
 			MaxRegenComboAfterMiss=10,
 			MinTNSToHideNotes="TapNoteScore_W4",
-			HarshHotLifePenalty=1,
+			HarshHotLifePenalty=true,
 
-			PercentageScoring=1,
+			PercentageScoring=true,
 			AllowW1="AllowW1_Everywhere",
-			SubSortByNumSteps=1,
+			SubSortByNumSteps=true,
 
 			TimingWindowSecondsW1=0.011000,
 			TimingWindowSecondsW2=0.021500,
@@ -222,11 +223,11 @@ SL = {
 			RegenComboAfterMiss=0,
 			MaxRegenComboAfterMiss=0,
 			MinTNSToHideNotes="TapNoteScore_W4",
-			HarshHotLifePenalty=0,
+			HarshHotLifePenalty=false,
 
-			PercentageScoring=1,
+			PercentageScoring=true,
 			AllowW1="AllowW1_Everywhere",
-			SubSortByNumSteps=1,
+			SubSortByNumSteps=true,
 
 			TimingWindowSecondsW1=0.012500,
 			TimingWindowSecondsW2=0.025000,
@@ -367,8 +368,8 @@ SL = {
 }
 
 
--- Initialize preferences by calling this method.
--- We typically do this from ./BGAnimations/ScreenTitleMenu underlay/default.lua
+-- Initialize preferences by calling this method.  We typically do
+-- this from ./BGAnimations/ScreenTitleMenu underlay/default.lua
 -- so that preferences reset between each game cycle.
 
 function InitializeSimplyLove()
@@ -377,5 +378,4 @@ function InitializeSimplyLove()
 	SL.Global:initialize()
 end
 
--- TODO: remove this; it's for debugging purposes (Control+F2 to reload scripts) only
 InitializeSimplyLove()
