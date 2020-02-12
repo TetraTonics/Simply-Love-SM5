@@ -518,6 +518,16 @@ GetThemeVersion = function()
 	return false
 end
 
+PlayerIsUpper = function()
+	local mpn = GAMESTATE:GetMasterPlayerNumber()
+	local profile_name = PROFILEMAN:GetPlayerName(mpn)
+	if profile_name and GoodReads.Players[profile_name] and GoodReads.Players[profile_name].isupper ~= nil then
+		return GoodReads.Players[profile_name].isupper
+	end
+	-- default to IsUpper = true
+	return nil
+end
+
 -- -----------------------------------------------------------------------
 -- functions that attempt to handle the mess that is custom judgment graphic detection/loading
 

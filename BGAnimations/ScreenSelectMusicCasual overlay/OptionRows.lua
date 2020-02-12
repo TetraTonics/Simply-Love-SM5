@@ -56,7 +56,7 @@ local OptionRows = {
 				THEME:GetString("ScreenSelectMusicCasual", "LessSpace"),
 			}
 		end,
-		Values = function() return {210, 300, 125} end,
+		Values = function() return {350, 450, 250} end,
 		OnLoad=function(actor, pn, choices, values)
 			local index = 1
 			local cmod = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):CMod()

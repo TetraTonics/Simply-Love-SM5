@@ -17,8 +17,13 @@ local Update = function(af, delta)
 		cursor.index = index
 
 		-- queue the appropriate command to the faux playfield, if needed
-		if choices[cursor.index+1] == "Marathon" or choices[cursor.index+1] == "Regular" then
+		if choices[cursor.index+1] == "Marathon" or choices[cursor.index+1] == "GoodReads"  or choices[cursor.index+1] == "Regular" then
 			af:queuecommand("FirstLoop"..choices[cursor.index+1])
+			if choices[cursor.index+1] == "GoodReads" then
+				ThemePrefs.Set("isGoodReads", true)
+			else 
+				ThemePrefs.Set("isGoodReads", false)
+			end
 		end
 
 		-- queue an "Update" to the AF containing the cursor, description text, score, and lifemeter actors

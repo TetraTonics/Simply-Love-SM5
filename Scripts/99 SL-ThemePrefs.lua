@@ -19,7 +19,6 @@ SL_CustomPrefs.Get = function()
 			Values = { 0,1,2,3,4,5,6,7,8,9 }
 		},
 
-
 		HideStockNoteSkins =
 		{
 			Default = false,
@@ -47,6 +46,12 @@ SL_CustomPrefs.Get = function()
 				THEME:GetString("ScreenSelectPlayMode", "StomperZ"),
 			},
 			Values 	= { "Casual", "ITG", "FA+", "StomperZ" }
+		},
+		isGoodReads =
+		{
+			Default = false,
+			Choices = { THEME:GetString("ThemePrefs","Yes"), THEME:GetString("ThemePrefs", "No") },
+			Values 	= { true, false }
 		},
 		AutoStyle =
 		{
