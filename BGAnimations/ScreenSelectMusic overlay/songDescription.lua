@@ -19,7 +19,7 @@ for _,group_name in ipairs(SONGMAN:GetSongGroupNames()) do
 	for _,song in ipairs(SONGMAN:GetSongsInGroup(group_name)) do
 		local song_cost = song:IsMarathon() and 3 or song:IsLong() and 2 or 1
 
-		if song_cost <= stages_remaining then
+		if GAMESTATE:IsEventMode() or song_cost <= stages_remaining then
 			group_durations[group_name] = group_durations[group_name] + song:MusicLengthSeconds()
 		end
 	end
@@ -99,6 +99,15 @@ local t = Def.ActorFrame{
 			LoadFont("Common Normal")..{
 				InitCommand=function(self) self:horizalign(left):xy(5,8):diffuse(1,1,1,1) end,
 				SetCommand=function(self)
+					-- if the active MusicWheel item is a group, GAMESTATE:GetCurrentSong() will return nil, but
+					-- GAMESTATE:GetCurrentSteps(player) will return the last-seen steps before wheel focus changed to the group
+					-- SL's StringifyDisplayBPMs() cannot reliably be used because of this, so if GetCurrentSong() returns nil
+					-- set this BPM value to an empty string and return out of this function early
+					if GAMESTATE:GetCurrentSong() == nil then
+						self:settext("")
+						return
+					end
+
 					--defined in ./Scipts/SL-BPMDisplayHelpers.lua
 					local text = StringifyDisplayBPMs()
 					self:settext(text or "")
