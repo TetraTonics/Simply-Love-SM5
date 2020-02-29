@@ -2,13 +2,36 @@
 -- Helper Functions for PlayerOptions
 ------------------------------------------------------------
 
-local function GetModsAndPlayerOptions(player)
+local GetModsAndPlayerOptions = function(player)
 	local mods = SL[ToEnumShortString(player)].ActiveModifiers
 	local topscreen = SCREENMAN:GetTopScreen():GetName()
 	local modslevel = topscreen  == "ScreenEditOptions" and "ModsLevel_Stage" or "ModsLevel_Preferred"
 	local playeroptions = GAMESTATE:GetPlayerState(player):GetPlayerOptions(modslevel)
 
 	return mods, playeroptions
+end
+
+-- -----------------------------------------------------------------------
+-- For normal gameplay, the engine offers SongUtil.GetPlayableSteps()
+-- but there is not currently any analogous helper function for CourseMode.
+-- Let's use this for now.
+
+local GetPlayableTrails = function(course)
+	if not (course and course.GetAllTrails) then return nil end
+
+	local trails = {}
+	for _,trail in ipairs(course:GetAllTrails()) do
+		local playable = true
+		for _,entry in ipairs(trail:GetTrailEntries()) do
+			if not SongUtil.IsStepsTypePlayable(entry:GetSong(), entry:GetSteps():GetStepsType()) then
+				playable = false
+				break
+			end
+		end
+		if playable then table.insert(trails, trail) end
+	end
+
+	return trails
 end
 
 ------------------------------------------------------------
@@ -63,7 +86,7 @@ local Overrides = {
 
 	-------------------------------------------------------------------------
 	SpeedModType = {
-		Choices = { "x", "C", "M" },
+		Choices = { "X", "C", "M" },
 		ExportOnChange = true,
 		LayoutType = "ShowOneInRow",
 		SaveSelections = function(self, list, pn)
@@ -71,7 +94,7 @@ local Overrides = {
 				if list[i] then
 					-- Broadcast a message that ./BGAnimations/ScreenPlayerOptions overlay.lua will be listening for
 					-- so it can hackishly modify the single BitmapText actor used in the SpeedMod optionrow
-					MESSAGEMAN:Broadcast('SpeedModType'..ToEnumShortString(pn)..'Set', {SpeedModType=self.Choices[i]})
+					MESSAGEMAN:Broadcast('SpeedModType'..ToEnumShortString(pn)..'Set', {SpeedModType=self.Choices[i], Player=pn})
 				end
 			end
 		end
@@ -81,25 +104,12 @@ local Overrides = {
 		Choices = { "       " },
 		ExportOnChange = true,
 		LayoutType = "ShowOneInRow",
-		LoadSelections = function(self, list, pn)
-			list[1] = true
-		end,
 		SaveSelections = function(self, list, pn)
 			local mods, playeroptions = GetModsAndPlayerOptions(pn)
-			local type 	= mods.SpeedModType or "x"
+			local type  = mods.SpeedModType or "X"
 			local speed = mods.SpeedMod or 1.00
 
-			-- it's necessary to manually apply a speedmod of 1x first, otherwise speedmods stack?
-			playeroptions:XMod(1.00)
-
-			if type == "x" then
-				playeroptions:XMod(speed)
-			elseif type == "C" then
-				playeroptions:CMod(speed)
-			elseif type == "M" then
-				playeroptions:MMod(speed)
-			end
-
+			playeroptions[type.."Mod"](playeroptions, speed)
 		end
 	},
 	-------------------------------------------------------------------------
@@ -260,6 +270,72 @@ local Overrides = {
 		end
 	},
 	-------------------------------------------------------------------------
+	Stepchart = {
+		ExportOnChange = true,
+		Choices = function()
+			local choices = {}
+
+			if not GAMESTATE:IsCourseMode() then
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					for steps in ivalues( SongUtil.GetPlayableSteps(song) ) do
+						if steps:IsAnEdit() then
+							choices[#choices+1] = ("%s %i"):format(steps:GetDescription(), steps:GetMeter())
+						else
+							choices[#choices+1] = ("%s %i"):format(THEME:GetString("Difficulty", ToEnumShortString(steps:GetDifficulty())), steps:GetMeter())
+						end
+					end
+				end
+			else
+				local course = GAMESTATE:GetCurrentCourse()
+				if course then
+					for _,trail in ipairs(GetPlayableTrails(course)) do
+						choices[#choices+1] = ("%s %i"):format(THEME:GetString("Difficulty", ToEnumShortString(trail:GetDifficulty())), trail:GetMeter())
+					end
+				end
+			end
+
+			return choices
+		end,
+		Values = function()
+			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
+			if SongOrCourse then
+				if GAMESTATE:IsCourseMode() then
+					return GetPlayableTrails(SongOrCourse)
+				else
+					return SongUtil.GetPlayableSteps(SongOrCourse)
+				end
+			end
+			return {}
+		end,
+		LoadSelections = function(self, list, pn)
+			local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+			local i = FindInTable(StepsOrTrail, self.Values) or 1
+			list[i] = true
+			return list
+		end,
+		SaveSelections = function(self, list, pn)
+			for i,v in ipairs(self.Values) do
+				if list[i] then
+					-- GAMESTATE keeps track of what the "preferred difficulty" is and this is used by
+					-- the engine's SelectMusic class.  SL is using the engine's SelectMusic for now.
+					-- Set the PreferredDifficulty now so that the player's newly chosen difficulty
+					-- doesn't reset when they return to SelectMusic/SelectCourse.
+					GAMESTATE:SetPreferredDifficulty(pn, v:GetDifficulty())
+
+					if GAMESTATE:IsCourseMode() then
+						GAMESTATE:SetCurrentTrail(pn, v)
+						MESSAGEMAN:Broadcast("CurrentTrail"..ToEnumShortString(pn).."Changed")
+					else
+						GAMESTATE:SetCurrentSteps(pn, v)
+						MESSAGEMAN:Broadcast("CurrentSteps"..ToEnumShortString(pn).."Changed")
+					end
+					break
+				end
+			end
+		end
+	},
+	-------------------------------------------------------------------------
 	Hide = {
 		SelectType = "SelectMultiple",
 		Values = { "Targets", "SongBG", "Combo", "Lifebar", "Score", "Danger", "ComboExplosions" },
@@ -291,15 +367,17 @@ local Overrides = {
 	-------------------------------------------------------------------------
 	DataVisualizations = {
 		Values = function()
-			local choices = { "Disabled", "Target Score Graph", "Step Statistics" }
+			local choices = { "None", "Target Score Graph", "Step Statistics" }
 
-			-- Disabled and Target Score Graph should always be available to players
+			-- None and Target Score Graph should always be available to players
 			-- but Step Statistics needs a lot of space and isn't always possible
 			-- remove it as an available option if we aren't in single or if the current
 			-- notefield width already uses more than half the screen width
+			local style = GAMESTATE:GetCurrentStyle()
+			local notefieldwidth = GetNotefieldWidth()
 
-			if GAMESTATE:GetCurrentStyle():GetName() ~= "single"
-			or GetNotefieldWidth() > _screen.w/2 then
+			if style and style:GetName() ~= "single"
+			or notefieldwidth and notefieldwidth > _screen.w/2 then
 				table.remove(choices, 3)
 			end
 
@@ -356,20 +434,20 @@ local Overrides = {
 		OneChoiceForAllPlayers = true,
 		LoadSelections = function(self, list, pn)
 			local worst = SL.Global.ActiveModifiers.WorstTimingWindow
-			if 	worst==5 then list[1] = true
-			elseif 	worst==4 then list[2] = true
-			elseif 	worst==3 then list[3] = true
-			elseif 	worst==0 then list[4] = true
+			if     worst==5 then list[1] = true
+			elseif worst==4 then list[2] = true
+			elseif worst==3 then list[3] = true
+			elseif worst==0 then list[4] = true
 			end
 			return list
 		end,
 		SaveSelections = function(self, list, pn)
 			local gmods = SL.Global.ActiveModifiers
 
-			if 	list[1] then gmods.WorstTimingWindow=5
-			elseif 	list[2] then gmods.WorstTimingWindow=4
-			elseif 	list[3] then gmods.WorstTimingWindow=3
-			elseif 	list[4] then gmods.WorstTimingWindow=0
+			if     list[1] then gmods.WorstTimingWindow=5
+			elseif list[2] then gmods.WorstTimingWindow=4
+			elseif list[3] then gmods.WorstTimingWindow=3
+			elseif list[4] then gmods.WorstTimingWindow=0
 			end
 
 			-- loop 5 times to set the 5 TimingWindows appropriately
@@ -384,21 +462,6 @@ local Overrides = {
 					end
 				end
 			end
-		end
-	},
-	-------------------------------------------------------------------------
-	Vocalization = {
-		Choices = function()
-			-- Allow users to arbitrarily add new vocalizations to ./Simply Love/Other/Vocalize/
-			-- and have those vocalizations be automatically detected
-			local vocalizations = FILEMAN:GetDirListing(THEME:GetCurrentThemeDirectory().."/Other/Vocalize/" , true, false)
-			table.insert(vocalizations, 1, "None")
-
-			if #vocalizations > 1 then
-				vocalizations[#vocalizations+1] = "Random"
-				vocalizations[#vocalizations+1] = "Blender"
-			end
-			return vocalizations
 		end
 	},
 	-------------------------------------------------------------------------
@@ -417,10 +480,6 @@ local Overrides = {
 			return choices
 		end,
 		OneChoiceForAllPlayers = true,
-		LoadSelections = function(self, list, pn)
-			list[1] = true
-			return list
-		end,
 		SaveSelections = function(self, list, pn)
 			if list[1] then SL.Global.ScreenAfter.PlayerOptions = Branch.GameplayScreen() end
 
@@ -442,10 +501,6 @@ local Overrides = {
 			return choices
 		end,
 		OneChoiceForAllPlayers = true,
-		LoadSelections = function(self, list, pn)
-			list[1] = true
-			return list
-		end,
 		SaveSelections = function(self, list, pn)
 			if list[1] then SL.Global.ScreenAfter.PlayerOptions2 = Branch.GameplayScreen() end
 
@@ -468,10 +523,6 @@ local Overrides = {
 			return choices
 		end,
 		OneChoiceForAllPlayers = true,
-		LoadSelections = function(self, list, pn)
-			list[1] = true
-			return list
-		end,
 		SaveSelections = function(self, list, pn)
 			if list[1] then SL.Global.ScreenAfter.PlayerOptions3 = Branch.GameplayScreen() end
 
