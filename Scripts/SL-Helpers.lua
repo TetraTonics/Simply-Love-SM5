@@ -2,7 +2,7 @@
 -- call this to draw a Quad with a border
 -- width of quad, height of quad, and border width, in pixels
 
-function Border(width, height, bw)
+Border = function(width, height, bw)
 	return Def.ActorFrame {
 		Def.Quad { InitCommand=function(self) self:zoomto(width-2*bw, height-2*bw):MaskSource(true) end },
 		Def.Quad { InitCommand=function(self) self:zoomto(width,height):MaskDest() end },
@@ -16,7 +16,8 @@ end
 -- in RageDisplay_D3D which is, ironically, where it's most needed.  So, this.
 
 SupportsRenderToTexture = function()
-	return PREFSMAN:GetPreference("VideoRenderers"):sub(1,6):lower() == "opengl"
+	-- ensure the method exists and, if so, ensure that it returns true
+	return DISPLAY.SupportsRenderToTexture and DISPLAY:SupportsRenderToTexture()
 end
 
 -- -----------------------------------------------------------------------
@@ -196,17 +197,6 @@ GetCredits = function()
 end
 
 -- -----------------------------------------------------------------------
--- used in Metrics.ini for ScreenRankingSingle and ScreenRankingDouble
-
-GetStepsTypeForThisGame = function(type)
-	local game = GAMESTATE:GetCurrentGame():GetName()
-	-- capitalize the first letter
-	game = game:gsub("^%l", string.upper)
-
-	return "StepsType_" .. game .. "_" .. type
-end
-
--- -----------------------------------------------------------------------
 -- return the x value for the center of a player's notefield
 -- used to position various elements in ScreenGameplay
 
@@ -231,113 +221,53 @@ end
 -- quirks/oversights in the engine on a per-game + per-style basis
 
 local NoteFieldWidth = {
-	-- dance Just Works™.  Wow!  It's almost like this game gets the most attention and fixes.
+	-- dance uses such nice, clean multiples of 64.  It's almost like this game gets the most attention and fixes.
 	dance = {
-		single  = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
-		versus  = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
-		double  = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
-		solo    = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
-		routine = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
+		single  = 256,
+		versus  = 256,
+		double  = 512,
+		solo    = 384,
+		routine = 512,
+		-- couple and threepanel not supported in Simply Love at this time D:
+		-- couple = 256,
+		-- threepanel = 192
 	},
-	-- the values returned by the engine for Pump are slightly too small(?), so... uh... pad it
+	-- pump's values are very similar to those used in dance, but curiously smaller
 	pump = {
-		single  = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) + 10 end,
-		versus  = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) + 10 end,
-		double  = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) + 10 end,
-		routine = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) + 10 end,
+		single  = 250,
+		versus  = 250,
+		double  = 500,
+		routine = 500,
 	},
-	-- techno works for single8, needs to be smaller for versus8 and double8
+	-- These values for techno, para, and kb7 are the result of empirical observation
+	-- of the SM5 engine and should not be regarded as any kind of Truth.
 	techno = {
-		single8 = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
-		versus8 = function(p) return (GAMESTATE:GetCurrentStyle():GetWidth(p)/1.65) end,
-		double8 = function(p) return (GAMESTATE:GetCurrentStyle():GetWidth(p)/1.65) end,
+		single8 = 448,
+		versus8 = 272,
+		double8 = 543,
 	},
-	-- the values returned for para are also slightly too small, so... pad those, too
 	para = {
-		single = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) + 10 end,
-		versus = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) + 10 end,
+		single = 280,
+		versus = 280,
 	},
-	-- kb7 works for single, needs to be smaller for versus
-	-- there is no kb7 double (would that be kb14?)
 	kb7 = {
-		single = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p) end,
-		versus = function(p) return GAMESTATE:GetCurrentStyle():GetWidth(p)/1.65 end,
+		single = 480,
+		versus = 270,
 	},
 }
 
-GetNotefieldWidth = function(player)
-	if not player then return false end
+GetNotefieldWidth = function()
+	local game = GAMESTATE:GetCurrentGame()
 
-	local game = GAMESTATE:GetCurrentGame():GetName()
-	local style = GAMESTATE:GetCurrentStyle():GetName()
-	return NoteFieldWidth[game][style](player)
-end
-
--- -----------------------------------------------------------------------
--- noteskin_name is a string that matches some available NoteSkin for the current game
--- column is an (optional) string for the column you want returned, like "Left" or "DownRight"
---
--- if no errors are encountered, a full NoteSkin actor is returned
--- otherwise, a generic Def.Actor is returned
--- in both these cases, the Name of the returned actor will be ("NoteSkin_"..noteskin_name)
-
-GetNoteSkinActor = function(noteskin_name, column)
-
-	-- prepare a dummy Actor using the name of NoteSkin in case errors are
-	-- encountered so that a valid (inert, not-drawing) actor still gets returned
-	local dummy = Def.Actor{
-		Name="NoteSkin_"..(noteskin_name or ""),
-		InitCommand=function(self) self:visible(false) end
-	}
-
-	-- perform first check: does the NoteSkin exist for the current game?
-	if not NOTESKIN:DoesNoteSkinExist(noteskin_name) then return dummy end
-
-	local game_name = GAMESTATE:GetCurrentGame():GetName()
-	local fallback_column = { dance="Up", pump="UpRight", techno="Up", kb7="Key1" }
-
-	-- prefer the value for column if one was passed in, otherwise use a fallback value
-	column = column or fallback_column[game_name] or "Up"
-
-	-- most NoteSkins are free of errors, but we cannot assume they all are
-	-- one error in one NoteSkin is enough to halt ScreenPlayerOptions overlay
-	-- so, use pcall() to catch errors.  The first argument is the function we
-	-- want to check for runtime errors, and the remaining arguments are what
-	-- we would have passed to that function.
-	--
-	-- Using pcall() like this returns [multiple] values.  A boolean indicating that the
-	-- function is error-free (true) or that errors were caught (false), and then whatever
-	-- calling that function would have normally returned
-	local okay, noteskin_actor = pcall(NOTESKIN.LoadActorForNoteSkin, NOTESKIN, column, "Tap Note", noteskin_name)
-
-	-- if no errors were caught and we have a NoteSkin actor from NOTESKIN:LoadActorForNoteSkin()
-	if okay and noteskin_actor then
-
-		-- If we've made it this far, the screen will function without halting, but there
-		-- may still be Lua errors in the NoteSkin's InitCommand that might cause the actor
-		-- to display strangely (because Lua halted and sizing/positioning/etc. never happened).
-		--
-		-- There is some version of an "smx" NoteSkin that got passed around the community
-		-- that attempts to use a nil constant "FIXUP" in its InitCommand that exhibits this.
-		-- So, pcall() again, now specifically on the noteskin_actor's InitCommand if it has one.
-		if noteskin_actor.InitCommand then
-			okay = pcall(noteskin_actor.InitCommand)
-		end
-
-		if okay then
-			return noteskin_actor..{
-				Name="NoteSkin_"..noteskin_name,
-				InitCommand=function(self) self:visible(false) end
-			}
+	if game then
+		local game_widths = NoteFieldWidth[game:GetName()]
+		local style = GAMESTATE:GetCurrentStyle()
+		if style then
+			return game_widths[style:GetName()]
 		end
 	end
 
-	-- if the user has ShowThemeErrors enabled, let them know about the Lua errors via SystemMessage
-	if PREFSMAN:GetPreference("ShowThemeErrors") then
-		SM( THEME:GetString("ScreenPlayerOptions", "NoteSkinErrors"):format(noteskin_name) )
-	end
-
-	return dummy
+	return false
 end
 
 -- -----------------------------------------------------------------------
@@ -479,8 +409,8 @@ GetStepsCredit = function(player)
 end
 
 -- -----------------------------------------------------------------------
-
 -- the best way to spread holiday cheer is singing loud for all to hear
+
 HolidayCheer = function()
 	return (PREFSMAN:GetPreference("EasterEggs") and MonthOfYear()==11)
 end
@@ -583,7 +513,6 @@ end
 -- a valid ComboFont should:
 --   • include glyphs for 1234567890()/
 --   • be open source or "100% free" on dafont.com
-
 
 GetComboFonts = function()
 	local path = THEME:GetCurrentThemeDirectory().."Fonts/_Combo Fonts/"
