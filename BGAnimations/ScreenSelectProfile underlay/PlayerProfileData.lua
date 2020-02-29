@@ -94,6 +94,14 @@ end
 
 -- ----------------------------------------------------
 -- Good Reads functions
+local RetrieveProfileData = function(profile, dir)
+	local theme_name = THEME:GetThemeDisplayName()
+	local path = dir .. theme_name .. " UserPrefs.ini"
+	if FILEMAN:DoesFileExist(path) then
+		return IniFile.ReadFile(path)[theme_name]
+	end
+	return false
+end
 
 local GoodReadsCountry = function(name)
 	if not GoodReads.Players[name] then return nil end
@@ -128,7 +136,7 @@ for i=1, PROFILEMAN:GetNumLocalProfiles() do
 	-- GetLocalProfileIDFromIndex() also expects indices to start at 0
 	local id = PROFILEMAN:GetLocalProfileIDFromIndex(i-1)
 	local dir = PROFILEMAN:LocalProfileIDToDir(id)
-	local userprefs = ReadProfileCustom(profile, dir)
+	local userprefs = RetrieveProfileData(profile, dir)
 	local mods, noteskin, judgment = RecentMods(userprefs)
 
 	local data = {
