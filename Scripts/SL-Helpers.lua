@@ -319,21 +319,23 @@ SetGameModePreferences = function()
 	-- If we're switching to Casual mode,
 	-- we want to reduce the number of judgments,
 	-- so turn Decents and WayOffs off now.
+	-- Be gentle on the young ones
 	if SL.Global.GameMode == "Casual" then
-		SL.Global.ActiveModifiers.WorstTimingWindow = 3
+		SL.Global.ActiveModifiers.TimingWindows = {true,true,true,false,false}
 		PREFSMAN:SetPreference("TimingWindowScale", 2.5);
 
 	-- Otherwise, we want all TimingWindows enabled by default.
+	-- Set Timing windows to normal
 	else
-		 SL.Global.ActiveModifiers.WorstTimingWindow = 5
+		 SL.Global.ActiveModifiers.TimingWindows = {true,true,true,true,true}
 		 PREFSMAN:SetPreference("TimingWindowScale", 1);
 	end
 
 	-- loop through human players and apply whatever mods need to be set now
 	for player in ivalues(GAMESTATE:GetHumanPlayers()) do
-		-- Now that we've set the SL table for WorstTimingWindow appropriately,
-		-- use it to apply WorstTimingWindow as a mod.
-		local OptRow = CustomOptionRow( "WorstTimingWindow" )
+		-- Now that we've set the SL table for TimingWindows appropriately,
+		-- use it to apply TimingWindows.
+		local OptRow = CustomOptionRow( "TimingWindows" )
 		OptRow:LoadSelections( OptRow.Choices, player )
 
 		-- using PREFSMAN to set the preference for MinTNSToHideNotes apparently isn't
