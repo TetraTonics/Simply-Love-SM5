@@ -33,16 +33,12 @@ local PlayerDefaults = {
 				LifeMeterType = "Standard",
 				MissBecauseHeld = false,
 				NPSGraphAtTop = false,
-				Vocalization = "None",
 			}
 			self.Streams = {
 				SongDir = nil,
 				StepsType = nil,
 				Difficulty = nil,
 				Measures = nil,
-			}
-			self.NoteDensity = {
-				Peak = nil
 			}
 			self.HighScores = {
 				EnteringName = false,
@@ -51,9 +47,7 @@ local PlayerDefaults = {
 			self.Stages = {
 				Stats = {}
 			}
-			self.CurrentPlayerOptions = {
-				String = nil
-			}
+			self.PlayerOptionsString = nil
 		end
 	}
 }

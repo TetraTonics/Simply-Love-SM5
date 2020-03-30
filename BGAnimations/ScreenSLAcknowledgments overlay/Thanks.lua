@@ -28,7 +28,7 @@ return {
 		},
 		{
 			Name="vyhd",
-			Img="",
+			Img="vyhd.jpg",
 			About='vyhd led development for the OpenITG project and served as an approachable guru when the technical details of StepMania were understood by few.\n\nvyhd was always patient and helpful when responding to my questions, which grew from "Can you help me set up OpenITG on a Pump cab?" to "what\'s fstab?" to "how do pointers even work?"  He was generous with his time and kind with his words, and his didactic style helped me grow as a programmer and a human.',
 		},
 	},
@@ -90,7 +90,7 @@ return {
 	{
 		{
 			Name="Dance Dance Maniacs",
-			Img={ "ddm/2020.jpg", "ddm/2019.jpg", "ddm/2017.jpg", "ddm/2015.jpg", "ddm/2018.jpg", "ddm/2012.jpg", "ddm/2010.jpg" },
+			Img={ "ddm/2020.jpg", "ddm/2019.jpg", "ddm/2017.jpg", "ddm/2015.jpg", "ddm/2018.jpg", "ddm/2015b.jpg", "ddm/2012.jpg", "ddm/2010.jpg" },
 			About="The PSU Dance Dance Maniacs dance gamed with me at my best and worst.\n\nLightningXCE, Zyroplex, Captain Swagonforce, rawinput, milk, teejusb, NBCrescendo, Vidur, freemansbackup, chronohat\n\nDJ OMiY, minomotu, Kristina, blakjakal, Vale, Silverheart97, AndyBeard, Alex, tfrederick, Catherine, Elena, Jonathan, Eileen, Ali, Anna\n\nRime, PirateKing, Fox, Lev, Cathy, Grant, Koopa, CCTV, MathMatt, TheNick, Nate(s), Crash Cringle, Daisy1218, Miaou Miaou Miaou, Silverwolfstar, and more."
 		},
 		{
@@ -130,7 +130,7 @@ return {
 		{
 			Name="Brittney / Galaga",
 			Img="galaga.jpg",
-			About="Brittney has been a leading voice in the effort to create a community and organize events for girls and women who play dance games.\n\nShe has encouraged women of all skill levels from around the world to push themselves and each other to improve through innovative and compelling competition, and the overall community is better for it."
+			About="Brittney leads Valkyrie Dimension, a major community focused on events for women and femme-leaning/identifying people who play dance games.\n\nShe has encouraged valkyries of all skill levels from around the world to push themselves and each other to improve through innovative and compelling competition, and the overall community is better for it."
 		},
 		{
 			Name="Dyle / RiOdO",
