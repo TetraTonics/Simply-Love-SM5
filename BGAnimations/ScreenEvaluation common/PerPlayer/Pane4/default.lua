@@ -16,7 +16,6 @@ local bottombar_height = 13
 local abbreviations = {
 	ITG = { "Fan", "Ex", "Gr", "Dec", "WO" },
 	["FA+"] = { "Fan", "Fan", "Ex", "Gr", "Dec" },
-	StomperZ = { "Perf", "Gr", "Good", "Hit", "" }
 }
 
 local colors = {}
@@ -35,8 +34,6 @@ end
 local num_judgments_available = 5
 local worst_window = PREFSMAN:GetPreference("TimingWindowSecondsW5")
 local windows = SL.Global.ActiveModifiers.TimingWindows
-
--- SM(windows)
 
 for i=5,1,-1 do
 	if windows[i]==true then
@@ -91,10 +88,6 @@ pane[#pane+1] = Def.Quad{
 			:zoomto(1, pane_height - (topbar_height+bottombar_height) )
 			:vertalign(bottom):xy(x, 0)
 			:diffuse(1,1,1,0.666)
-
-		if SL.Global.GameMode == "StomperZ" then
-			self:diffuse(0,0,0,0.666)
-		end
 	end,
 }
 

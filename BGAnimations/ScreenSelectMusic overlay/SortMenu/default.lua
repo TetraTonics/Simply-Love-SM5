@@ -137,9 +137,18 @@ local t = Def.ActorFrame {
 		-- Allow players to switch from single to double and from double to single
 		-- but only present these options if Joint Double or Joint Premium is enabled
 		if not (PREFSMAN:GetPreference("Premium") == "Premium_Off" and GAMESTATE:GetCoinMode() == "CoinMode_Pay") then
+
 			if style == "single" then
+				if ThemePrefs.Get("AllowDanceSolo") then
+					table.insert(wheel_options, {"ChangeStyle", "Solo"})
+				end
+
 				table.insert(wheel_options, {"ChangeStyle", "Double"})
+
 			elseif style == "double" then
+				table.insert(wheel_options, {"ChangeStyle", "Single"})
+
+			elseif style == "solo" then
 				table.insert(wheel_options, {"ChangeStyle", "Single"})
 
 			-- Routine is not ready for use yet, but it might be soon.
@@ -153,7 +162,6 @@ local t = Def.ActorFrame {
 		-- but don't add the current SL GameMode as a choice. If a player is already in FA+, don't
 		-- present a choice that would allow them to switch to FA+.
 		if SL.Global.Stages.PlayedThisGame == 0 then
-			if SL.Global.GameMode ~= "StomperZ" then table.insert(wheel_options, {"ChangeMode", "StomperZ"}) end
 			if SL.Global.GameMode ~= "ITG"      then table.insert(wheel_options, {"ChangeMode", "ITG"}) end
 			if SL.Global.GameMode ~= "FA+"      then table.insert(wheel_options, {"ChangeMode", "FA+"}) end
 		end

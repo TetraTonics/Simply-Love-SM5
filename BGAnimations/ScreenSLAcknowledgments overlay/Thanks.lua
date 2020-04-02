@@ -28,7 +28,7 @@ return {
 		},
 		{
 			Name="vyhd",
-			Img="",
+			Img="vyhd.jpg",
 			About='vyhd led development for the OpenITG project and served as an approachable guru when the technical details of StepMania were understood by few.\n\nvyhd was always patient and helpful when responding to my questions, which grew from "Can you help me set up OpenITG on a Pump cab?" to "what\'s fstab?" to "how do pointers even work?"  He was generous with his time and kind with his words, and his didactic style helped me grow as a programmer and a human.',
 		},
 	},
@@ -90,7 +90,7 @@ return {
 	{
 		{
 			Name="Dance Dance Maniacs",
-			Img={ "ddm/2020.jpg", "ddm/2019.jpg", "ddm/2017.jpg", "ddm/2015.jpg", "ddm/2018.jpg", "ddm/2012.jpg", "ddm/2010.jpg" },
+			Img={ "ddm/2020.jpg", "ddm/2019.jpg", "ddm/2017.jpg", "ddm/2015.jpg", "ddm/2018.jpg", "ddm/2015b.jpg", "ddm/2012.jpg", "ddm/2010.jpg" },
 			About="The PSU Dance Dance Maniacs dance gamed with me at my best and worst.\n\nLightningXCE, Zyroplex, Captain Swagonforce, rawinput, milk, teejusb, NBCrescendo, Vidur, freemansbackup, chronohat\n\nDJ OMiY, minomotu, Kristina, blakjakal, Vale, Silverheart97, AndyBeard, Alex, tfrederick, Catherine, Elena, Jonathan, Eileen, Ali, Anna\n\nRime, PirateKing, Fox, Lev, Cathy, Grant, Koopa, CCTV, MathMatt, TheNick, Nate(s), Crash Cringle, Daisy1218, Miaou Miaou Miaou, Silverwolfstar, and more."
 		},
 		{
@@ -130,7 +130,7 @@ return {
 		{
 			Name="Brittney / Galaga",
 			Img="galaga.jpg",
-			About="Brittney has been a leading voice in the effort to create a community and organize events for girls and women who play dance games.\n\nShe has encouraged women of all skill levels from around the world to push themselves and each other to improve through innovative and compelling competition, and the overall community is better for it."
+			About="Brittney leads Valkyrie Dimension, a major community focused on events for women and femme-leaning/identifying people who play dance games.\n\nShe has encouraged valkyries of all skill levels from around the world to push themselves and each other to improve through innovative and compelling competition, and the overall community is better for it."
 		},
 		{
 			Name="Dyle / RiOdO",
@@ -144,7 +144,7 @@ return {
 		{
 			Name="Jose_Varela",
 			Img="jose.png",
-			About="An up-and-coming StepMania themer, Jose graciously translated Simply Love's UI into Spanish.\n\nAs of this writing, he's working on three unique themes for SM5 and each is looking great.  By the time you read this, he will probably have undertaken at least a fifth."
+			About="Jose graciously translated Simply Love's UI into Spanish.\n\nAs of this writing, he's working on three unique themes for SM5 and each is looking great.  By the time you read this, he will probably have undertaken at least a fifth."
 		},
 		{
 			Name="HeySora",
@@ -152,18 +152,18 @@ return {
 			About="HeySora kindly translated Simply Love's UI into French.\n\nHe also went through the theme with a fine-tooth comb to find and fix bugs, offer helpful suggestions, and help make the theme better for everyone."
 		},
 		{
-			Name="Moru Zerinho6",
-			Img="Moru_Zerinho6.jpg",
-			About="Moru Zerinho6 volunteered to translate Simply Love's UI into Brazilian Portuguese and the theme is richer for it.\n\nHe spoke with me extensively about his experience going down The Rabbit Hole in Simply Love and how he translated its words for other non-English-speaking people along the way.  His earnest sincerity helped me in ways I am unable to describe using any words of my own."
+			Name="FMS_Cat",
+			Img="fms_cat 1x32.png",
+			About="FMS_Cat translated Simply Love's UI into Japanese, helping to realize a longtime dream of mine.\n\nHe is an incredibly talented WebGL programmer whose creative work with shaders leaves me smiling and curious about how such expansive beauty appears in the tiniest of footprints."
 		},
 	},
 
 	-- page 10
 	{
 		{
-			Name="FMS_Cat",
-			Img="fms_cat 1x32.png",
-			About="FMS_Cat translated Simply Love's UI into Japanese, helping to realize a longtime dream of mine.\n\nHe is an incredibly talented WebGL programmer whose creative work with shaders leaves me smiling and curious about how such expansive beauty appears in the tiniest of footprints."
+			Name="Moru Zerinho6",
+			Img="Moru_Zerinho6.jpg",
+			About="Moru Zerinho6 volunteered to translate Simply Love's UI into Brazilian Portuguese and the theme is richer for it.\n\nHe spoke with me extensively about his experience going down The Rabbit Hole in Simply Love and how he translated its words for other non-English-speaking people along the way.  His earnest sincerity helped me in ways I am unable to describe using any words of my own."
 		},
 		{
 			Name="TheNick",

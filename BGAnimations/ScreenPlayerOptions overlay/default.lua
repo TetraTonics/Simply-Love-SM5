@@ -104,7 +104,12 @@ local SpeedModBMTs = {}
 
 local t = Def.ActorFrame{
 	InitCommand=function(self) self:xy(_screen.cx,0) end,
-	OnCommand=function(self) self:queuecommand("Capture") end,
+	OnCommand=function(self)
+		-- players can repeatedly visit the options screen while in Edit Mode
+		-- so ensure that this ActorFrame can be seen each time OnCommand() is called
+		self:diffusealpha(1)
+		self:queuecommand("Capture")
+	end,
 	OffCommand=function(self) self:linear(0.2):diffusealpha(0) end,
 	CaptureCommand=function(self)
 		local ScreenOptions = SCREENMAN:GetTopScreen()
@@ -135,11 +140,23 @@ local t = Def.ActorFrame{
 		local MusicRateRowIndex = FindOptionRowIndex(screen, "MusicRate")
 
 		if MusicRateRowIndex then
-			local musicrate = SL.Global.ActiveModifiers.MusicRate
 			local title_bmt = screen:GetOptionRow(MusicRateRowIndex):GetChild(""):GetChild("Title")
+			local bpms = {}
 
-			local bpms = StringifyDisplayBPMs()
-			title_bmt:settext( ("%s\nbpm: %s"):format(THEME:GetString("OptionTitles", "MusicRate"), bpms) )
+			for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+				table.insert(bpms, StringifyDisplayBPMs(player))
+			end
+
+			local text = StringifyDisplayBPMs()
+			if #bpms == 2 then
+				if bpms[1] == bpms[2] then
+					text = bpms[1]
+				else
+					text = THEME:GetString("ScreenPlayerOptions", "SplitBPMs")
+				end
+			end
+
+			title_bmt:settext( ("%s\nbpm: %s"):format(THEME:GetString("OptionTitles", "MusicRate"), text) )
 		end
 	end
 }

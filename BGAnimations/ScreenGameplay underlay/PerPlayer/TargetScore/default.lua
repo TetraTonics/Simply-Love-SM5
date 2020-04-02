@@ -11,12 +11,14 @@ if SL.Global.GameMode == "Casual" then return end
 local player = ...
 local pn = ToEnumShortString(player)
 
--- there are three possible reasons the rest of this file should proceed to execute
+-- Make sure that someone requested something from this file.
+-- (There's a lot. See the long note near the end, just above the pacemaker implementation.)
+local Pacemaker = SL[pn].ActiveModifiers.Pacemaker
 local WantsTargetGraph = SL[pn].ActiveModifiers.DataVisualizations == "Target Score Graph"
 local FailOnMissedTarget = PREFSMAN:GetPreference("EventMode") and SL[pn].ActiveModifiers.ActionOnMissedTarget == "Fail"
 local RestartOnMissedTarget = PREFSMAN:GetPreference("EventMode") and SL[pn].ActiveModifiers.ActionOnMissedTarget == "Restart"
 -- if none of them apply, bail now
-if (not WantsTargetGraph) and (not FailOnMissedTarget) and (not RestartOnMissedTarget) then return end
+if not (Pacemaker or WantsTargetGraph or FailOnMissedTarget or RestartOnMissedTarget) then return end
 
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 
@@ -89,7 +91,7 @@ local bar = {}
 if use_smaller_graph then
 	-- this graph is horizontally condensed compared to the full-width alternative
 	graph.w = WideScale(25, 70)
-	graph.y = 425
+	graph.y = 429
 
 	-- smaller border for the target bar
 	targetBarBorderWidth = 1
@@ -118,7 +120,7 @@ else
 
 	-- full-width graph
 	graph.w = WideScale(250, 300)
-	graph.y = 430
+	graph.y = 432
 
 	-- put the graph on the other side of the screen
 	if (player == PLAYER_1) then
@@ -501,33 +503,22 @@ if SL[pn].ActiveModifiers.Pacemaker or FailOnMissedTarget or RestartOnMissedTarg
 			-- don't draw it if we don't need it
 			self:visible(SL[pn].ActiveModifiers.Pacemaker)
 
-			local noteX
-			local noteY
-			local zoomF = 0.4
+
 			local origX = GetNotefieldX(player)
 			local width = GetNotefieldWidth()
 
-			-- special casing: StomperZ with its receptor positions would appear over the normal pacemaker position
-			if SL.Global.GameMode == "StomperZ" and SL[pn].ActiveModifiers.ReceptorArrowsPosition == "StomperZ" then
-				-- put ourself just over the combo
-				noteY = _screen.cy - 60
-				zoomF = 0.35
+			local noteX = width / 4 -- this serendipitously works for doubles, somehow
+			local noteY = 56
+			local zoomF = 0.4
 
-				local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-				noteX = (width/NumColumns)
 
-				self:shadowlength(1) -- match other playfield counters
-			else
-				noteY = 56
-				noteX = width / 4 -- this serendipitously works for doubles, somehow
-
-				-- antisymmetry kludge; nudge PLAYER_2's pacemaker text to the left so that it
-				-- doesn't possibly overlap with the percent score text.  this is necessary because
-				-- P1 and P2 percent scores are not strictly symmetrical around the horizontal middle
-				if (player ~= PLAYER_1 and isTwoPlayers) then
-					noteX = noteX + 25
-				end
+			-- non-symmetry kludge; nudge PLAYER_2's pacemaker text to the left so that it
+			-- doesn't possibly overlap with the percent score text.  this is necessary because
+			-- P1 and P2 percent scores are not strictly symmetrical around the horizontal middle
+			if (player ~= PLAYER_1 and isTwoPlayers) then
+				noteX = noteX + 25
 			end
+
 
 			-- flip x-coordinate based on player
 			if (player ~= PLAYER_1) then

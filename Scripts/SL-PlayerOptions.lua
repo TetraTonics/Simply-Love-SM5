@@ -1,6 +1,6 @@
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 -- Helper Functions for PlayerOptions
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 
 local GetModsAndPlayerOptions = function(player)
 	local mods = SL[ToEnumShortString(player)].ActiveModifiers
@@ -34,7 +34,7 @@ local GetPlayableTrails = function(course)
 	return trails
 end
 
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 -- when to use Choices() vs. Values()
 --
 -- Each OptionRow needs stringified choices to present to the player.  Sometimes using hardcoded strings
@@ -207,7 +207,7 @@ local Overrides = {
 		Choices = function()
 			local first	= -100
 			local last 	= 150
-			local step 	= 5
+			local step 	= 1
 
 			return stringify( range(first, last, step), "%g%%")
 		end,
@@ -406,10 +406,23 @@ local Overrides = {
 	GameplayExtras = {
 		SelectType = "SelectMultiple",
 		Values = function()
+			-- GameplayExtras will be presented as a single OptionRow when WideScreen
 			local vals = { "ColumnFlashOnMiss", "SubtractiveScoring", "Pacemaker", "MissBecauseHeld", "NPSGraphAtTop" }
-			if SL.Global.GameMode == "StomperZ" then table.remove(vals, 5) end
+
+			-- if not WideScreen (traditional DDR cabinets running at 640x480)
+			-- remove the last two choices and show an additional OptionRow with just those two
+			if not IsUsingWideScreen() then
+				table.remove(vals, 5)
+				table.remove(vals, 4)
+			end
 			return vals
 		end,
+	},
+
+	-- this is defined in metrics.ini to only appear when not IsUsingWideScreen()
+	GameplayExtrasB = {
+		SelectType = "SelectMultiple",
+		Values = { "MissBecauseHeld", "NPSGraphAtTop" }
 	},
 	-------------------------------------------------------------------------
 	MeasureCounter = {
@@ -467,10 +480,6 @@ local Overrides = {
 				end
 			end
 		end
-	},
-	-------------------------------------------------------------------------
-	ReceptorArrowsPosition = {
-		Choices = { "StomperZ", "ITG" },
 	},
 	-------------------------------------------------------------------------
 	LifeMeterType = {
@@ -544,9 +553,9 @@ local Overrides = {
 }
 
 
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 -- Generic OptionRow Definition
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 local OptionRowDefault = {
 	-- the __index metatable will serve to define a completely generic OptionRow
 	__index = {
@@ -554,6 +563,7 @@ local OptionRowDefault = {
 
 			self.Name = name
 
+			-- FIXME: add inline comments explaining the intent/purpose of All This Code
 			if Overrides[name].Values then
 				if Overrides[name].Choices then
 					self.Choices = type(Overrides[name].Choices)=="function" and Overrides[name].Choices() or Overrides[name].Choices
@@ -617,7 +627,7 @@ local OptionRowDefault = {
 	}
 }
 
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 -- Passed a string like "Mini", CustomOptionRow() will return table that represents
 -- the themeside attributes of the OptionRow for Mini.
 --
@@ -630,6 +640,8 @@ local OptionRowDefault = {
 -- so it can load preview NoteSkin actors into the overlay's ActorFrame ahead of time.
 
 function CustomOptionRow( name )
+	if not (type(name)=="string" and Overrides[name]) then return false end
+
 	-- assign the properties of the generic OptionRowDefault to OptRow
 	local OptRow = setmetatable( {}, OptionRowDefault )
 
@@ -638,7 +650,7 @@ function CustomOptionRow( name )
 end
 
 
-------------------------------------------------------------
+-- -----------------------------------------------------------------------
 -- Mods are applied in their respective SaveSelections() functions when
 -- ScreenPlayerOptions receives its OffCommand(), but what happens
 -- if a player expects mods to have been set via a profile,

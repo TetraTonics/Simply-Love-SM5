@@ -3,7 +3,6 @@ local pn = ToEnumShortString(player)
 
 if not SL[pn].ActiveModifiers.NPSGraphAtTop
 or SL.Global.GameMode == "Casual"
-or SL.Global.GameMode == "StomperZ"
 then
 	return
 end
@@ -44,8 +43,8 @@ return Def.ActorFrame{
 			self:zoomtoheight(1)
 
 			if #GAMESTATE:GetHumanPlayers()==2 and SL.P1.ActiveModifiers.NPSGraphAtTop and SL.P2.ActiveModifiers.NPSGraphAtTop then
-				local my_peak = SL[pn].NoteDensity.Peak
-				local their_peak = SL[ToEnumShortString(OtherPlayer[player])].NoteDensity.Peak
+				local my_peak = GAMESTATE:Env()[pn.."PeakNPS"]
+				local their_peak = GAMESTATE:Env()[ToEnumShortString(OtherPlayer[player]).."PeakNPS"]
 
 				if my_peak < their_peak then
 					self:zoomtoheight(my_peak/their_peak)
