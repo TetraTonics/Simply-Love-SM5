@@ -406,10 +406,23 @@ local Overrides = {
 	GameplayExtras = {
 		SelectType = "SelectMultiple",
 		Values = function()
+			-- GameplayExtras will be presented as a single OptionRow when WideScreen
 			local vals = { "ColumnFlashOnMiss", "SubtractiveScoring", "Pacemaker", "MissBecauseHeld", "NPSGraphAtTop" }
-			if SL.Global.GameMode == "StomperZ" then table.remove(vals, 5) end
+
+			-- if not WideScreen (traditional DDR cabinets running at 640x480)
+			-- remove the last two choices and show an additional OptionRow with just those two
+			if not IsUsingWideScreen() then
+				table.remove(vals, 5)
+				table.remove(vals, 4)
+			end
 			return vals
 		end,
+	},
+
+	-- this is defined in metrics.ini to only appear when not IsUsingWideScreen()
+	GameplayExtrasB = {
+		SelectType = "SelectMultiple",
+		Values = { "MissBecauseHeld", "NPSGraphAtTop" }
 	},
 	-------------------------------------------------------------------------
 	MeasureCounter = {
@@ -467,10 +480,6 @@ local Overrides = {
 				end
 			end
 		end
-	},
-	-------------------------------------------------------------------------
-	ReceptorArrowsPosition = {
-		Choices = { "StomperZ", "ITG" },
 	},
 	-------------------------------------------------------------------------
 	LifeMeterType = {
