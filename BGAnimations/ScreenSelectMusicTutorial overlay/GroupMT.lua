@@ -85,47 +85,47 @@ local item_mt = {
 				SwitchCommand=function(subself) switch_to_songs(self.groupName) end,
 
 
-				-- back of folder
-				LoadActor("./img/folderBack.png")..{
-					Name="back",
-					InitCommand=function(subself) subself:zoom(0.75) end,
-					OnCommand=function(subself) subself:y(-10) end,
-					GainFocusCommand=function(subself) subself:diffuse(color("#c47215")) end,
-					LoseFocusCommand=function(subself) subself:diffuse(color("#4e4f54")) end
-				},
+				---- back of folder
+				--LoadActor("./img/folderBack.png")..{
+				--	Name="back",
+				--	InitCommand=function(subself) subself:zoom(0.75) end,
+				--	OnCommand=function(subself) subself:y(-10) end,
+				--	GainFocusCommand=function(subself) subself:diffuse(color("#c47215")) end,
+				--	LoseFocusCommand=function(subself) subself:diffuse(color("#4e4f54")) end
+				--},
 
 				-- group banner
 				Def.Banner{
 					Name="Banner",
 					InitCommand=function(subself) self.banner = subself end,
-					OnCommand=function(subself) subself:y(-30):setsize(418,164):zoom(0.48) end,
+					OnCommand=function(subself) subself:y(-100):setsize(418*1.8,300*1.8):zoom(0.48) end,
 				},
 
 				-- front of folder
-				LoadActor("./img/folderFront.png")..{
-					Name="front",
-					InitCommand=function(subself) subself:zoom(0.75):vertalign(bottom) end,
-					OnCommand=function(subself) subself:y(64) end,
-					GainFocusCommand=function(subself) subself:diffusetopedge(color("#eebc54")):diffusebottomedge(color("#7c5505")):decelerate(0.33):rotationx(50) end,
-					LoseFocusCommand=function(subself) subself:diffusebottomedge(color("#3d3e43")):diffusetopedge(color("#8d8e93")):decelerate(0.15):rotationx(0) end,
-				},
+				--LoadActor("./img/folderFront.png")..{
+				--	Name="front",
+				--	InitCommand=function(subself) subself:zoom(0.75):vertalign(bottom) end,
+				--	OnCommand=function(subself) subself:y(64) end,
+				--	GainFocusCommand=function(subself) subself:diffusetopedge(color("#eebc54")):diffusebottomedge(color("#7c5505")):decelerate(0.33):rotationx(50) end,
+				--	LoseFocusCommand=function(subself) subself:diffusebottomedge(color("#3d3e43")):diffusetopedge(color("#8d8e93")):decelerate(0.15):rotationx(0) end,
+				--},
 
 				-- group title bmt
 				Def.BitmapText{
 					Font="Common Normal",
 					InitCommand=function(subself)
 						self.bmt = subself
-						subself:_wrapwidthpixels(150):vertspacing(-4):shadowlength(0.5)
+						subself:_wrapwidthpixels(150):vertspacing(-4):shadowlength(0.5):y(60)
 					end,
 					OnCommand=function(subself)
 						if self.index == GroupWheel:get_actor_item_at_focus_pos().index then
-							subself:horizalign(left):xy(150,-6):zoom(3):diffuse(Color.White):_wrapwidthpixels(480):shadowlength(0):playcommand("Untruncate")
+							subself:horizalign(left):xy(150,60):zoom(3):diffuse(Color.White):_wrapwidthpixels(480):shadowlength(0):playcommand("Untruncate")
 						end
 					end,
 					UntruncateCommand=function(subself) subself:settext(self.groupName) end,
 					TruncateCommand=function(subself) subself:settext(self.groupName):Truncate(max_chars) end,
 
-					GainFocusCommand=function(subself) subself:x(0):horizalign(center):linear(0.15):y(20):zoom(1.1) end,
+					GainFocusCommand=function(subself) subself:x(0):horizalign(center):linear(0.15):y(60):zoom(1.1) end,
 					LoseFocusCommand=function(subself) subself:xy(0,6):horizalign(center):linear(0.15):zoom(1):diffuse(Color.White) end,
 
 					SlideToTopCommand=function(subself) subself:sleep(0.3):diffuse(Color.White):queuecommand("SlideToTop2") end,
@@ -148,7 +148,7 @@ local item_mt = {
 			-- so we want to position all the folders "behind the scenes", and then call Init
 			-- on the group folder with focus so that it is positioned correctly at the top
 			if Input.WheelWithFocus ~= GroupWheel then
-				self.container:x( offset * col.w * zm + _screen.cx ):z( -1 * math.abs(offset) ):zoom( zm ):rotationy( ry )
+				self.container:x( offset * 700 * zm + _screen.cx ):z( -1 * math.abs(offset) ):zoom( zm ):rotationy( ry )
 				if has_focus then self.container:playcommand("Init") end
 
 			-- otherwise, we are performing a normal transform
@@ -159,7 +159,7 @@ local item_mt = {
 				else
 					self.container:playcommand("LoseFocus")
 				end
-				self.container:x( offset * col.w * zm + _screen.cx ):z( -1 * math.abs(offset) ):zoom( zm ):rotationy( ry )
+				self.container:x( offset * 700 * zm + _screen.cx ):z( -1 * math.abs(offset) ):zoom( zm ):rotationy( ry )
 			end
 		end,
 

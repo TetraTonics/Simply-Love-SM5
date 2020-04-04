@@ -15,7 +15,7 @@ end
 local af = Def.ActorFrame{ Name="GroupWheelShared" }
 
 af[#af+1] = Def.Quad{
-	InitCommand=function(self) self:zoomto(_screen.w, _screen.h-200):diffuse(0,0,0,0.9):cropbottom(1) end,
+	InitCommand=function(self) self:zoomto(_screen.w, _screen.h-200):diffuse(0,0,0,0.4):cropbottom(1) end,
 	OnCommand=function(self) self:xy(_screen.cx, _screen.cy+60):finishtweening():accelerate(0.2):cropbottom(1) end,
 	SwitchFocusToGroupsMessageCommand=function(self) self:sleep(0.3):smooth(0.3):cropbottom(0) end,
 	SwitchFocusToSongsMessageCommand=function(self) self:cropbottom(1) end,
@@ -40,7 +40,7 @@ af[#af+1] = Def.ActorFrame{
 		end,
 		CurrentGroupChangedMessageCommand=function(self, params)
 			if params.group then
-				self:settext( group_info[params.group].num_songs .. " Unique Songs" )
+				self:settext( group_info[params.group].num_songs .. " Arbitrary Placeholders" )
 			else
 				self:self("")
 			end
@@ -55,7 +55,7 @@ af[#af+1] = Def.ActorFrame{
 		end,
 		CurrentGroupChangedMessageCommand=function(self, params)
 			if params.group then
-				self:settext( "ARTISTS:\n" .. group_info[params.group].artists )
+				self:settext( "Techniques:\n" .. group_info[params.group].artists )
 			else
 				self:self("")
 			end
@@ -70,7 +70,7 @@ af[#af+1] = Def.ActorFrame{
 		end,
 		CurrentGroupChangedMessageCommand=function(self, params)
 			if params.group then
-				self:settext( "GENRES:\n" .. group_info[params.group].genres )
+				self:settext( "Lesson Type:\n" .. group_info[params.group].genres )
 			else
 				self:self("")
 			end
@@ -85,7 +85,7 @@ af[#af+1] = Def.ActorFrame{
 		end,
 		CurrentGroupChangedMessageCommand=function(self, params)
 			if params.group then
-				self:settext( "STEPCHARTS:\n" ..group_info[params.group].charts )
+				self:settext( "Difficulty:\n" ..group_info[params.group].charts )
 			else
 				self:self("")
 			end

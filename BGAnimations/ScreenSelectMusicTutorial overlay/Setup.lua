@@ -328,7 +328,7 @@ return {
 	steps_type=steps_type,
 	Groups=groups,
 	group_index=group_index,
-	-- group_info=GetGroupInfo(groups),
+	group_info=GetGroupInfo(groups),
 	OptionsWheel=OptionsWheel,
 	OptionRows=OptionRows,
 	row=row,
