@@ -20,7 +20,7 @@ local RecentMods = function(mods)
 
 	-- SpeedModType should be a string and SpeedMod should be a number
 	if type(mods.SpeedModType)=="string" and type(mods.SpeedMod)=="number" then
-		if mods.SpeedModType=="x" and mods.SpeedMod > 0 then text = text..tostring(mods.SpeedMod).."x"
+		-- for ScreenSelectProfile, allow either "x" or "X" to be in the player's profile for SpeedModType
 		if (mods.SpeedModType):upper()=="X" and mods.SpeedMod > 0 then
 			-- take whatever number is in the player's profile, string format it to 2 decimal places
 			-- convert back to a number to remove potential trailing 0s (we want "1.5x" not "1.50x")
