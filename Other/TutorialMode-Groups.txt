@@ -3,10 +3,10 @@
 Cringle Haven
 Cringle Isle
 Cringle Paradise
-Novice Lessons
-Beginner Lessons
-Easy Lessons
-Medium Lessons
-Hard Lessons
-Expert Lessons
-Master Lessons
+1. Novice Lessons
+2. Beginner Lessons
+3. Easy Lessons
+4. Medium Lessons
+5. Hard Lessons
+6. Expert Lessons
+7. Master Lessons
