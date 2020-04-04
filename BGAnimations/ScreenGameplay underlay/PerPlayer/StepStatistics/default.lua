@@ -5,6 +5,7 @@ local pn = ToEnumShortString(player)
 if SL[pn].ActiveModifiers.DataVisualizations ~= "Step Statistics"
 or GAMESTATE:GetCurrentStyle():GetName() ~= "single"
 or SL.Global.GameMode == "Casual"
+or SL.Global.Gamemode == "Tutorial"
 or (PREFSMAN:GetPreference("Center1Player") and not IsUsingWideScreen())
 then
 	return

@@ -447,7 +447,7 @@ SetGameModePreferences = function()
 	-- we want to reduce the number of judgments,
 	-- so turn Decents and WayOffs off now.
 	-- Be gentle on the young ones
-	if SL.Global.GameMode == "Casual" then
+	if SL.Global.GameMode == "Casual" or SL.Global.Gamemode == "Tutorial" then
 		SL.Global.ActiveModifiers.TimingWindows = {true,true,true,false,false}
 		PREFSMAN:SetPreference("TimingWindowScale", 2.5);
 
@@ -488,7 +488,8 @@ SetGameModePreferences = function()
 	local prefix = {
 		ITG = "",
 		["FA+"] = "ECFA-",
-		Casual = "Casual-"
+		Casual = "Casual-",
+		Tutorial = "Tutorial-"
 	}
 
 	if PROFILEMAN:GetStatsPrefix() ~= prefix[SL.Global.GameMode] then

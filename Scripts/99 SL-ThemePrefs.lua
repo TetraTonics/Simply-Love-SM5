@@ -52,11 +52,12 @@ SL_CustomPrefs.Get = function()
 		{
 			Default = "ITG",
 			Choices = {
+				THEME:GetString("ScreenSelectPlayMode", "Tutorial"),
 				THEME:GetString("ScreenSelectPlayMode", "Casual"),
 				THEME:GetString("ScreenSelectPlayMode", "ITG"),
 				THEME:GetString("ScreenSelectPlayMode", "FA+"),
 			},
-			Values 	= { "Casual", "ITG", "FA+" }
+			Values 	= { "Tutorial", "Casual", "ITG", "FA+" }
 		},
 		isGoodReads =
 		{

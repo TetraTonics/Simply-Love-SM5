@@ -1,5 +1,5 @@
--- if we're in Casual mode, don't let players save screenshots at all
-if SL.Global.GameMode == "Casual" then return end
+-- if we're in Casual/Tutorial mode, don't let players save screenshots at all
+if SL.Global.GameMode == "Casual" or SL.Global.GameMode == "Tutorial" then return end
 
 -- The code here is only half of what's needed for this screen's ScreenShot animation.
 --
