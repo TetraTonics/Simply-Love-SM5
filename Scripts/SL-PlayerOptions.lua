@@ -202,6 +202,9 @@ local Overrides = {
 	BackgroundFilter = {
 		Values = { 'Off','Dark','Darker','Darkest','Darkerest' },
 	},
+	BackgroundColor = {
+		Values = { 'Original', 'Light', 'Grey', "PlayerDark", "PlayerLight"},
+	},
 	-------------------------------------------------------------------------
 	Mini = {
 		Choices = function()

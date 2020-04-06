@@ -11,11 +11,17 @@ local FilterAlpha = {
 	Darkest = 0.95,
 	Darkerest=1
 }
-
+local FilterColors = {
+	PlayerDark = PlayerDarkColor(pn), -- Dark (player)
+	Original = color("#000000"), -- Dark
+	PlayerLight = color("#112061"), -- Light (player)
+	Light = color("#FFFFFF"), -- Light
+	Grey = color("#AAAAAA"), -- Grey
+}
 return Def.Quad{
 	InitCommand=function(self)
 		self:xy(GetNotefieldX(player), _screen.cy )
-			:diffuse(Color.Black)
+			:diffuse(FilterColors[mods.BackgroundColor])
 			:diffusealpha( FilterAlpha[mods.BackgroundFilter] or 0 )
 			:zoomto( GetNotefieldWidth(), _screen.h )
 	end,

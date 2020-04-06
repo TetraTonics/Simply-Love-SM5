@@ -15,7 +15,7 @@ local profile_whitelist = {
 	JudgmentGraphic = "string",
 	ComboFont = "string",
 	BackgroundFilter = "string",
-
+	BackgroundColor = "string",
 	HideTargets = "boolean",
 	HideSongBG = "boolean",
 	HideCombo = "boolean",
