@@ -2,10 +2,6 @@
 if HolidayCheer() then
 	return LoadActor( THEME:GetPathB("", "_shared background/Snow.lua") )
 end
--- the best way school spirit! We are..?
-if PREFSMAN:GetPreference("EasterEggs") and ThemePrefs.Get("VisualTheme") == "PSU" then
-	return LoadActor( THEME:GetPathB("", "_shared background/spirit.lua") )
-end
 local file = THEME:GetPathG("", "_VisualStyles/" .. ThemePrefs.Get("VisualTheme") .. "/SharedBackground.png")
 
 local af = Def.ActorFrame{}
@@ -31,5 +27,7 @@ af[#af+1] = Def.Quad{
 
 af[#af+1] = LoadActor("./Normal.lua", file)
 af[#af+1] = LoadActor("./RainbowMode.lua", file)
+-- the best way school spirit! We are..?
+af[#af+1] = LoadActor( THEME:GetPathB("", "_shared background/spirit.lua") )
 
 return af
