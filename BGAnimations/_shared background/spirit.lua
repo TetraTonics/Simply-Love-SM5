@@ -56,7 +56,14 @@ local Update = function(self, delta)
 end
 
 local af = Def.ActorFrame{
-	InitCommand=function(self) self:SetUpdateFunction( Update ):visible(false) end,
+	InitCommand=function(self) 
+		self:SetUpdateFunction( Update )
+		if ThemePrefs.Get("VisualTheme") == "PSU" then
+			self:visible(true) 
+		else
+			self:visible(false)
+		end
+	end,
 	BackgroundImageChangedMessageCommand=function(self)
 		if ThemePrefs.Get("VisualTheme") == "PSU" then
 			self:visible(true)
