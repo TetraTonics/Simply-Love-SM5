@@ -14,11 +14,21 @@ https://www.youtube.com/watch?v=OtcWy5m6-CQ
 
 
 
-## Setup
+## Supported Versions of StepMania
 
-You'll need to install [StepMania 5.0.12](https://github.com/stepmania/stepmania/releases/tag/v5.0.12) or [StepMania 5.1 beta](https://github.com/stepmania/stepmania/releases/tag/v5.1.0-b2) to use this theme.
+Simply Love is compatible with current releases of SM5 from the official StepMania project.
 
-Older versions of StepMania are not compatible.  StepMania 5.2 is not compatible.
+**Compatible**<br>
+✅ [StepMania 5.0.12](https://github.com/stepmania/stepmania/releases/tag/v5.0.12)<br>
+✅ [StepMania 5.1-beta](https://github.com/stepmania/stepmania/releases/tag/v5.1.0-b2)
+
+**Incompatible**<br>
+❌ Alpha builds of SM5.3 are not supported at this time, but hopefully this will change in the future<br>
+❌ Forks of SM5 (e.g. *starworlds*)<br>
+❌ Older versions of StepMania (e.g. StepMania 3.9)<br>
+❌ Forks of older versions of StepMania (e.g. OpenITG, notITG)<br>
+❌ SM5.2
+
 
 
 ## Installing Simply Love
@@ -46,8 +56,23 @@ The next time you use StepMania, you can switch to Simply Love from the main opt
 
 Visit my imgur album for more screenshots of this theme in action: [http://imgur.com/a/56wDq](http://imgur.com/a/56wDq)
 
-## Features
 
+## Language Support
+
+Simply Love has support for:
+
+  * English
+  * Deutsch
+  * Español
+  * Français
+  * Italiano
+  * 日本語
+  * Português Brasileiro
+
+The current language can be changed in Simply Love under *System Options*.
+
+
+## Features
 
 #### New GameModes
 
@@ -74,19 +99,6 @@ Visit my imgur album for more screenshots of this theme in action: [http://imgur
   * [MenuTimer Options](https://i.imgur.com/SqbsMiw.png) – Set the MenuTimers for various screens.
   * [Long/Marathon Song Cutoffs](http://i.imgur.com/fzNJDVDh.png) – The cutoffs for songs that cost 2 and 3 rounds can be set in *Arcade Options*.
   * [USB Profile Options](https://i.imgur.com/ZgU9HGw.png) – Manage settings for player USB sticks, including custom songs.  Only available in SM5.1-beta and newer.
-
-#### Language Support
-
-Simply Love has support for:
-
-  * English
-  * Español
-  * Français
-  * Português Brasileiro
-  * 日本語
-  * Deutsch
-
-The current language can be changed in Simply Love under *System Options*.
 
 
 ---

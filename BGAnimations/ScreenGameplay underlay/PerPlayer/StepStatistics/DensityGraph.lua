@@ -1,10 +1,20 @@
-local player = ...
+local player, width = unpack(...)
+
+local pn = ToEnumShortString(player)
+-- height is how tall, in pixels, the density graph will be
+local height = 105
 
 local LifeBaseSampleRate = 0.25
 local LifeLineThickness = 2
 local LifeMeter = nil
 local life_verts = {}
 local offset = 0
+
+-- -----------------------------------------------------------------------
+local BothUsingStepStats = (#GAMESTATE:GetHumanPlayers()==2
+and SL.P1.ActiveModifiers.DataVisualizations == "Step Statistics"
+and SL.P2.ActiveModifiers.DataVisualizations == "Step Statistics")
+-- -----------------------------------------------------------------------
 
 -- max_seconds is how many seconds of a stepchart we want visualized on-screen at once.
 -- For very long songs (longer than, say, 10 minutes) the density graph becomes too
@@ -17,38 +27,17 @@ local offset = 0
 local max_seconds = 4 * 60
 
 -- width and position of the density graph
-local width = _screen.w / 2
 local pos_x = -width / 2
-if (PREFSMAN:GetPreference("Center1Player") and IsUsingWideScreen()) then
-	-- 16:9 aspect ratio (approximately 1.7778)
-	if GetScreenAspectRatio() > 1.7 then
-		width = (_screen.w/4 - 70) + (_screen.w/4 - 44) * 0.925
-
-		local adjust = ((_screen.w/4 - 70) - ((_screen.w/4 - 44) * 0.925)) / 2
-		pos_x = -width/2 + adjust * (player==PLAYER_1 and 1 or -1)
-	-- if 16:10 aspect ratio
-	else
-		width = (_screen.w/4 - 64) + (_screen.w/4 - 36) * 0.825
-
-		local adjust = ((_screen.w/4 - 64) - ((_screen.w/4 - 36) * 0.825)) / 2
-		pos_x = -width/2 + adjust * (player==PLAYER_1 and 1 or -1)
-	end
-end
-
 
 local scaled_width = width
-
--- height is how tall, in pixels, the density graph will be
-local height = GetNotefieldWidth() / 2.25
-
 local UpdateRate, first_second, last_second
 
 local af = Def.ActorFrame{
 	InitCommand=function(self)
-		self:xy( pos_x, 48 ):queuecommand("Update")
+		self:xy( pos_x, 55 ):queuecommand("Update")
 	end,
 	OnCommand=function(self)
-		LifeMeter = SCREENMAN:GetTopScreen():GetChild("Life"..ToEnumShortString(player))
+		LifeMeter = SCREENMAN:GetTopScreen():GetChild("Life"..pn)
 	end,
 	UpdateCommand=function(self)
 		self:sleep(UpdateRate):queuecommand("Update")
@@ -64,7 +53,7 @@ local bg = Def.Quad{
 	end
 }
 
--- FIXME: add inline comments explainig the intent/purpose of this code
+-- FIXME: add inline comments explaining the intent/purpose of this code
 local SlopeAngle = function(p1, p2)
 	return math.atan2(p2[1] - p1[1], p2[2] - p1[2])
 end
@@ -73,18 +62,31 @@ local histogram_amv = Scrolling_NPS_Histogram(player, width, height)..{
 	OnCommand=function(self)
 		-- offset the graph's x-position by half the thickness of the LifeLine
 		self:xy( LifeLineThickness/2, height )
+	end,
+	PeakNPSUpdatedMessageCommand=function(self) self:queuecommand("Size") end,
+	SizeCommand=function(self)
+		if BothUsingStepStats then
+			local my_peak = GAMESTATE:Env()[pn.."PeakNPS"]
+			local their_peak = GAMESTATE:Env()[ToEnumShortString(OtherPlayer[player]).."PeakNPS"]
+
+			if my_peak < their_peak then
+				self:zoomtoheight(my_peak/their_peak)
+			end
+		end
 	end
 }
 
 -- PeakNPS text
 local text = LoadFont("Common Normal")..{
-	PeakNPSUpdatedMessageCommand=function(self, params)
-		if params.PeakNPS == nil then
+	PeakNPSUpdatedMessageCommand=function(self)
+		local my_peak = GAMESTATE:Env()[pn.."PeakNPS"]
+
+		if my_peak == nil then
 			self:settext("")
 			return
 		end
 
-		self:settext( THEME:GetString("ScreenGameplay", "PeakNPS") .. ": " .. round(params.PeakNPS * SL.Global.ActiveModifiers.MusicRate,2) )
+		self:settext( THEME:GetString("ScreenGameplay", "PeakNPS") .. ": " .. round(my_peak * SL.Global.ActiveModifiers.MusicRate,2) )
 		self:x( width - self:GetWidth()/2 - 2 )
 			:y( -self:GetHeight()/2 - 2 )
 			:zoom(0.9)
