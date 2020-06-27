@@ -218,7 +218,7 @@ local Overrides = {
 		Values = { 'Off','Dark','Darker','Darkest','Darkerest' },
 	},
 	BackgroundColor = {
-		Values = { 'Original', 'Light', 'Grey', "PlayerDark", "PlayerLight"},
+		Values = { 'Original', 'Light', 'Grey', "Green", "Gold", "Blue", "Pink", "Peach", "Rainbow"},
 	},
 	-------------------------------------------------------------------------
 	Mini = {

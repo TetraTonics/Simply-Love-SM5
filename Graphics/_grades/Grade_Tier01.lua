@@ -1,53 +1,54 @@
 local pss = ...
 
 local function Spin(self)
-	r = math.min(math.random(3,51),36);
-	s = math.random()*7+1;
-	z = self:GetZ();
-	l = r/36;
-	
+	r = math.min(math.random(3,51),36)
+	s = math.random()*7+1
+	z = self:GetZ()
+	l = r/36
+
 	if z >= 36 then
-		z = z-36;
-		self:z(z);
-		self:rotationz(z*10);
+		z = z-36
+		self:z(z)
+		self:rotationz(z*10)
 	end
-	
-	z = z + r;
-	self:linear(l);
-	self:rotationz(z*10);
-	self:z(z);
-	self:sleep(s);
-	self:queuecommand("Spin");
+
+	z = z + r
+	self:linear(l)
+	self:rotationz(z*10)
+	self:z(z)
+	self:sleep(s)
+	self:queuecommand("Spin")
 end
 
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 
 	--top left
 	LoadActor("star.lua", pss)..{
-		OnCommand=cmd(x,-46;y,-46;zoom,0.5;pulse;effectmagnitude,1,0.9,0;sleep,60;queuecommand,"Spin");
-		SpinCommand=function(self) Spin(self); end;
-	};
+		OnCommand=function(self) self:x(-46):y(-46):zoom(0.5):pulse():effectmagnitude(1,0.9,0):sleep(60):queuecommand("Spin") end,
+		SpinCommand=function(self) Spin(self) end
+	},
 
 	--top right
 	LoadActor("star.lua", pss)..{
-		OnCommand=cmd(x,46;y,-46;zoom,0.5;effectoffset,0.2;pulse;effectmagnitude,0.9,1,0;sleep,3;queuecommand,"Spin";);
-		SpinCommand=function(self) Spin(self) end;
-	};
+		OnCommand=function(self) self:x(46):y(-46):zoom(0.5):effectoffset(0.2):pulse():effectmagnitude(0.9,1,0):sleep(3):queuecommand("Spin") end,
+		SpinCommand=function(self) Spin(self) end
+	},
+
 	-- bottom left
 	LoadActor("star.lua", pss)..{
-		OnCommand=cmd(x,-46;y,46;zoom,0.5;effectoffset,0.4;pulse;effectmagnitude,0.9,1,0;sleep,11;queuecommand,"Spin";);
-		SpinCommand=function(self) Spin(self) end;
-	};
+		OnCommand=function(self) self:x(-46):y(46):zoom(0.5):effectoffset(0.4):pulse():effectmagnitude(0.9,1,0):sleep(11):queuecommand("Spin") end,
+		SpinCommand=function(self) Spin(self) end
+	},
 
 	--  bottom right
 	LoadActor("star.lua", pss)..{
-		OnCommand=cmd(x,46;y,46;zoom,0.5;effectoffset,0.6;pulse;effectmagnitude,1,0.9,0;sleep,48;queuecommand,"Spin";);
-		SpinCommand=function(self) Spin(self) end;	
-	};
-		--Ponies in between
-	LoadActor("assets/rhyme (stretch).png", pss)..{
-		OnCommand=cmd(x,0;y,0;zoom,0.9;effectoffset,0.6;pulse;effectmagnitude,2,0.9,0;sleep,48;queuecommand,"Spin";);
-		};
-};
+		OnCommand=function(self) self:x(46):y(46):zoom(0.5):effectoffset(0.6):pulse():effectmagnitude(1,0.9,0):sleep(48):queuecommand("Spin") end,
+		SpinCommand=function(self) Spin(self) end
+	},
 
-return t;
+	-- This was made as a tribute to RIME for both his birthday and him graduating.
+	-- A way of keeping his memory alive at cabby, and a reference and joke towards his amazing accuracy.
+	LoadActor("assets/rhyme (stretch).png", pss)..{
+		OnCommand=function(self) self:x(0):y(0):zoom(0.9):effectoffset(0.6):pulse():effectmagnitude(2,0.9,0):sleep(48):queuecommand("Spin") end,
+	}
+}

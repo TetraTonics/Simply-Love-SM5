@@ -445,16 +445,17 @@ SetGameModePreferences = function()
 	-- If we're switching to Casual mode,
 	-- we want to reduce the number of judgments,
 	-- so turn Decents and WayOffs off now.
-	-- Be gentle on the young ones
 	if SL.Global.GameMode == "Casual" then
 		SL.Global.ActiveModifiers.TimingWindows = {true,true,true,false,false}
+		-- We also want to widen the Timing Windows
+		-- to decrease the difficulty for new players.
 		PREFSMAN:SetPreference("TimingWindowScale", 2.5);
 
 	-- Otherwise, we want all TimingWindows enabled by default.
-	-- Set Timing windows to normal
 	else
-		 SL.Global.ActiveModifiers.TimingWindows = {true,true,true,true,true}
-		 PREFSMAN:SetPreference("TimingWindowScale", 1);
+ 		SL.Global.ActiveModifiers.TimingWindows = {true,true,true,true,true}
+		--Returns Timing Windows to "normal" scaling
+		PREFSMAN:SetPreference("TimingWindowScale", 1);
 	end
 
 	-- loop through human players and apply whatever mods need to be set now
