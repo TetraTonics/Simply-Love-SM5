@@ -10,6 +10,9 @@ local LifeMeter = nil
 local life_verts = {}
 local offset = 0
 
+local IsUltraWide = (GetScreenAspectRatio() > 21/9)
+local NoteFieldIsCentered = (GetNotefieldX(player) == _screen.cx)
+
 -- -----------------------------------------------------------------------
 local BothUsingStepStats = (#GAMESTATE:GetHumanPlayers()==2
 and SL.P1.ActiveModifiers.DataVisualizations == "Step Statistics"
@@ -78,6 +81,7 @@ local histogram_amv = Scrolling_NPS_Histogram(player, width, height)..{
 
 -- PeakNPS text
 local text = LoadFont("Common Normal")..{
+	InitCommand=function(self) self:horizalign(right):zoom(0.9) end,
 	PeakNPSUpdatedMessageCommand=function(self)
 		local my_peak = GAMESTATE:Env()[pn.."PeakNPS"]
 
@@ -87,9 +91,67 @@ local text = LoadFont("Common Normal")..{
 		end
 
 		self:settext( THEME:GetString("ScreenGameplay", "PeakNPS") .. ": " .. round(my_peak * SL.Global.ActiveModifiers.MusicRate,2) )
-		self:x( width - self:GetWidth()/2 - 2 )
-			:y( -self:GetHeight()/2 - 2 )
-			:zoom(0.9)
+
+		-- -----------------------------------------------------------------------
+		local StepsOrTrail = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player)) or GAMESTATE:GetCurrentSteps(player)
+		local total_tapnotes = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_Notes" )
+
+		-- determine how many digits are needed to express the number of notes in base-10
+		local digits = (math.floor(math.log10(total_tapnotes)) + 1)
+		-- subtract 4 from the digit count; we're only really interested in how many digits past 4
+		-- this stepcount is so we can use it to align the score actor in the StepStats pane if needed
+		-- aligned-with-4-digits is the default
+		digits = clamp(math.max(4, digits) - 4, 0, 3)
+
+		-- -----------------------------------------------------------------------
+		-- crumby code used for
+		-- positioning x offset
+		-- of PeakNPS
+
+		local stepstatspane = self:GetParent():GetParent()
+		local padding = {}
+
+		if IsUltraWide then
+			-- 21:9 (and wider)
+			if (#GAMESTATE:GetHumanPlayers() <= 1) then
+				padding[PLAYER_1] = -_screen.cx + 36
+				padding[PLAYER_2] = 36
+			else
+				padding[PLAYER_1] = 4
+				padding[PLAYER_2] = -908
+			end
+
+		elseif IsUsingWideScreen() then
+			-- 16:9, 16:10
+			if NoteFieldIsCentered then
+				padding[PLAYER_1] = -_screen.cx - 116
+				padding[PLAYER_2] = WideScale(-20,20)
+			else
+				padding[PLAYER_1] = -_screen.cx + 26.5
+				padding[PLAYER_2] = 26.5
+			end
+
+		else
+			-- 4:3
+			padding[PLAYER_1] = -_screen.cx + 28
+			padding[PLAYER_2] = 28
+		end
+
+		if IsUsingWideScreen() and not (IsUltraWide and #GAMESTATE:GetHumanPlayers() > 1) then
+			-- pad with an additional ~14px for each digit past 4 the stepcount goes
+			-- this keeps the score right-aligned with the right edge of the judgment
+			-- counts in the StepStats pane
+			local digitpadding = (digits * 14)
+			-- provide an upper bound of extra padding for extra digits when NoteFieldIsCentered
+			if NoteFieldIsCentered then digitpadding = clamp(digitpadding, 0, WideScale(7,14)) end
+
+			padding[player] = padding[player] + digitpadding
+		end
+
+		-- -----------------------------------------------------------------------
+
+		self:x( stepstatspane:GetX() + padding[player] + (self:GetWidth()/self:GetZoom()) )
+		self:y( -self:GetHeight()/2 - 2 )
 	end,
 }
 
@@ -115,7 +177,8 @@ local graph_and_lifeline = Def.ActorFrame{
 		UpdateRate = LifeBaseSampleRate
 
 		-- FIXME: add inline comments explaining what a 'simple' BPM is -quietly
-		-- FIXME: add inline comments explaining what "quantize the timing [...] to avoid jaggies" means -quietly
+		-- FIXME: add inline comments explaining what "quantize the timing [...] to avoid jaggies" means
+		--            because I have no idea what it means -quietly
 
 		-- if the song has a 'simple' BPM, then quantize the timing
 		-- to the nearest multiple of 8ths to avoid jaggies

@@ -1,5 +1,5 @@
 local title_bg_width = SL_WideScale(115, 128)
-local row_height = _screen.h * 0.0625 -- ???
+local row_height = 30
 local row_width = {
 	active   = WideScale(304, 460),
 	inactive = WideScale(300, 456)

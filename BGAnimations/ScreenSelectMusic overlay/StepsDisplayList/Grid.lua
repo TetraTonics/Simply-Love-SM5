@@ -15,7 +15,7 @@ local t = Def.ActorFrame{
 	Name="StepsDisplayList",
 	InitCommand=function(self) self:vertalign(top):xy(_screen.cx-170, _screen.cy + 70) end,
 
-	OnCommand=function(self) self:queuecommand("RedrawStepsDisplay") end,
+	OnCommand=function(self)                           self:queuecommand("RedrawStepsDisplay") end,
 	CurrentSongChangedMessageCommand=function(self)    self:queuecommand("RedrawStepsDisplay") end,
 	CurrentStepsP1ChangedMessageCommand=function(self) self:queuecommand("RedrawStepsDisplay") end,
 	CurrentStepsP2ChangedMessageCommand=function(self) self:queuecommand("RedrawStepsDisplay") end,
