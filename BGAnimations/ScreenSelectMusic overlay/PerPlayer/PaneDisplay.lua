@@ -54,17 +54,17 @@ local PaneItems = {
 	-- first row
 	{ name=THEME:GetString("RadarCategory","Taps"),  rc='RadarCategory_TapsAndHolds'},
 	{ name=THEME:GetString("RadarCategory","Mines"), rc='RadarCategory_Mines'},
-	-- { name=THEME:GetString("ScreenSelectMusic","NPS") },
+	{ name=THEME:GetString("ScreenSelectMusic","NPS") },
 
 	-- second row
 	{ name=THEME:GetString("RadarCategory","Jumps"), rc='RadarCategory_Jumps'},
 	{ name=THEME:GetString("RadarCategory","Hands"), rc='RadarCategory_Hands'},
-	-- { name=THEME:GetString("RadarCategory","Lifts"), rc='RadarCategory_Lifts'},
+	{ name=THEME:GetString("RadarCategory","Lifts"), rc='RadarCategory_Lifts'},
 
 	-- third row
 	{ name=THEME:GetString("RadarCategory","Holds"), rc='RadarCategory_Holds'},
 	{ name=THEME:GetString("RadarCategory","Rolls"), rc='RadarCategory_Rolls'},
-	-- { name=THEME:GetString("RadarCategory","Fakes"), rc='RadarCategory_Fakes'},
+	{ name=THEME:GetString("RadarCategory","Fakes"), rc='RadarCategory_Fakes'},
 }
 
 -- -----------------------------------------------------------------------
@@ -148,7 +148,7 @@ af[#af+1] = Def.Quad{
 -- add one BitmapText as the label and one BitmapText as the value for each PaneItem
 
 local num_rows = 3
-local num_cols = 2
+local num_cols = 4
 
 for i, item in ipairs(PaneItems) do
 
