@@ -48,6 +48,12 @@ local PlayerDefaults = {
 				Stats = {}
 			}
 			self.PlayerOptionsString = nil
+
+			-- default panes to intialize ScreenEvaluation to
+			-- when only a single player is joined (single, double)
+			-- in versus (2 players joined) only EvalPanePrimary will be used
+			self.EvalPanePrimary   = 1 -- large score and judgment counts
+			self.EvalPaneSecondary = 4 -- offset histogram
 		end
 	}
 }

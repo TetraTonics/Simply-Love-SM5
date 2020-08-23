@@ -5,24 +5,40 @@ local t = Def.ActorFrame{}
 
 -- -----------------------------------------------------------------------
 
-local function CreditsText( pn )
+local function CreditsText( player )
 	return LoadFont("Common Normal") .. {
 		InitCommand=function(self)
 			self:visible(false)
-			self:name("Credits" .. PlayerNumberToString(pn))
+			self:name("Credits" .. PlayerNumberToString(player))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end,
 		UpdateTextCommand=function(self)
-			local str = ScreenSystemLayerHelpers.GetCreditsMessage(pn)
+			-- this feels like a holdover from SM3.9 that just never got updated
+			local str = ScreenSystemLayerHelpers.GetCreditsMessage(player)
 			self:settext(str)
 		end,
 		UpdateVisibleCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen()
 			local bShow = true
-			-- we always want to show the CreditText for each player on ScreenEval, regardless of the ShowCreditDisplay metric
-			if screen and (screen:GetName() ~= "ScreenEvaluationStage") and (screen:GetName() ~= "ScreenEvaluationNonstop") then
+
+			self:diffuse(Color.White)
+
+			if screen then
 				bShow = THEME:GetMetric( screen:GetName(), "ShowCreditDisplay" )
+
+				if (screen:GetName() == "ScreenEvaluationStage") or (screen:GetName() == "ScreenEvaluationNonstop") then
+					-- ignore ShowCreditDisplay metric for ScreenEval
+					-- only show this BitmapText actor on Evaluation if the player is joined
+					bShow = GAMESTATE:IsHumanPlayer(player)
+					--        I am not human^
+					--        today, but there's always hope
+					--        I'll see tomorrow
+
+					-- dark text for RainbowMode
+					if ThemePrefs.Get("RainbowMode") then self:diffuse(Color.Black) end
+				end
 			end
+
 			self:visible( bShow )
 		end
 	}
@@ -39,7 +55,7 @@ for player in ivalues(PlayerNumber) do
 		PlayerUnjoinedMessageCommand=function(self, params) if params.Player==player then self:queuecommand("Update") end end,
 
 		UpdateCommand=function(self)
-			local path = GetAvatarPathForPlayerProfile(player)
+			local path = GetPlayerAvatarPath(player)
 
 			if path == nil and self:GetTexture() ~= nil then
 				self:Load(nil):diffusealpha(0):visible(false)
@@ -79,43 +95,66 @@ t[#t+1] = Def.ActorFrame {
 	CreditsText( PLAYER_2 )
 }
 
-local SystemMessageText = nil
 
--- SystemMessage Text
+-- -----------------------------------------------------------------------
+-- SystemMessage stuff
+-- this is what appears when someone uses SCREENMAN:SystemMessage(text)
+-- or MESSAGEMAN:Broadcast("SystemMessage", {text})
+-- or SM(text)
+
+local bmt = nil
+
+-- SystemMessage ActorFrame
 t[#t+1] = Def.ActorFrame {
 	SystemMessageMessageCommand=function(self, params)
-		SystemMessageText:settext( params.Message )
+		bmt:settext( params.Message )
+
 		self:playcommand( "On" )
 		if params.NoAnimate then
 			self:finishtweening()
 		end
-		self:playcommand( "Off" )
+		self:playcommand( "Off", params )
 	end,
 	HideSystemMessageMessageCommand=function(self) self:finishtweening() end,
 
+	-- background quad behind the SystemMessage
 	Def.Quad {
 		InitCommand=function(self)
-			self:zoomto(_screen.w, 30):horizalign(left):vertalign(top)
-				:diffuse(Color.Black):diffusealpha(0)
+			self:zoomto(_screen.w, 30)
+			self:horizalign(left):vertalign(top)
+			self:diffuse(0,0,0,0)
 		end,
 		OnCommand=function(self)
 			self:finishtweening():diffusealpha(0.85)
-				:zoomto(_screen.w, (SystemMessageText:GetHeight() + 16) * SL_WideScale(0.8, 1) )
+			self:zoomto(_screen.w, (bmt:GetHeight() + 16) * SL_WideScale(0.8, 1) )
 		end,
-		OffCommand=function(self) self:sleep(3.33):linear(0.5):diffusealpha(0) end,
+		OffCommand=function(self, params)
+			-- use 3.33 seconds as a default duration if none was provided as the second arg in SM()
+			self:sleep(type(params.Duration)=="number" and params.Duration or 3.33):linear(0.25):diffusealpha(0)
+		end,
 	},
 
+	-- BitmapText for the SystemMessage
 	LoadFont("Common Normal")..{
 		Name="Text",
 		InitCommand=function(self)
-			self:maxwidth(_screen.w-20):horizalign(left):vertalign(top)
-				:xy(10, 10):diffusealpha(0):zoom(SL_WideScale(0.8, 1))
-			SystemMessageText = self
+			bmt = self
+
+			self:maxwidth(_screen.w-20)
+			self:horizalign(left):vertalign(top):xy(10, 10)
+			self:diffusealpha(0):zoom(SL_WideScale(0.8, 1))
 		end,
-		OnCommand=function(self) self:finishtweening():diffusealpha(1) end,
-		OffCommand=function(self) self:sleep(3):linear(0.5):diffusealpha(0) end,
+		OnCommand=function(self)
+			self:finishtweening():diffusealpha(1)
+		end,
+		OffCommand=function(self, params)
+			-- use 3 seconds as a default duration if none was provided as the second arg in SM()
+			self:sleep(type(params.Duration)=="number" and params.Duration or 3):linear(0.5):diffusealpha(0)
+		end,
 	}
 }
+-- -----------------------------------------------------------------------
+
 
 -- "Event Mode" or CreditText at lower-center of screen
 t[#t+1] = LoadFont("Common Footer")..{

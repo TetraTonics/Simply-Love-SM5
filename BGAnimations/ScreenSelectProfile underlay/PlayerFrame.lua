@@ -200,13 +200,13 @@ return Def.ActorFrame{
 						},
 						LoadActor(THEME:GetPathG("", "_VisualStyles/".. ThemePrefs.Get("VisualTheme") .."/SelectColor"))..{
 							InitCommand=function(self)
-								self:align(0,0):zoom(0.095):diffusealpha(0.9):xy(13, 8)
+								self:align(0,0):zoom(0.09):diffusealpha(0.9):xy(13, 8)
 							end
 						},
 						LoadFont("Common Normal")..{
 							Text=THEME:GetString("ProfileAvatar","NoAvatar"),
 							InitCommand=function(self)
-								self:valign(0):zoom(0.815):diffusealpha(0.9):xy(self:GetWidth()*0.5 + 13, 68)
+								self:valign(0):zoom(0.815):diffusealpha(0.9):xy(self:GetWidth()*0.5 + 13, 67)
 							end,
 							SetCommand=function(self, params)
 								if params == nil then
@@ -326,7 +326,7 @@ return Def.ActorFrame{
 	LoadActor(THEME:GetPathB("ScreenMemoryCard", "overlay/usbicon.png"))..{
 		Name="USBIcon",
 		InitCommand=function(self)
-			self:rotationz(90):zoom(0.75):visible(false):diffuseshift()
+			self:rotationz(90):zoom(0.8175):visible(false):diffuseshift()
 				:effectperiod(1.5):effectcolor1(1,1,1,1):effectcolor2(1,1,1,0.5)
 		end
 	},

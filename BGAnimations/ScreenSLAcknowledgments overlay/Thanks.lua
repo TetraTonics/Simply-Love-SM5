@@ -62,7 +62,7 @@ return {
 		{
 			Name="GitHub Community",
 			Img="GitHub.png",
-			About="Many thanks go to the GitHub users who have contributed to SL over the years.  This includes:\n\nKauhsa, OmnipotentEntity, ianklatzco, FishamanP, itg-abby, camsta4, fent, iamjackg, tertu-m, Horsey-, Akethorpe, tfrederick74656, DinsFire64, sahunt, StefanoFiumara, concubidated, sangyeolbaek, nayotodot, dougshell, shockdude, Sereni, karamel59, electromuis, Fieoner, arcaneAgilmente, ListenerJubatus, TheNick, CrashCringle12, jordando, and natano."
+			About="Many thanks go to the GitHub users who have contributed to SL over the years.  This includes:\n\nKauhsa, OmnipotentEntity, ianklatzco, FishamanP, itg-abby, camsta4, fent, iamjackg, tertu-m, Horsey-, Akethorpe, tfrederick74656, DinsFire64, sahunt, StefanoFiumara, concubidated, sangyeolbaek, nayotodot, dougshell, shockdude, Sereni, karamel59, electromuis, Fieoner, arcaneAgilmente, ListenerJubatus, TheNick, CrashCringle12, jordando, Roujo, JapanYoshi, and natano."
 		},
 	},
 
@@ -125,7 +125,7 @@ return {
 		{
 			Name="Ian / Archi",
 			Img="archi.png",
-			About="I'm pretty sure the Pendulum packs singlehandedly instigated the notion that \"ITG is all streams\" and we have Ian to thank/blame for that.\n\nWhen he's not busy streaming, he encourages others to through GrooveStats, the ECS events, and an overly-enthusiastic-soccer-mom coaching style."
+			About="I'm pretty sure the Pendulum packs singlehandedly instigated the notion that \"ITG is all streams\" and we have Ian to thank/blame for that.\n\nWhile Ian has top-tier competitive stamina, his greatest strength is his eagerness to improve the community.  He is the driving force behind Stamina RPG, Stamina Con, Stamina visual novels, and literally hundreds of original stepcharts – all of which has dramatically shaped the post-ITG scene as we know it."
 		},
 		{
 			Name="Brittney / Galaga",
