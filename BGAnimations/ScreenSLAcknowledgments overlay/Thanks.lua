@@ -52,17 +52,17 @@ return {
 		{
 			Name="SM5 Dev Team",
 			Img="stepmania.png",
-			About="Theming in SM5 is easier and more robust than it is in SM3.95.  Thank you shakesoda, wolfman2000, Midiman, roothorick, cybik, et al!  Thanks to the OG team as well, including Chris Danford, Glenn Maynard, and Steve Checkoway.\n\nI am happy to see new and enthusiastic people working on the next iteration of open source dance games, including Lirodon, Jousway, MrThatKid, RyTak, and Squirrel."
+			About="Theming in SM5 is easier and more robust than it is in SM3.95.  Thank you shakesoda, wolfman2000, Midiman, roothorick, cybik, et al!  Thanks to the OG team as well, including Chris Danford, Glenn Maynard, and Steve Checkoway.\n\nI am happy to see new and enthusiastic people working on the next iteration of open source dance games, including Lirodon, MrThatKid, JoseVarela, Jousway, Cube, and Squirrel."
 		},
 		{
 			Name="kyzentun",
 			Img="kyzentun.png",
-			About="kyzentun answered many of my theming questions on IRC and went out of his way to fix source-related issues that helped me along my way."
+			About="kyzentun answered many of my theming questions on IRC and went out of his way to fix issues in the StepMania engine that helped make earlier releases of Simply Love easier for me."
 		},
 		{
 			Name="GitHub Community",
 			Img="GitHub.png",
-			About="Many thanks go to the GitHub users who have contributed to SL over the years.  This includes:\n\nKauhsa, OmnipotentEntity, ianklatzco, FishamanP, itg-abby, camsta4, fent, iamjackg, tertu-m, Horsey-, Akethorpe, tfrederick74656, DinsFire64, sahunt, StefanoFiumara, concubidated, sangyeolbaek, nayotodot, dougshell, shockdude, Sereni, karamel59, electromuis, Fieoner, arcaneAgilmente, ListenerJubatus, TheNick, CrashCringle12, jordando, Roujo, JapanYoshi, and natano."
+			About="Many thanks go to the GitHub users who have contributed to SL over the years.  This includes:\n\nKauhsa, OmnipotentEntity, ianklatzco, FishamanP, itg-abby, camsta4, fent, iamjackg, tertu-m, Horsey-, Akethorpe, tfrederick74656, DinsFire64, sahunt, StefanoFiumara, concubidated, sangyeolbaek, nayotodot, dougshell, shockdude, Sereni, karamel59, electromuis, mcognetta, Fieoner, arcaneAgilmente, ListenerJubatus, TheNick, CrashCringle12, jordando, Roujo, JapanYoshi, Valentina16, and natano."
 		},
 	},
 
@@ -76,7 +76,7 @@ return {
 		{
 			Name="Sujeet / teejusb",
 			Img="teejusb.jpg",
-			About="Sujeet was a great fount of general CS knowledge, and patiently answered my questions about data structures and algorithms many times.\n\nHe also runs the U.P.S. tournament series, which showcases custom content for SM5 in a lighthearted and fun way."
+			About="Sujeet was a great fount of general CS knowledge, and patiently answered my questions about data structures and algorithms many times.  He has contributed significantly to Simply Love, helping make features like GrooveStats QR codes and MeasureCounter lookahead possible.\n\nSujeet also runs the U.P.S. tournament series, which showcases custom content for SM5 in a lighthearted and fun way."
 		},
 
 		{
@@ -90,12 +90,12 @@ return {
 	{
 		{
 			Name="Dance Dance Maniacs",
-			Img={ "ddm/2020.jpg", "ddm/2019.jpg", "ddm/2017.jpg", "ddm/2015.jpg", "ddm/2018.jpg", "ddm/2015b.jpg", "ddm/2012.jpg", "ddm/2010.jpg" },
+			Img={ "ddm/2020.jpg", "ddm/2019.jpg", "ddm/2017.jpg", "ddm/2016.jpg", "ddm/2015b.jpg", "ddm/2016b.jpg", "ddm/2015.jpg", "ddm/2018.jpg", "ddm/2012.jpg", "ddm/2010.jpg", "ddm/2009.jpg", "ddm/2016HolidayCheer.jpg" },
 			About="The PSU Dance Dance Maniacs dance gamed with me at my best and worst.\n\nLightningXCE, Zyroplex, Captain Swagonforce, rawinput, milk, teejusb, NBCrescendo, Vidur, freemansbackup, chronohat\n\nDJ OMiY, minomotu, Kristina, blakjakal, Vale, Silverheart97, AndyBeard, Alex, tfrederick, Catherine, Elena, Jonathan, Eileen, Ali, Anna\n\nRime, PirateKing, Fox, Lev, Cathy, Grant, Koopa, CCTV, MathMatt, TheNick, Nate(s), Crash Cringle, Daisy1218, Miaou Miaou Miaou, Silverwolfstar, and more."
 		},
 		{
 			Name="DDRIllini",
-			Img={ "uiuc/uiuc.jpg", "uiuc/uiuc2.jpg", "uiuc/uiuc3.jpg", "uiuc/uiuc4.jpg", "uiuc/uiuc5.jpg", "uiuc/wendy.jpg" },
+			Img={ "uiuc/uiuc.jpg", "uiuc/uiuc2.jpg", "uiuc/uiuc3.jpg", "uiuc/uiuc4.jpg", "uiuc/uiuc5.jpg", "uiuc/uiuc6.jpg", "uiuc/wendy.jpg" },
 			About="Thanks to the DDRIllini crew for being DDM's loving counterpart a time zone away.  I have fond memories of driving with DDM friends to DDRIllini's annual Rumble in the Prairie events each spring.\n\nThank you, Kyt-Xune, Z0rk, feedbacker, Sudzi, ian5v, Benpai, pez, mtgmackid, Krysel, Kasemei, Juni, rikame, Mary, andrewipark, et al!"
 		}
 	},
@@ -111,7 +111,7 @@ return {
 		{
 			Name="Alan / TaroNuke",
 			Img="taronuke.png",
-			About="Alan's programming work with the UKSRT and Mawaru series blows away every preconceived notion you've ever had of what dance games can be. The results are amusing, startling, incredible, and always fun.\n\nHe's a good friend, and has helped me be a kinder human being."
+			About="Alan leads development on NotITG, a StepMania fork that focuses on creative \"mod\" content.  His own creative resumé includes some of best and most memorable content available, from the UKSRT and the Mawaru series, to the Simply Thonk experience found in this theme.\n\nThe community he has fostered around NotITG is warm and welcoming, and I am so fortunate to live in this timeline where he exists."
 		},
 		{
 			Name="bblum",
@@ -183,7 +183,7 @@ return {
 		{
 			Name="pluto",
 			Img="pluto.png",
-			About="Pluto has supplied exceptional art for many dance game events such as ECS and Nordic Cup, and has infused each with her signature style.\n\nWhen she collaborated with me on my Distant Towers visual novel project, her artistic output brought life and vitality to my moribund mind, and her feedback as a friend kept my soul on life support and my heart beating while I was otherwise dead.",
+			About="Pluto has created exceptional art for many dance game projects such as ECS, Stamina RPG, and SteveReen's Waterfall project, and has infused each with her signature style.\n\nWhen she collaborated with me on my visual novel, her artistic output brought life and vitality to my moribund mind, and her feedback as a friend kept my soul on life support and my heart beating while I was otherwise dead.",
 		},
 	},
 
