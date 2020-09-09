@@ -74,8 +74,8 @@ SL_CustomPrefs.Get = function()
 		{
 			Default = "PSU",
 			 -- emojis are our lingua franca for the 21st century
-			Choices = { "♡", "↖", "🐻", "🦆", "🎃", "🌈", "⭐", "🤔", "🏈", "😺", "🍀", "👌"},
-			Values  = {"Hearts", "Arrows", "Bears", "Ducks", "Spooky", "Gay", "Stars", "Thonk", "PSU", "Cats", "Lucky", "GotEm" },
+			Choices = { "♡", "↖", "🐻", "🦆", "🎃", "🌈", "⭐", "🤔", "🏈", "😺", "🍀", "👌", "🍦"},
+			Values  = {"Hearts", "Arrows", "Bears", "Ducks", "Spooky", "Gay", "Stars", "Thonk", "PSU", "Cats", "Lucky", "GotEm", "Ice_Cream" },
 		},
 		RainbowMode = {
 			Default = false,
