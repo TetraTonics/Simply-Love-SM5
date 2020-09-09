@@ -12,6 +12,7 @@ local songs = {
 	Lucky  = "drunken sailor (loop).ogg",
 	GotEm  = "Ha Got Em.ogg",
 	Ice_Cream = "Space Ice Cream -Adhenoid (loop).ogg",
+	Spades = "Casino Night Remix.ogg",
 }
 
 -- retrieve the current VisualTheme from the ThemePrefs system
