@@ -79,8 +79,13 @@ local af = Def.ActorFrame{
 af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." (doubleres).png"))..{
 	Name="Simply Text",
 	InitCommand=function(self)
-		self:zoom(0.7):vertalign(top)
-		self:y(-102):shadowlength(0.75)
+		if (style == "PSU") then
+			self:x(2):zoom(0.7):shadowlength(0.75)
+			self:y(-47)
+		else
+			self:zoom(0.7):vertalign(top)
+			self:y(-102):shadowlength(0.75)
+		end
 	end,
 	OffCommand=function(self) self:linear(0.5):shadowlength(0) end
 }
