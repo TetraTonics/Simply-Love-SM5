@@ -7,7 +7,7 @@ return Def.ActorFrame{
 	},
 	LoadFont("Common Header")..{
 		Text=ScreenString("Header"),
-		InitCommand=function(self) self:shadowlength(1):y(-130):diffusealpha(0) end,
+		InitCommand=function(self) self:shadowlength(1):y(-150):diffusealpha(0) end,
 		OnCommand=function(self) self:sleep(1.0):decelerate(1):diffusealpha(1):sleep(6):linear(0.75):diffusealpha(0) end,
 	},
 	LoadFont("_eurostile normal")..{

@@ -15,8 +15,13 @@ t[#t+1] = LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
 
 t[#t+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/".. image .."/TitleMenu (doubleres).png"))..{
 	InitCommand=function(self)
-		self:xy(_screen.cx+2, _screen.cy):diffusealpha(0):zoom(0.7)
-			:shadowlength(1)
+		if (image == "PSU") then
+			self:xy(_screen.cx+2, _screen.cy-47):diffusealpha(0):zoom(0.7)
+				:shadowlength(1)
+		else
+			self:xy(_screen.cx+2, _screen.cy-16):diffusealpha(0):zoom(0.7)
+				:shadowlength(1)
+		end
 	end,
 	OnCommand=function(self) self:linear(0.5):diffusealpha(1) end
 }
