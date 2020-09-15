@@ -566,6 +566,19 @@ GetStepsCredit = function(player)
 	return t
 end
 
+RandomizeVisualTheme = function()
+	-- Array of possible visual theme options
+	local visualthemes = {"Hearts", "Arrows", "Bears", "Ducks", "Stars", "Thonk", "PSU", "Cats", "GotEm", "Ice_Cream", "Spades", "Gay"}
+	local index = math.floor(math.random(0, 11)) 
+		
+	ThemePrefs.Set("VisualTheme", visualthemes[index])
+
+	ThemePrefs.Save()
+
+	-- This compensates for ThemePrefsRows' current lack of support for ExportOnChange() and SaveSelections().
+	MESSAGEMAN:Broadcast("BackgroundImageChanged")
+end
+
 -- -----------------------------------------------------------------------
 -- the best way to spread holiday cheer is singing loud for all to hear
 

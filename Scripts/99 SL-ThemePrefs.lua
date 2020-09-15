@@ -70,6 +70,14 @@ SL_CustomPrefs.Get = function()
 			},
 			Values 	= { "none", "single", "versus", "double" }
 		},
+		RandomVisualTheme = {
+			Default = false,
+			Choices = {
+				THEME:GetString("ThemePrefs", "On"),
+				THEME:GetString("ThemePrefs", "Off")
+			},
+			Values 	= { true , false }
+		},
 		VisualTheme =
 		{
 			Default = "PSU",
