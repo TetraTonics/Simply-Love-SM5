@@ -11,15 +11,6 @@ local SongStats = ("%i %s %i %s, %i %s"):format(
 )
 
 -- - - - - - - - - - - - - - - - - - - - -
--- use the current game (dance, pump, etc.) to load the apporopriate logo
--- SL currently has logo assets for: dance, pump, techno
---   use the techno logo asset for less common games (para, kb7, etc.)
-local game = GAMESTATE:GetCurrentGame():GetName()
-if game ~= "dance" and game ~= "pump" then
-	game = "techno"
-end
-
--- - - - - - - - - - - - - - - - - - - - -
 -- People commonly have multiple copies of SL installed – sometimes different forks with unique features
 -- sometimes due to concern that an update will cause them to lose data, sometimes accidentally, etc.
 
@@ -51,20 +42,11 @@ if ProductVersion():find("git") then
 	sm_version = ("%s, Built %s %s %s"):format(sm_version, day, month, year)
 end
 
--- - - - - - - - - - - - - - - - - - - - -
 -- If Random Visual Themes are enabled then first thing we want to do before the title
 -- screen appears is set a random visual theme
 if ThemePrefs.Get("RandomVisualTheme") then
 	RandomizeVisualTheme()
 end
-local style = ThemePrefs.Get("VisualTheme")
-local image = "TitleMenu"
-
--- see: watch?v=wxBO6KX9qTA etc.
-if FILEMAN:DoesFileExist("/Themes/"..sl_name.."/Graphics/_VisualStyles/"..ThemePrefs.Get("VisualTheme").."/TitleMenuAlt (doubleres).png") then
-	if math.random(1,100) <= 10 then image="TitleMenuAlt" end
-end
-
 
 -- -----------------------------------------------------------------------
 -- preliminary Lua setup is done
@@ -80,10 +62,7 @@ local af = Def.ActorFrame{
 	OffCommand=function(self) self:smooth(0.65):diffusealpha(0) end,
 }
 
--- SIMPLY [something]
-af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." (doubleres).png"))..{
-	Name="Simply Text",
-	InitCommand=function(self)
+af[#af+1] = LoadActor("./SimplySomething.lua")
 		if (style == "PSU") then
 			self:x(2):zoom(0.7):shadowlength(0.75)
 			self:y(-47)
@@ -91,30 +70,8 @@ af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." 
 			self:zoom(0.7):vertalign(top)
 			self:y(-102):shadowlength(0.75)
 		end
-	end,
-	OffCommand=function(self) self:linear(0.5):shadowlength(0) end
-}
 
--- decorative arrows
-af[#af+1] = LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
-	InitCommand=function(self)
-		self:y(-16)
-
-		-- get a reference to the SIMPLY [something] graphic
-		-- it's rasterized text in the Wendy font like "SIMPLY LOVE" or "SIMPLY THONK" or etc.
-		local simply = self:GetParent():GetChild("Simply Text")
-
-		-- zoom the logo's width to match the width of the text graphic
-		-- zoomtowidth() performs a "horizontal" zoom (on the x-axis) to meet a provided pixel quantity
-		--    and leaves the y-axis zoom as-is, potentially skewing/squishing the appearance of the asset
-		self:zoomtowidth( simply:GetZoomedWidth() )
-
-		-- so, get the horizontal zoom factor of these decorative arrows
-		-- and apply it to the y-axis as well to maintain proportions
-		self:zoomy( self:GetZoomX() )
-	end
-}
-
+-- -----------------------------------------------------------------------
 -- SM version, SL version, song stats
 af[#af+1] = Def.ActorFrame{
 	InitCommand=function(self) self:zoom(0.8):y(-120):diffusealpha(0) end,
