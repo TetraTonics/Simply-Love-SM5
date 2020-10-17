@@ -51,6 +51,9 @@ spr.CodeMessageCommand=function(self, params)
 			player = params.PlayerNumber
 			MESSAGEMAN:Broadcast("ScreenshotCurrentScreen")
 		end
+	elseif param.Name == "Favorite1" or param.Name == "Favorite2" then
+		addOrRemoveFavorite(param.PlayerNumber)
+		generateFavoritesForMusicWheel()
 	end
 end
 

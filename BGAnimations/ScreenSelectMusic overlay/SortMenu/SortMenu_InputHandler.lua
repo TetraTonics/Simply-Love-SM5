@@ -26,9 +26,15 @@ local input = function(event)
 			local focus = sort_wheel:get_actor_item_at_focus_pos()
 
 			if focus.kind == "SortBy" then
-				MESSAGEMAN:Broadcast('Sort',{order=focus.sort_by})
-				overlay:queuecommand("DirectInputToEngine")
-
+				if focus.sort_by == "Favorites" then
+					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+					SONGMAN:SetPreferredSongs("RIO_FavoriteSongs");
+					SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
+					overlay:queuecommand("DirectInputToEngine")
+				elseif focus.kind == "SortBy" then
+					MESSAGEMAN:Broadcast('Sort',{order=focus.sort_by})
+					overlay:queuecommand("DirectInputToEngine")
+				end
 
 			-- the player wants to change modes, for example from ITG to FA+
 			elseif focus.kind == "ChangeMode" then

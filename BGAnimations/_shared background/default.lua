@@ -2,7 +2,6 @@
 if HolidayCheer() then
 	return LoadActor( THEME:GetPathB("", "_shared background/Snow.lua") )
 end
-local file = THEME:GetPathG("", "_VisualStyles/" .. ThemePrefs.Get("VisualTheme") .. "/SharedBackground.png")
 
 local af = Def.ActorFrame{}
 
@@ -24,6 +23,7 @@ af[#af+1] = Def.Quad{
 		self:linear(1):diffuse( ThemePrefs.Get("RainbowMode") and Color.White or Color.Black )
 	end
 }
+
 af[#af+1] = LoadActor("./Normal.lua", file)
 af[#af+1] = LoadActor("./RainbowMode.lua", file)
 -- the best way school spirit! We are..?
