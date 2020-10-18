@@ -16,8 +16,9 @@
 -- Copyright 2009: hans@hpelbers.org
 local TableToString_Recursive = function(t, name, indent)
 	local tableList = {}
+	local table_r
 
-	function table_r (t, name, indent, full)
+	table_r = function(t, name, indent, full)
 		local id = not full and name or type(name)~="number" and tostring(name) or '['..name..']'
 		local tag = indent .. id .. ' = '
 		local out = {}	-- result
@@ -125,20 +126,6 @@ range = function(start, stop, step)
 	end
 	return t
 end
-
--- pass in a range of time values in seconds and get back a table of stringified
--- values formatted as minutes and seconds.
---
--- for example usage, see the MenuTimer OptionRows defined in ./Scripts/99 SL-ThemePrefs.lua
-function SecondsToMMSS_range(start, stop, step)
-	local ret = {}
-	local r = range(start, stop, step)
-	for v in ivalues(r) do
-		ret[#ret+1] = SecondsToMMSS(v):gsub("^0*", "")
-	end
-	return ret
-end
-
 
 -- stringify() accepts an indexed table, applies tostring() to each element,
 -- and returns the results.  sprintf style format can be provided via an

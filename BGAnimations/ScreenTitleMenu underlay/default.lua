@@ -52,8 +52,8 @@ end
 
 -- If Random Visual Themes are enabled then first thing we want to do before the title
 -- screen appears is set a random visual theme
-if ThemePrefs.Get("RandomVisualTheme") then
-	RandomizeVisualTheme()
+if ThemePrefs.Get("RandomVisualStyle") then
+	RandomizeVisualStyle()
 end
 
 -- -----------------------------------------------------------------------

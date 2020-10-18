@@ -58,14 +58,14 @@ end
 local af = Def.ActorFrame{
 	InitCommand=function(self) 
 		self:SetUpdateFunction( Update )
-		if ThemePrefs.Get("VisualTheme") == "PSU" then
+		if ThemePrefs.Get("VisualStyle") == "PSU" then
 			self:visible(true) 
 		else
 			self:visible(false)
 		end
 	end,
 	BackgroundImageChangedMessageCommand=function(self)
-		if ThemePrefs.Get("VisualTheme") == "PSU" then
+		if ThemePrefs.Get("VisualStyle") == "PSU" then
 			self:visible(true)
 		else
 			self:visible(false)
@@ -103,7 +103,7 @@ for i=1,num_particles do
 			self:y( math.random( -40, math.floor(_screen.h)+40 ) )
 			self:zoomto( _t.size, _t.size )
 
-			if ThemePrefs.Get("VisualTheme") == "Gay" then self:effectoffset( math.random() ):rainbow() end
+			if ThemePrefs.Get("VisualStyle") == "Gay" then self:effectoffset( math.random() ):rainbow() end
 		end
 	}
 end
