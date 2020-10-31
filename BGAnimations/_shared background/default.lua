@@ -2,17 +2,18 @@
 if HolidayCheer() then
 	return LoadActor( THEME:GetPathB("", "_shared background/Snow.lua") )
 end
+local file = THEME:GetPathG("", "_VisualStyles/" .. ThemePrefs.Get("VisualStyle") .. "/SharedBackground.png")
 
 local af = Def.ActorFrame{}
 
--- use the "VisualTheme" ThemePrefs value to generate a proper filepath to the appropriate
+-- use the "VisualStyle" ThemePrefs value to generate a proper filepath to the appropriate
 -- SharedBackground texture and pass it to Normal.lua and RainbowMode.lua now as this file
 -- is being initialized.
 
--- if the player chooses a different VisualTheme during runtime, MESSAGEMAN will broadcast
+-- if the player chooses a different VisualStyle during runtime, MESSAGEMAN will broadcast
 -- "BackgroundImageChanged" which we can use in Normal.lua and RainbowMode.lua to Load() the
 -- newly-appropriate texture from disk into each Sprite; see also: ./BGAnimations/ScreenOptionsService overlay.lua
-local file = THEME:GetPathG("", "_VisualStyles/" .. ThemePrefs.Get("VisualTheme") .. "/SharedBackground.png")
+local file = THEME:GetPathG("", "_VisualStyles/" .. ThemePrefs.Get("VisualStyle") .. "/SharedBackground.png")
 
 -- a simple Quad to serve as the backdrop
 af[#af+1] = Def.Quad{
@@ -23,7 +24,6 @@ af[#af+1] = Def.Quad{
 		self:linear(1):diffuse( ThemePrefs.Get("RainbowMode") and Color.White or Color.Black )
 	end
 }
-
 af[#af+1] = LoadActor("./Normal.lua", file)
 af[#af+1] = LoadActor("./RainbowMode.lua", file)
 -- the best way school spirit! We are..?
