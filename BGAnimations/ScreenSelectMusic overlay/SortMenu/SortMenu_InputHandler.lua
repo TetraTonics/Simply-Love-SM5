@@ -28,7 +28,7 @@ local input = function(event)
 			if focus.kind == "SortBy" then
 				if focus.sort_by == "Favorites" then
 					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
-					SONGMAN:SetPreferredSongs("RIO_FavoriteSongs");
+					SONGMAN:SetPreferredSongs("FavoriteSongs");
 					SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
 					overlay:queuecommand("DirectInputToEngine")
 				elseif focus.kind == "SortBy" then

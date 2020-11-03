@@ -136,7 +136,17 @@ local t = Def.ActorFrame {
 
 		table.insert(wheel_options, {"SortBy", "Popularity"})
 		table.insert(wheel_options, {"SortBy", "Recent"})
-		table.insert(wheel_options, {"SortBy", "Preferred"})
+
+		-- This is here purely for quick testing purposes, I know this is garbage code
+		local magicvalue = false
+		for player in ivalues(PlayerNumber) do
+			if PROFILEMAN:IsPersistentProfile(player) then
+				magicvalue = true
+			end
+		end
+		if magicvalue then
+			table.insert(wheel_options, {"SortBy", "Preferred"})
+		end
 
 
 

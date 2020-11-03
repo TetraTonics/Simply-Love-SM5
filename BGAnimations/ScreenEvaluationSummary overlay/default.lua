@@ -49,6 +49,10 @@ local t = Def.ActorFrame{
 			-- for more info on SaveScreenshot(), see ./BGA/ScreenEvaluation common/ScreenshotHandler.lua
 			SaveScreenshot(param.PlayerNumber, false, false, prefix)
 		end
+		if param.Name == "Favorite1" or param.Name == "Favorite2" then
+			addOrRemoveFavorite(param.PlayerNumber)
+			generateFavoritesForMusicWheel()
+		end
 
 		if pages > 1 and buttons[param.Name] ~= nil then
 			next_page = page + buttons[param.Name]

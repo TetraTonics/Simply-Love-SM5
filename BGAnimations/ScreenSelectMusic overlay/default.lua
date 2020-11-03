@@ -31,7 +31,6 @@ local t = Def.ActorFrame{
 	LoadActor("./Banner.lua"),
 	-- Song Artist, BPM, Duration (Referred to in other themes as "PaneDisplay")
 	LoadActor("./SongDescription.lua"),
-
 	-- ---------------------------------------------------
 	-- finally, load the overlay used for sorting the MusicWheel (and more), hidden by default
 	LoadActor("./SortMenu/default.lua"),
