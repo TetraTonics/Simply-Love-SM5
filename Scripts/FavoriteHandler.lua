@@ -16,10 +16,9 @@ addOrRemoveFavorite = function(player)
 	local sTitle = GAMESTATE:GetCurrentSong():GetDisplayFullTitle();
 	local arr = split("/",sDir);
 	local favoritesString = lua.ReadFile(path) or "";
-	if (PROFILEMAN:GetProfile(player) == PROFILEMAN:GetMachineProfile()) or not PROFILEMAN:GetPlayerName(player) then
+	if not PROFILEMAN:IsPersistentProfile(player) then
 		favoritesString = "";
-	end
-	if favoritesString then
+	elseif favoritesString then
 		--If song found in the player's favorites
 		local checksong = string.match(favoritesString, strPlainText(arr[3].."/"..arr[4]))
 
