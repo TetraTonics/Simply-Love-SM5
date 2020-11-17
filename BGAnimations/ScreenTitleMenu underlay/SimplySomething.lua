@@ -24,7 +24,7 @@ af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." 
 	Name="Simply Text",
 	InitCommand=function(self)
 		if (style == "PSU") then
-			self:x(2):zoom(0.7):shadowlength(0.75)
+			self:x(2):zoom(0.8):shadowlength(0.75)
 			self:y(-47)
 		else
 			self:zoom(0.7):vertalign(top)
@@ -38,7 +38,7 @@ af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." 
 -- decorative arrows
 af[#af+1] = LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
 	InitCommand=function(self)
-		self:y(-16)
+		self:y(style == "PSU" and -11 or -16)
 
 		-- get a reference to the SIMPLY [something] graphic
 		-- it's rasterized text in the Wendy font like "SIMPLY LOVE" or "SIMPLY THONK" or etc.
