@@ -22,8 +22,6 @@ local permitted_profile_settings = {
 	HoldJudgment     = "string",
 	BackgroundFilter = "string",
 
-
-
 	----------------------------------
 	-- "Advanced Modifiers"
 	-- OptionRows that appear in SL's second page of PlayerOptions
@@ -52,6 +50,9 @@ local permitted_profile_settings = {
 	Pacemaker            = "boolean",
 	MissBecauseHeld      = "boolean",
 	NPSGraphAtTop        = "boolean",
+	ErrorBar             = "string",
+	ErrorBarUp           = "boolean",
+	ErrorBarMultiTick    = "boolean",
 
 	ReceptorArrowsPosition = "string",
 	----------------------------------
@@ -226,8 +227,6 @@ GetPlayerAvatarPath = function(player)
 
 	return GetAvatarPath(dir, name)
 end
-
-
 GetScreenshotsPath = function(profileDirectory, displayName)
 
 	if type(profileDirectory) ~= "string" then return end
