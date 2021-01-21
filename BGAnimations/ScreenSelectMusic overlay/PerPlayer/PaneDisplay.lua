@@ -319,7 +319,11 @@ af[#af+1] = LoadFont("Wendy/_wendy small")..{
 	SetCommand=function(self)
 		local SongOrCourse = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse()) or GAMESTATE:GetCurrentSong()
 		if not SongOrCourse then self:settext(""); return end
-
+		if SongOrCourse then
+			local line1 = "In the Song Selection..."
+			local line2 = "[" .. GAMESTATE:GetCurrentSong():GetGroupName() .. "]: " .. SongOrCourse:GetDisplayFullTitle()
+			GAMESTATE:UpdateDiscordPresence(GetPlayerOrMachineProfile(PLAYER_1):GetDisplayName(), line1, line2, 0)
+		end
 		local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		local meter = StepsOrTrail and StepsOrTrail:GetMeter() or "?"
 

@@ -103,7 +103,6 @@ for i=1,num_particles do
 			self:y( math.random( -40, math.floor(_screen.h)+40 ) )
 			self:zoomto( _t.size, _t.size )
 
-			if ThemePrefs.Get("VisualStyle") == "Gay" then self:effectoffset( math.random() ):rainbow() end
 		end
 	}
 end

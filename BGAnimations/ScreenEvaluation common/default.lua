@@ -60,4 +60,16 @@ end
 
 t[#t+1] = LoadActor("./Panes/default.lua", NumPanes)
 
+-- Discord thingies
+local largeImageTooltip = GetPlayerOrMachineProfile(PLAYER_1):GetDisplayName() .. ": " .. string.format("%5.2f", GetPlayerOrMachineProfile(PLAYER_1):GetPlayerRating())
+local detail = GAMESTATE:GetCurrentSong():GetDisplayMainTitle() .. " 1x" .. " [" .. GAMESTATE:GetCurrentSong():GetGroupName() .. "]"
+-- truncated to 128 characters(discord hard limit)
+detail = #detail < 128 and detail or string.sub(detail, 1, 124) .. "..."
+local state = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() .. 
+	" - " .. string.format("%05.2f%%",math.floor(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetScore()*10000)/100) .. 
+	" " .. THEME:GetString("Grade",ToEnumShortString(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade()))
+GAMESTATE:UpdateDiscordPresence(largeImageTooltip, detail, state, 0)
+
+-- -----------------------------------------------------------------------
+
 return t

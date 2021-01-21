@@ -55,7 +55,7 @@ OperatorMenuOptionRows.EditorNoteskin = function()
 		Name = "EditorNoteSkin",
 		LayoutType = "ShowOneInRow",
 		SelectType = "SelectOne",
-		OneChoiceForAllPlayers = true,
+		--OneChoiceForAllPlayers = not SCREENMAN:GetTopScreen():GetName():match("ScreenEditOptions"),
 		ExportOnChange = false,
 		Choices = skins,
 		LoadSelections = function(self, list, pn)
@@ -75,6 +75,10 @@ OperatorMenuOptionRows.EditorNoteskin = function()
 					break
 				end
 			end
+			GAMESTATE:RefreshNoteSkinData()
+			ThemePrefs.Save()
+			-- This compensates for ThemePrefsRows' current lack of support for ExportOnChange() and SaveSelections().
+			SCREENMAN:ReloadOverlayScreens()			
 		end,
 	}
 end

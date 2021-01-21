@@ -20,6 +20,9 @@ af[#af+1] = Def.Quad{
 	InitCommand=function(self) self:FullScreen():Center():diffuse( ThemePrefs.Get("RainbowMode") and Color.White or Color.Black ) end,
 	BackgroundImageChangedMessageCommand=function(self)
 		THEME:ReloadMetrics() -- is this needed here?  -quietly
+		-- Removed it out of curiosity to see what would happen, from my observations it didn't change anything?
+		-- I tested specifically with PSU at first since I figured that was the most likely style to break, but
+		-- that and others seem to be okay without her. But who knows -- Crash Cringle
 		SL.Global.ActiveColorIndex = ThemePrefs.Get("RainbowMode") and 3 or ThemePrefs.Get("SimplyLoveColor")
 		self:linear(1):diffuse( ThemePrefs.Get("RainbowMode") and Color.White or Color.Black )
 	end
