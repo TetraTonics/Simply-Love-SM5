@@ -113,11 +113,31 @@ af.UpdateCommand=function(self)
 	StepsOrTrail = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player)) or GAMESTATE:GetCurrentSteps(player)
 
 	machine_score, machine_name = GetNameAndScore( machine_profile )
-
+	--Discord Shizzle
+	--updateDiscordPresence(LargeImageText, Details, State, EndTime)
+	local SongOrCourse = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse()) or GAMESTATE:GetCurrentSong()
+	local stepstype = ""
+	if SongOrCourse then
+		-- get the StepsType for the stepchart that was played
+		-- this will be a string from the StepsType enum like "StepsType_Dance_Single"
+		stepstype = GAMESTATE:GetCurrentStyle():GetStepsType()
+		-- remove the first two sections, transforming something like "StepsType_Dance_Single" into "Single"
+		stepstype = stepstype:gsub("%w+_%w+_", "")
+		-- localize
+		stepstype = THEME:GetString("ScreenSelectMusic", stepstype) .. "s"
+		if GAMESTATE:IsCourseMode() then
+			GAMESTATE:UpdateDiscordPresenceImage(0, "Maybe "..SongOrCourse:GetDisplayFullTitle().."...", "default")
+			GAMESTATE:UpdateDiscordPresenceInfo("Playing "..stepstype, "Selecting a Course", 0)
+		else
+			local StageIndex = GAMESTATE:GetCurrentStageIndex()
+			GAMESTATE:UpdateDiscordPresenceImage(0, "Browsing ".. SongOrCourse:GetGroupName(), 'default')
+			GAMESTATE:UpdateDiscordPresenceInfo("Playing "..stepstype, "Selecting Song [Stage ".. StageIndex+1 .. "]", 0)
+		end
+	end
 	if PROFILEMAN:IsPersistentProfile(player) then
 		 player_score, player_name = GetNameAndScore( PROFILEMAN:GetProfile(player) )
 	end
-
+	
 	self:queuecommand("Set")
 end
 
@@ -319,11 +339,6 @@ af[#af+1] = LoadFont("Wendy/_wendy small")..{
 	SetCommand=function(self)
 		local SongOrCourse = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse()) or GAMESTATE:GetCurrentSong()
 		if not SongOrCourse then self:settext(""); return end
-		if SongOrCourse then
-			local line1 = "In the Song Selection..."
-			local line2 = "[" .. GAMESTATE:GetCurrentSong():GetGroupName() .. "]: " .. SongOrCourse:GetDisplayFullTitle()
-			GAMESTATE:UpdateDiscordPresence(GetPlayerOrMachineProfile(PLAYER_1):GetDisplayName(), line1, line2, 0)
-		end
 		local StepsOrTrail = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player) or GAMESTATE:GetCurrentSteps(player)
 		local meter = StepsOrTrail and StepsOrTrail:GetMeter() or "?"
 

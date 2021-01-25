@@ -68,7 +68,8 @@ detail = #detail < 128 and detail or string.sub(detail, 1, 124) .. "..."
 local state = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() .. 
 	" - " .. string.format("%05.2f%%",math.floor(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetScore()*10000)/100) .. 
 	" " .. THEME:GetString("Grade",ToEnumShortString(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade()))
-GAMESTATE:UpdateDiscordPresence(largeImageTooltip, detail, state, 0)
+GAMESTATE:UpdateDiscordPresenceImage(0, largeImageTooltip, "default")
+GAMESTATE:UpdateDiscordPresenceInfo(detail, state, 0)
 
 -- -----------------------------------------------------------------------
 

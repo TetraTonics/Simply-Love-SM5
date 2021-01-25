@@ -128,5 +128,20 @@ return LoadFont("Wendy/_wendy monospace numbers")..{
 		dance_points = pss:GetPercentDancePoints()
 		percent = FormatPercentScore( dance_points ):sub(1,-2)
 		self:settext(percent)
+			-- Discord thingies
+		local largeImageTooltip = GetPlayerOrMachineProfile(PLAYER_1):GetDisplayName() .. ": " .. string.format("%5.2f", (STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetScore()*10000)/100)
+		local detail = "Playing: "..GAMESTATE:GetCurrentSong():GetDisplayMainTitle() .. " [" .. GAMESTATE:GetCurrentSong():GetGroupName() .. "]"
+		-- truncated to 128 characters(discord hard limit)
+		detail = #detail < 128 and detail or string.sub(detail, 1, 124) .. "..."
+		-- GetDifficulty() returns a value from the Difficulty Enum such as "Difficulty_Hard"
+		-- ToEnumShortString() removes the characters up to and including the
+		-- underscore, transforming a string like "Difficulty_Hard" into "Hard"
+		local difficulty = ToEnumShortString( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() )
+		difficulty = THEME:GetString("Difficulty", difficulty)
+		local state = difficulty .. 
+			" - " .. string.format("%05.2f%%",percent) .. 
+			" " .. THEME:GetString("Grade",ToEnumShortString(STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade()))
+			GAMESTATE:UpdateDiscordPresenceImage(0, largeImageTooltip, "default")
+			GAMESTATE:UpdateDiscordPresenceInfo(detail, state, 0)
 	end
 }
