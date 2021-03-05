@@ -78,12 +78,13 @@ Handle.Start = function(event)
 			end
 		end
 		if (#GAMESTATE:GetHumanPlayers() > playersSelected or lastPlayerNumber == event.PlayerNumber) then
-			playersSelected = playersSelected + 1
+			playersSelected = 2
+			MESSAGEMAN:Broadcast("Cursor", {PlayerNumber=event.PlayerNumber})
 			lastPlayerNumber = event.PlayerNumber
 			MESSAGEMAN:Broadcast("InvalidChoice", {PlayerNumber=event.PlayerNumber})
 			return
 		end
-
+		MESSAGEMAN:Broadcast("Cursor", {PlayerNumber=event.PlayerNumber})
 		finished = true
 		-- otherwise, play the StartButton sound
 		MESSAGEMAN:Broadcast("StartButton")
@@ -136,7 +137,12 @@ Handle.Back = function(event)
 	if GAMESTATE:GetNumPlayersEnabled()==0 then
 		SCREENMAN:GetTopScreen():Cancel()
 	else
-		MESSAGEMAN:Broadcast("BackButton")
+		MESSAGEMAN:Broadcast("BackButton", {PlayerNumber=event.PlayerNumber})
+		if (playersSelected > 1) then
+			playersSelected = 1
+			lastPlayerNumber = nil
+			return
+		end
 		-- ScreenSelectProfile:SetProfileIndex() will interpret -2 as
 		-- "Unjoin this player and unmount their USB stick if there is one"
 		-- see ScreenSelectProfile.cpp for details
