@@ -12,6 +12,16 @@ local profile_data = args.ProfileData
 -- ScreenSelectProfile's code across multiple files.
 local finished = false
 
+-- Counter used to determine if both players have selected their profile. 
+-- This value basically represents the amount of players that are ready to
+-- move forward + 1. Each time a player presses enter this value goes up until
+-- it matches the amount of human players (This sounds a little more heavy than it really is)
+local playersSelected = 1
+
+--The player number of the last player to press enter. Used to prevent one player from
+--incrementing the counter themself and still skipping and not letting the other player select.
+local lastPlayerNumber
+
 -- we need to calculate how many dummy rows the scroller was "padded" with
 -- (to achieve the desired transform behavior since I am not mathematically
 -- perspicacious enough to have done so otherwise).
@@ -66,6 +76,12 @@ Handle.Start = function(event)
 				MESSAGEMAN:Broadcast("InvalidChoice", {PlayerNumber=event.PlayerNumber})
 				return
 			end
+		end
+		if (#GAMESTATE:GetHumanPlayers() > playersSelected or lastPlayerNumber == event.PlayerNumber) then
+			playersSelected = playersSelected + 1
+			lastPlayerNumber = event.PlayerNumber
+			MESSAGEMAN:Broadcast("InvalidChoice", {PlayerNumber=event.PlayerNumber})
+			return
 		end
 
 		finished = true
