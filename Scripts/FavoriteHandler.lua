@@ -88,4 +88,38 @@ generateFavoritesForMusicWheel = function()
 			file:destroy()
 		end
 	end
+	sortFavorites()
+end
+
+sortFavorites = function()
+	local favorites = {}
+	local strToWrite = ""
+	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+		local profileName = PROFILEMAN:GetPlayerName(pn)
+		local path = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[pn]+1]).."FavoriteSongs.txt"
+		if FILEMAN:DoesFileExist(path) then
+			local favs = lua.ReadFile(path)
+			if string.len(favs) > 2 then
+				favorites = string.gmatch(favs, "^\r\n")
+				table.sort(favorites)
+				strToWrite=strToWrite.."---"..profileName.."'s Favorites\r\n"
+				for fav in ivalues(favorites) do 
+					strToWrite = fav .."\n"
+				end
+			end
+		else
+		if strToWrite ~= "" then
+			--Warn(strToWrite)
+			local path = THEME:GetCurrentThemeDirectory().."Other/SongManager FavoriteSongs1.txt"
+			local file= RageFileUtil.CreateRageFile()
+			if not file:Open(path, 2) then
+				Warn("Could not open '" .. path .. "' to write current playing info.")
+			else
+				file:Write(strToWrite)
+				file:Close()
+				file:destroy()
+			end
+		end	
+	end
+
 end
