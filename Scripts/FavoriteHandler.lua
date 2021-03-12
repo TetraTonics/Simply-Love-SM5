@@ -71,7 +71,7 @@ generateFavoritesForMusicWheel = function()
 				
 				for fav in ivalues(listofavorites) do 
 					strToWrite = strToWrite..fav[1].."\n";
-					Warn(strToWrite)
+					--Warn(strToWrite)
 				end		
 			end
 		else
@@ -81,6 +81,8 @@ generateFavoritesForMusicWheel = function()
 	if strToWrite ~= "" then
 		--Warn(strToWrite
 		local path = THEME:GetCurrentThemeDirectory().."Other/SongManager FavoriteSongs.txt"
+		-- create a generic RageFile that we'll use to read the contents
+
 		local file= RageFileUtil.CreateRageFile()
 		if not file:Open(path, 2) then
 			Warn("Could not open '" .. path .. "' to write current playing info.")
