@@ -8,7 +8,6 @@ local function strPlainText(strText)
 	return strText:gsub("(%W)","%%%1")
 end
 
-
 addOrRemoveFavorite = function(player)
 	local profileName = PROFILEMAN:GetPlayerName(player)
 	local path = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[player]+1]).."FavoriteSongs.txt"
@@ -52,17 +51,9 @@ addOrRemoveFavorite = function(player)
 	end
 end
 
---[[
-This is the only way to use favorites in the stock StepMania songwheel, 
-It reads the favorites file and then generates a Preferred Sort formatted file which SM can read.
-Call this before ScreenSelectMusic and after addOrRemoveFavorite.
-To open the favorties folder, call this from ScreenSelectMusic:
-SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
-SONGMAN:SetPreferredSongs("FavoriteSongs");
-SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
-]]
 generateFavoritesForMusicWheel = function()
 	local strToWrite = ""
+	local listofavorites = {}
 	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		local profileName = PROFILEMAN:GetPlayerName(pn)
 		local path = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[pn]+1]).."FavoriteSongs.txt"
@@ -70,14 +61,25 @@ generateFavoritesForMusicWheel = function()
 			local favs = lua.ReadFile(path)
 			if string.len(favs) > 2 then
 				setenv(pname(pn).."HasAnyFavorites",true)
-				strToWrite=strToWrite.."---"..profileName.."'s Favorites\r\n"..favs;
+				-- split the context of the txt file on newline characters
+				-- groupsong will be one line from the file
+				for line in favs:gmatch("[^\r\n]+") do
+					listofavorites[#listofavorites+1] = {line, Basename(line)}
+				end
+				table.sort(listofavorites, function(a, b) return a[2]:upper() < b[2]:upper() end)
+				strToWrite= strToWrite.."---"..profileName.."'s Favorites\r\n";
+				
+				for fav in ivalues(listofavorites) do 
+					strToWrite = strToWrite..fav[1].."\n";
+					Warn(strToWrite)
+				end		
 			end
 		else
 			Warn("No favorites found at "..path)
 		end
 	end
 	if strToWrite ~= "" then
-		--Warn(strToWrite)
+		--Warn(strToWrite
 		local path = THEME:GetCurrentThemeDirectory().."Other/SongManager FavoriteSongs.txt"
 		local file= RageFileUtil.CreateRageFile()
 		if not file:Open(path, 2) then
@@ -88,38 +90,15 @@ generateFavoritesForMusicWheel = function()
 			file:destroy()
 		end
 	end
-	sortFavorites()
 end
 
-sortFavorites = function()
-	local favorites = {}
-	local strToWrite = ""
-	for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-		local profileName = PROFILEMAN:GetPlayerName(pn)
-		local path = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[pn]+1]).."FavoriteSongs.txt"
-		if FILEMAN:DoesFileExist(path) then
-			local favs = lua.ReadFile(path)
-			if string.len(favs) > 2 then
-				favorites = string.gmatch(favs, "^\r\n")
-				table.sort(favorites)
-				strToWrite=strToWrite.."---"..profileName.."'s Favorites\r\n"
-				for fav in ivalues(favorites) do 
-					strToWrite = fav .."\n"
-				end
-			end
-		else
-		if strToWrite ~= "" then
-			--Warn(strToWrite)
-			local path = THEME:GetCurrentThemeDirectory().."Other/SongManager FavoriteSongs1.txt"
-			local file= RageFileUtil.CreateRageFile()
-			if not file:Open(path, 2) then
-				Warn("Could not open '" .. path .. "' to write current playing info.")
-			else
-				file:Write(strToWrite)
-				file:Close()
-				file:destroy()
-			end
-		end	
-	end
 
-end
+--[[
+This is the only way to use favorites in the stock StepMania songwheel, 
+It reads the favorites file and then generates a Preferred Sort formatted file which SM can read.
+Call this before ScreenSelectMusic and after addOrRemoveFavorite.
+To open the favorties folder, call this from ScreenSelectMusic:
+SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+SONGMAN:SetPreferredSongs("FavoriteSongs");
+SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
+]]
