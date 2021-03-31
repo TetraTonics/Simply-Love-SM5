@@ -13,6 +13,7 @@ local songs = {
 	GotEm  = "Ha Got Em.ogg",
 	Ice_Cream = "Space Ice Cream -Adhenoid (loop).ogg",
 	Spades = "Casino Night Remix.ogg",
+	Boba = "Bubble Tea.ogg",
 }
 
 -- retrieve the current VisualStyle from the ThemePrefs system

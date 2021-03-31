@@ -29,7 +29,7 @@ local input = function(event)
 				if (focus.sort_by == "Preferred" or focus.sort_by == "Favorites") and getenv(pname(event.PlayerNumber).."HasAnyFavorites") then
 					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
 					SONGMAN:SetPreferredSongs("FavoriteSongs")
-					--SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites")
+					SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites")
 				
 				elseif focus.kind == "SortBy" then
 					MESSAGEMAN:Broadcast('Sort',{order=focus.sort_by})
