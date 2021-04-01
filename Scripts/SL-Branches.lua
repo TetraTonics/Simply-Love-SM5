@@ -273,7 +273,7 @@ Branch.AfterProfileSaveSummary = function()
 end
 
 Branch.AfterScreenAds = function()
-	local randomNum = math.random(0, 10)
+	local randomNum = math.random(0, 28)
 	if (randomNum % 3 == 0) then
 		return "ScreenSponsors2"
 	else
@@ -282,7 +282,7 @@ Branch.AfterScreenAds = function()
 end
 
 Branch.AfterCoronaLines = function()
-	local randomNum = math.random(0, 10)
+	local randomNum = math.random(0, 16)
 	if (randomNum % 3 == 0) then
 		return "ScreenSponsors"
 	else
