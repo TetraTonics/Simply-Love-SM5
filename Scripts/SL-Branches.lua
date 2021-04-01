@@ -274,7 +274,6 @@ end
 
 Branch.AfterScreenAds = function()
 	local randomNum = math.random(0, 10)
-	SM(randomNum)
 	if (randomNum % 3 == 0) then
 		return "ScreenSponsors2"
 	else
@@ -284,7 +283,6 @@ end
 
 Branch.AfterCoronaLines = function()
 	local randomNum = math.random(0, 10)
-	SM(randomNum)
 	if (randomNum % 3 == 0) then
 		return "ScreenSponsors"
 	else
