@@ -271,3 +271,23 @@ Branch.AfterProfileSaveSummary = function()
 		return Branch.AfterInit()
 	end
 end
+
+Branch.AfterScreenAds = function()
+	local randomNum = math.random(0, 10)
+	SM(randomNum)
+	if (randomNum % 3 == 0) then
+		return "ScreenSponsors2"
+	else
+		return SL.Global.ScreenAfter.PlayerOptions
+	end
+end
+
+Branch.AfterCoronaLines = function()
+	local randomNum = math.random(0, 10)
+	SM(randomNum)
+	if (randomNum % 3 == 0) then
+		return "ScreenSponsors"
+	else
+		return Branch.AllowScreenSelectProfile()
+	end
+end

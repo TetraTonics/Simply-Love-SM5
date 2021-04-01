@@ -75,9 +75,9 @@ local GlobalDefaults = {
 			}
 			self.ScreenAfter = {
 				PlayAgain = "ScreenEvaluationSummary",
-				PlayerOptions  = "ScreenGameplay",
-				PlayerOptions2 = "ScreenGameplay",
-				PlayerOptions3 = "ScreenGameplay",
+				PlayerOptions  = "ScreenAds",
+				PlayerOptions2 = "ScreenAds",
+				PlayerOptions3 = "ScreenAds",
 			}
 			self.ContinuesRemaining = ThemePrefs.Get("NumberOfContinuesAllowed") or 0
 			self.GameMode = ThemePrefs.Get("DefaultGameMode") or "ITG"
@@ -165,6 +165,35 @@ SL = {
 			color("#b45cff"),	-- purple (greatly lightened)
 			color("#ff3030")	-- red (slightly lightened)
 		},
+	},
+	AprilFools = {
+		Ads = {
+		"Arknights ad",
+		"BodyWash",
+		"DbZ",
+		"DDR",
+		"DDRmario",
+		"DeliveryDance",
+		"EducationConnection",
+		"EmpireCarpet",
+		"Geico",
+		"KiaSoul",
+		"KidsBop",
+		"Knowledge",
+		"KrustyKrab",
+		"MeowMix",
+		"Nescafe",
+		"Poptarts",
+		"Progressive",
+		"RaidShadowLegends",
+		"RaidShadowLegends2",
+		"RaidShadowLegends3",
+		"RaidShadowLegends4",
+		"Resee",
+		"Spongebob",
+		"Spongebob2",
+		"ZZ"
+		}
 	},
 	Preferences = {
 		Casual = {
