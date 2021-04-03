@@ -162,7 +162,7 @@ GetAvatarPath = function(profileDirectory, displayName)
 	-- prefer png first, then jpg, then jpeg, etc.
 	-- (note that SM5 does not support animated gifs at this time, so SL doesn't either)
 	-- TODO: investigate effects (memory footprint, fps) of allowing movie files as avatars in SL
-	local extensions = { "png", "jpg", "jpeg", "bmp", "gif" }
+	local extensions = { "png", "jpg", "jpeg", "bmp", "gif", "mp4" }
 
 	-- prefer an avatar named:
 	--    "avatar" in the player's profile directory (preferred by Simply Love)
@@ -179,7 +179,8 @@ GetAvatarPath = function(profileDirectory, displayName)
 			local avatar_path = ("%s.%s"):format(path, extension)
 
 			if FILEMAN:DoesFileExist(avatar_path)
-			and ActorUtil.GetFileType(avatar_path) == "FileType_Bitmap"
+			and (ActorUtil.GetFileType(avatar_path)   == "FileType_Bitmap"
+			    or ActorUtil.GetFileType(avatar_path) == "FileType_Movie")
 			then
 				-- return the first valid avatar path that is found
 				return avatar_path
