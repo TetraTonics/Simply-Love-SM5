@@ -185,6 +185,8 @@ SL = {
 		"Nescafe",
 		"Poptarts",
 		"Progressive",
+		"Opera",
+		"PC",
 		"RaidShadowLegends",
 		"RaidShadowLegends2",
 		"RaidShadowLegends3",

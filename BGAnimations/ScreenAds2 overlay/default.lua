@@ -10,7 +10,7 @@ local WideScale = function(AR4_3, AR16_9)
 	return scale( w, 640, 854, AR4_3, AR16_9 )
  end
  
-local adChoice = math.random(1, 25)
+local adChoice = math.random(1, 27)
 d = Enum.Reverse(Difficulty)
 count = 10
 nice = {}

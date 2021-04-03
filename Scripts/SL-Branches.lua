@@ -274,7 +274,7 @@ end
 
 Branch.AfterScreenAds = function()
 	local randomNum = math.random(0, 28)
-	if (randomNum % 3 == 0) then
+	if (AprilFools() and randomNum % 3 == 0) then
 		return "ScreenSponsors2"
 	else
 		return SL.Global.ScreenAfter.PlayerOptions
@@ -283,7 +283,7 @@ end
 
 Branch.AfterCoronaLines = function()
 	local randomNum = math.random(0, 16)
-	if (randomNum % 3 == 0) then
+	if (AprilFools() and randomNum % 3 == 0) then
 		return "ScreenSponsors"
 	else
 		return Branch.AllowScreenSelectProfile()
