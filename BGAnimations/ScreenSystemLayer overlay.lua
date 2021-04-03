@@ -35,7 +35,7 @@ local function CreditsText( player )
 					--        I'll see tomorrow
 
 					-- dark text for RainbowMode
-					if ThemePrefs.Get("RainbowMode") then self:diffuse(Color.Black) end
+					if (ThemePrefs.Get("RainbowMode") or ThemePrefs.Get("VisualStyle") == "Boba")then self:diffuse(Color.Black) end
 				end
 			end
 

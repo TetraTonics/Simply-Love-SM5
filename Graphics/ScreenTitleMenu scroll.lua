@@ -31,7 +31,7 @@ t[#t+1] = LoadFont("Common Bold")..{
 	LoseFocusCommand=function(self)
 		has_focus = false
 		self:stoptweening():zoom(0.4)
-		self:accelerate(0.1):diffuse(ThemePrefs.Get("RainbowMode") and {1,1,1,1} or color("#888888")):glow(1,1,1,0)
+		self:accelerate(0.1):diffuse((ThemePrefs.Get("RainbowMode") or ThemePrefs.Get("VisualStyle") == "Boba")and {1,1,1,1} or color("#888888")):glow(1,1,1,0)
 	end
 }
 
