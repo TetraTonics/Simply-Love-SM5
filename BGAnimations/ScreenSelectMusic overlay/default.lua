@@ -1,10 +1,4 @@
 local t = Def.ActorFrame{
-	CodeMessageCommand = function(self,params)		
-		if (params.Name == "Favorite1" or params.Name == "Favorites2") and getenv(pname(params.PlayerNumber).."HasAnyFavorites") then
-			addOrRemoveFavorite(params.PlayerNumber)
-			generateFavoritesForMusicWheel()
-		end
-	end,
 	-- GameplayReloadCheck is a kludgy global variable used in ScreenGameplay in.lua to check
 	-- if ScreenGameplay is being entered "properly" or being reloaded by a scripted mod-chart.
 	-- If we're here in SelectMusic, set GameplayReloadCheck to false, signifying that the next
@@ -45,7 +39,6 @@ local t = Def.ActorFrame{
 	-- a yes/no prompt overlay for backing out of SelectMusic when in EventMode can be
 	-- activated via "CodeEscapeFromEventMode" under [ScreenSelectMusic] in Metrics.ini
 	LoadActor("./EscapeFromEventMode.lua"),
-
 }
 
 return t

@@ -26,11 +26,11 @@ local input = function(event)
 			local focus = sort_wheel:get_actor_item_at_focus_pos()
 
 			if focus.kind == "SortBy" then
-				if (focus.sort_by == "Preferred" or focus.sort_by == "Favorites") and getenv(pname(event.PlayerNumber).."HasAnyFavorites") then
+				if focus.sort_by == "Favorites" then
 					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
-					SONGMAN:SetPreferredSongs("FavoriteSongs")
-					SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites")
-				
+					SONGMAN:SetPreferredSongs("FavoriteSongs");
+					SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
+					overlay:queuecommand("DirectInputToEngine")
 				elseif focus.kind == "SortBy" then
 					MESSAGEMAN:Broadcast('Sort',{order=focus.sort_by})
 					overlay:queuecommand("DirectInputToEngine")

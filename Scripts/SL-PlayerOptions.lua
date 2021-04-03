@@ -215,7 +215,7 @@ local Overrides = {
 	},
 	-------------------------------------------------------------------------
 	BackgroundFilter = {
-		Values = { 'Off','Dark','Darker','Darkest','Darkerest' },
+		Values = { 'Off','Dark','Darker','Darkest' },
 	},
 	BackgroundColor = {
 		Values = { 'Original', 'Light', 'Grey', "Green", "Gold", "Blue", "Pink", "Peach", "Rainbow"},

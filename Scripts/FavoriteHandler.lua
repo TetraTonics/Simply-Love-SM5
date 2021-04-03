@@ -8,6 +8,7 @@ local function strPlainText(strText)
 	return strText:gsub("(%W)","%%%1")
 end
 
+
 addOrRemoveFavorite = function(player)
 	local profileName = PROFILEMAN:GetPlayerName(player)
 	local path = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[player]+1]).."FavoriteSongs.txt"
@@ -51,6 +52,15 @@ addOrRemoveFavorite = function(player)
 	end
 end
 
+--[[
+This is the only way to use favorites in the stock StepMania songwheel, 
+It reads the favorites file and then generates a Preferred Sort formatted file which SM can read.
+Call this before ScreenSelectMusic and after addOrRemoveFavorite.
+To open the favorties folder, call this from ScreenSelectMusic:
+SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+SONGMAN:SetPreferredSongs("FavoriteSongs");
+SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
+]]
 generateFavoritesForMusicWheel = function()
 	local strToWrite = ""
 	local listofavorites = {}
@@ -79,10 +89,8 @@ generateFavoritesForMusicWheel = function()
 		end
 	end
 	if strToWrite ~= "" then
-		--Warn(strToWrite
+		--Warn(strToWrite)
 		local path = THEME:GetCurrentThemeDirectory().."Other/SongManager FavoriteSongs.txt"
-		-- create a generic RageFile that we'll use to read the contents
-
 		local file= RageFileUtil.CreateRageFile()
 		if not file:Open(path, 2) then
 			Warn("Could not open '" .. path .. "' to write current playing info.")
@@ -93,14 +101,3 @@ generateFavoritesForMusicWheel = function()
 		end
 	end
 end
-
-
---[[
-This is the only way to use favorites in the stock StepMania songwheel, 
-It reads the favorites file and then generates a Preferred Sort formatted file which SM can read.
-Call this before ScreenSelectMusic and after addOrRemoveFavorite.
-To open the favorties folder, call this from ScreenSelectMusic:
-SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
-SONGMAN:SetPreferredSongs("FavoriteSongs");
-SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
-]]
