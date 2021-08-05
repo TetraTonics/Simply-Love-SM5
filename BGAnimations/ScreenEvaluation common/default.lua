@@ -6,6 +6,7 @@ if ThemePrefs.Get("WriteCustomScores") then
 end
 
 local t = Def.ActorFrame{}
+t[#t+1] = LoadActor("../everyone.dance.lua")
 
 if SL.Global.GameMode ~= "Casual" then
 	-- add a lua-based InputCalllback to this screen so that we can navigate
@@ -61,3 +62,4 @@ end
 t[#t+1] = LoadActor("./Panes/default.lua", NumPanes)
 
 return t
+
