@@ -10,6 +10,7 @@ local t = Def.ActorFrame{
 
 	-- MenuTimer code for preserving SSM's timer value
 	LoadActor("./MenuTimer.lua"),
+LoadActor("../everyone.dance.lua"),
 	-- Apply player modifiers from profile
 	LoadActor("./PlayerModifiers.lua"),
 
