@@ -210,3 +210,60 @@ GetPlayerAvatarPath = function(player)
 
 	return GetAvatarPath(dir, name)
 end
+
+
+GetScreenshotsPath = function(profileDirectory, displayName)
+
+	if type(profileDirectory) ~= "string" then return end
+
+	local path = nil
+
+	-- sequence matters here
+	-- prefer png first, then jpg, then jpeg, etc.
+	-- (note that SM5 does not support animated gifs at this time, so SL doesn't either)
+	-- TODO: investigate effects (memory footprint, fps) of allowing movie files as avatars in SL
+	local extensions = { "png", "jpg", "jpeg", "bmp", "gif", "mp4" }
+
+	-- prefer an avatar named:
+	--    "avatar" in the player's profile directory (preferred by Simply Love)
+	--    then "profile picture" in the player's profile directory (used by Digital Dance)
+	--    then (whatever the profile's DisplayName is) in /Appearance/Avatars/ (used in OutFox?)
+	path = ("%s/Screenshots/Simply_love/"):format(profileDirectory)
+	local pathos = " "
+	local year = FILEMAN:GetDirListing(path.."/", true, true)
+	if year then
+		for  _, monthInYear in ipairs(year) do 
+			local months = FILEMAN:GetDirListing(monthInYear.."/", true, true)
+			if months then
+				for _, month in ipairs(months) do
+					local screenies = FILEMAN:GetDirListing(month.."/", false, true)
+					if screenies then
+						return screenies
+						-- for _, screenshot in ipairs(screenies) do
+							
+						-- end
+					end							
+				end
+			end
+		end
+	end
+	return nil
+
+	-- or, return nil if no avatars were found in any of the permitted paths
+	--return pathos
+end
+
+GetPlayerScreenshotsPath = function(player)
+	if not player then return end
+	local profile_slot = {
+		[PLAYER_1] = "ProfileSlot_Player1",
+		[PLAYER_2] = "ProfileSlot_Player2"
+	}
+
+	if not profile_slot[player] then return end
+
+	local dir  = PROFILEMAN:GetProfileDir(profile_slot[player])
+	local name = PROFILEMAN:GetProfile(player):GetDisplayName()
+
+	return GetScreenshotsPath(dir, name)
+end
