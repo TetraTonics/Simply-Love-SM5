@@ -20,7 +20,9 @@ local input = function(event)
 		elseif event.GameButton == "MenuLeft" or event.GameButton == "MenuUp" then
 			sort_wheel:scroll_by_amount(-1)
 			sortmenu:GetChild("change_sound"):play()
-
+		elseif event.GameButton == "MenuUp" then
+			sortmenu:GetChild("change_sound"):play()
+			THEME:ReloadMetrics()
 		elseif event.GameButton == "Start" then
 			sortmenu:GetChild("start_sound"):play()
 			local focus = sort_wheel:get_actor_item_at_focus_pos()
@@ -75,6 +77,11 @@ local input = function(event)
 			elseif focus.new_overlay then
 				if focus.new_overlay == "TestInput" then
 					sortmenu:queuecommand("DirectInputToTestInput")
+				end
+				
+				if focus.new_overlay == "SelectProfile" then
+					screen:SetNextScreenName("ScreenSelectProfile")
+					screen:StartTransitioningScreen("SM_GoToNextScreen")
 				end
 			end
 
