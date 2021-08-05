@@ -21,7 +21,7 @@ local Update = function(af, delta)
 			if choices[cursor.index+1] == "Marathon" then
 				ThemePrefs.Set("isGoodReads", false)
 				af:queuecommand("FirstLoopMarathon")
-			else if choices[cursor.index+1] == "GoodReads" then
+			elseif choices[cursor.index+1] == "GoodReads" then
 				ThemePrefs.Set("isGoodReads", true)
 				af:queuecommand("FirstLoopGoodReads")
 			else
