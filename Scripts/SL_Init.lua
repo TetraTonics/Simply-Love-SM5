@@ -84,6 +84,7 @@ local GlobalDefaults = {
 			self.ScreenshotTexture = nil
 			self.MenuTimer = {
 				ScreenSelectMusic = ThemePrefs.Get("ScreenSelectMusicMenuTimer"),
+				ScreenViewGallery = ThemePrefs.Get("ScreenViewGalleryMenuTimer"),
 				ScreenSelectMusicCasual = ThemePrefs.Get("ScreenSelectMusicCasualMenuTimer"),
 				ScreenSelectMusicTutorial = ThemePrefs.Get("ScreenSelectMusicTutorialMenuTimer"),
 				ScreenPlayerOptions = ThemePrefs.Get("ScreenPlayerOptionsMenuTimer"),

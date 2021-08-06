@@ -1,15 +1,20 @@
 ---------------------------------------------------------------------
--- screenie Select Wheel(s)
+-- Character Select Wheel(s)
 ---------------------------------------------------------------------
-local ScreenshotWheels = {}
-for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
-	ScreenshotWheels[ToEnumShortString(player)] = setmetatable({}, sick_wheel_mt)
-end	
+
+-- the theme may not have Consensual's sick_wheel.lua in ./Scripts
+-- so load a bundled copy now
+--LoadActor("../Scripts/Consensual-sick_wheel.lua")
+
+local GalleryScreenshotWheels = {}
+	-- Add the full character display
+	GalleryScreenshotWheels= setmetatable({}, sick_wheel_mt)
+
 
 local Screenshots = GetPlayerScreenshotsPath(ThemePrefs.Get("GalleryPlayer"))
 local duration_between_frames = 0.15
 
--- the metatable for the creenie in the wheel
+-- the metatable for the fullbody character in the wheel
 local wheel_item_mt2 = {
 	__index = {
 		create_actors = function(self, name)
@@ -83,18 +88,20 @@ local wheel_item_mt2 = {
 			self.container:zoom( zoom )
 		end,
 
-		set = function(self, screenie)
-			if not screenie then return end
-			--SM(screenie)
+		set = function(self, character)
+			if not character then return end
+			--SM(character)
 
-			local dir = split("/",screenie)
+			--local dir = GAMESTATE:GetCurrentSong():GetSongDir()
+			local dir = split("/",character)
 			local month = split("-",dir[8])[2]
 			local year = dir[7]
 			local day = split("_",split("-",dir[9])[3])[1]
-			self.screenie = screenie
+			self.character = character
 			self.bmt:settext( month.. " "..day..", "..year )
-			self.sprite:Load(screenie)
+			self.sprite:Load(character)
 			self.sprite:setsize(418*2.8,300*1.95):zoom(0.11)
+			--self.sprite:SetStateProperties( frames.Down )
 		end
 	}
 }
@@ -119,13 +126,13 @@ local InputHandler = function(event)
 	if event.type == "InputEventType_FirstPress" then
 
 		if event.GameButton == "MenuRight" then
-			ScreenshotWheels[pn]:scroll_by_amount(1)
+			GalleryScreenshotWheels:scroll_by_amount(1)
 			
 		elseif event.GameButton == "MenuLeft" then
-			ScreenshotWheels[pn]:scroll_by_amount(-1)
+			GalleryScreenshotWheels:scroll_by_amount(-1)
 			
 		elseif event.GameButton == "Start" then
-			ScreenshotWheels[pn].container:queuecommand("Test")
+			GalleryScreenshotWheels.container:queuecommand("Test")
 			--##Note
 		elseif event.GameButton == "Select" then
 			local top_screen = SCREENMAN:GetTopScreen()
@@ -147,17 +154,15 @@ local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:Center():visible(true):diffusealpha(1)
 		self:fov(90)
-		for k,wheel in pairs(ScreenshotWheels) do
 			-- set_info_set() takes two arguments:
 			--		a table of meaningful data to divvy up to wheel items
 			--		the index of which item we want to initially give focus to
-			wheel:set_info_set(GetPlayerScreenshotsPath(ThemePrefs.Get("GalleryPlayery")), 1)
-		end
+			GalleryScreenshotWheels:set_info_set(GetPlayerScreenshotsPath(ThemePrefs.Get("GalleryPlayer")), 1)
 		-- queue the next command so that we can actually GetTopScreen()
 		self:queuecommand("Capture")
 	--		:sleep( 60/140 * 16 ):accelerate(0.5):diffusealpha(0)
 	end,
-	screenieSelectionMessageCommand=function(self)
+	CharacterSelectionMessageCommand=function(self)
 		self:visible(true):accelerate(0.4):diffusealpha(1)
 	end,
 	CaptureCommand=function(self)
@@ -169,12 +174,10 @@ local t = Def.ActorFrame{
 	
 }
 	
-for player in ivalues(GAMESTATE:GetHumanPlayers()) do
-	local pn = ToEnumShortString(player)
+-- add a CharacterWheel for each available player
 	local x_pos = _screen.cx-(_screen.w*160/640)+50
-	t[#t+1] = ScreenshotWheels[pn]:create_actors( "ScreenshotWheel", 6, wheel_item_mt2, x_pos-265 , _screen.cy-230)
-	--FullCharacterWheels[pn]:scroll_by_amount(1)
-end
+	t[#t+1] = GalleryScreenshotWheels:create_actors( "GalleryScreenshotWheel", 6, wheel_item_mt2, x_pos-265 , _screen.cy-230)
+	--GalleryScreenshotWheels:scroll_by_amount(1)
 
 
 ---------------------------------------------------------------------

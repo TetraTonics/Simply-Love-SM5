@@ -133,6 +133,12 @@ SL_CustomPrefs.Get = function()
 			Choices = map(SecondsToMSS, range(60, 450, 15)),
 			Values  = range(60, 450, 15),
 		},
+		ScreenViewGalleryMenuTimer =
+		{
+			Default = 90,
+			Choices = map(SecondsToMSS, range(30, 450, 15)),
+			Values  = range(30, 450, 15),
+		},
 		ScreenSelectMusicCasualMenuTimer =
 		{
 			Default = 300,
