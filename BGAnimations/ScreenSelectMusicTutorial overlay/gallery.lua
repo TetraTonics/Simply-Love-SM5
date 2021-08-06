@@ -225,7 +225,12 @@ local InputHandler = function(event)
 		elseif event.GameButton == "Start" then
 			FullCharacterWheels[pn].container:queuecommand("Test")
 			--##Note
-
+		elseif event.GameButton == "Select" then
+			local top_screen = SCREENMAN:GetTopScreen()
+			if top_screen then         
+			   top_screen:SetNextScreenName("ScreenSelectMusic")
+			   top_screen:StartTransitioningScreen("SM_GoToNextScreen")
+			end
 		end
 
 	end
