@@ -1,9 +1,9 @@
 
 local t = Def.ActorFrame {
 	InitCommand=function(self)
+		if PREFSMAN:GetPreference("MenuTimer") then self:queuecommand("Listen") end
 	end,
 	OnCommand=function(self)
-		if PREFSMAN:GetPreference("MenuTimer") then self:queuecommand("Listen") end
 	end,
 	ListenCommand=function(self)
 		local topscreen = SCREENMAN:GetTopScreen()
@@ -16,7 +16,6 @@ local t = Def.ActorFrame {
 		end
 	end,
 	FinishCommand=function(self)
-		self:GetChild("start_sound"):play()
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 	end,
 	LoadActor("./Header.lua", 1),

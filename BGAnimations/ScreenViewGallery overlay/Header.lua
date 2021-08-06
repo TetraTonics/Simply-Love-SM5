@@ -28,7 +28,7 @@ local af = Def.ActorFrame{
 		Def.BitmapText{
 			Name="HeaderText",
 			Font="Wendy/_wendy small",
-			Text=PROFILEMAN:GetProfile(PLAYER_1):GetDisplayName().."\'s Gallery",
+			Text=PROFILEMAN:GetProfile(ThemePrefs.Get("GalleryPlayer")):GetDisplayName().."\'s Gallery",
 			InitCommand=function(self) self:diffuse(1,1,1,1):zoom(WideScale(0.5,0.6)):xy(_screen.cx, 45) end,
 			OffCommand=function(self) self:accelerate(0.33):diffusealpha(0) end,
 			SwitchFocusToSongsMessageCommand=function(self) self:linear(0.1):diffusealpha(0) end,
@@ -43,7 +43,7 @@ if not PREFSMAN:GetPreference("EventMode") then
 		Name="Stage Number",
 		Text=SSM_Header_StageText(),
 		InitCommand=function(self)
-			self:diffusealpha(0):halign(1):zoom(0.5):x(_screen.w-8)
+			self:diffusealpha(1):halign(1):zoom(0.5):x(_screen.w-8)
 			if PREFSMAN:GetPreference("MenuTimer") then
 				self:y(44)
 			else
