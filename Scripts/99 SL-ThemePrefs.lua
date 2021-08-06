@@ -66,6 +66,15 @@ SL_CustomPrefs.Get = function()
 			Choices = { THEME:GetString("ThemePrefs","Yes"), THEME:GetString("ThemePrefs", "No") },
 			Values 	= { true, false }
 		},
+		GalleryPlayer =
+		{
+			Default = PLAYER_1,
+			Choices = {
+				"P1",
+				"P2",
+			},
+			Values = {PLAYER_1, PLAYER_2}
+		},
 		AutoStyle =
 		{
 			Default = "none",
