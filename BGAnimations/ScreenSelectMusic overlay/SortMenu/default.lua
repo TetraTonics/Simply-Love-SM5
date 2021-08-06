@@ -195,6 +195,9 @@ local t = Def.ActorFrame {
 		if (game=="dance" or game=="pump" or game=="techno") and ThemePrefs.Get("isGoodReads") == true then
 			table.insert(wheel_options, {"GoodReads", "SelectProfile"})
 		end
+		if (game=="dance" or game=="pump" or game=="techno") then
+			table.insert(wheel_options, {"View", "Gallery"})
+		end
 
 		-- Override sick_wheel's default focus_pos, which is math.floor(num_items / 2)
 		--

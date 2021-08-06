@@ -83,6 +83,10 @@ local input = function(event)
 					screen:SetNextScreenName("ScreenSelectProfile")
 					screen:StartTransitioningScreen("SM_GoToNextScreen")
 				end
+				if focus.new_overlay == "Gallery" then
+					screen:SetNextScreenName("ScreenViewGallery")
+					screen:StartTransitioningScreen("SM_GoToNextScreen")
+				end
 			end
 
 		elseif event.GameButton == "Back" or event.GameButton == "Select" then
