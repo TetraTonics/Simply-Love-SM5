@@ -23,9 +23,9 @@ return Def.ActorFrame{
 
 	LoadFont("Common Normal")..{
 		Name="Text",
-		Text=THEME:GetString("ScreenSelectMusicTutorial", "Press"),
+		Text=THEME:GetString("ScreenViewGallery", "Press"),
 		InitCommand=function(self) self:diffuse(Color.Black):zoom(0.9) end,
-		SwitchFocusToSingleSongMessageCommand=function(self) self:settext(THEME:GetString("ScreenSelectMusicTutorial", "Press")) end,
-		BothPlayersAreReadyMessageCommand=function(self) self:settext(THEME:GetString("ScreenSelectMusicTutorial", "Start")) end
+		SwitchFocusToSingleSongMessageCommand=function(self) self:settext(THEME:GetString("ScreenViewGallery", "Press")) end,
+		BothPlayersAreReadyMessageCommand=function(self) self:settext(THEME:GetString("ScreenViewGallery", "Start")) end
 	}
 }
