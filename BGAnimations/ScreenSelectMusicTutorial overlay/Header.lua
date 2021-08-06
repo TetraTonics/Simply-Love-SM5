@@ -1,5 +1,5 @@
-local text = ScreenString("HeaderText")
 local row = ...
+local text = "Viewing"
 
 local af = Def.ActorFrame{
 
@@ -19,11 +19,21 @@ local af = Def.ActorFrame{
 		Name="HeaderText",
 		Font="Wendy/_wendy small",
 		Text=text,
-		InitCommand=function(self) self:diffuse(1,1,1,0):zoom(WideScale(0.5,0.6)):horizalign(left):xy(10, 15) end,
+		InitCommand=function(self) self:diffuse(1,1,1,1):zoom(WideScale(0.5,0.6)):xy(_screen.cx, 15)  end,
 		OffCommand=function(self) self:accelerate(0.33):diffusealpha(0) end,
 		SwitchFocusToSongsMessageCommand=function(self) self:linear(0.1):diffusealpha(0) end,
 		SwitchFocusToGroupsMessageCommand=function(self) self:sleep(0.25):linear(0.1):diffusealpha(1) end,
 	},
+		-- "Choose Your Song"
+		Def.BitmapText{
+			Name="HeaderText",
+			Font="Wendy/_wendy small",
+			Text=PROFILEMAN:GetProfile(PLAYER_1):GetDisplayName().."\'s Gallery",
+			InitCommand=function(self) self:diffuse(1,1,1,1):zoom(WideScale(0.5,0.6)):xy(_screen.cx, 45) end,
+			OffCommand=function(self) self:accelerate(0.33):diffusealpha(0) end,
+			SwitchFocusToSongsMessageCommand=function(self) self:linear(0.1):diffusealpha(0) end,
+			SwitchFocusToGroupsMessageCommand=function(self) self:sleep(0.25):linear(0.1):diffusealpha(1) end,
+		},
 }
 
 -- Stage Number

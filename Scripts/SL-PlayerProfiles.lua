@@ -228,6 +228,7 @@ GetScreenshotsPath = function(profileDirectory, displayName)
 	--    "avatar" in the player's profile directory (preferred by Simply Love)
 	--    then "profile picture" in the player's profile directory (used by Digital Dance)
 	--    then (whatever the profile's DisplayName is) in /Appearance/Avatars/ (used in OutFox?)
+	local dascreens = {}
 	path = ("%s/Screenshots/Simply_love/"):format(profileDirectory)
 	local pathos = " "
 	local year = FILEMAN:GetDirListing(path.."/", true, true)
@@ -238,16 +239,15 @@ GetScreenshotsPath = function(profileDirectory, displayName)
 				for _, month in ipairs(months) do
 					local screenies = FILEMAN:GetDirListing(month.."/", false, true)
 					if screenies then
-						return screenies
-						-- for _, screenshot in ipairs(screenies) do
-							
-						-- end
+						for _, screenshot in ipairs(screenies) do
+							table.insert(dascreens, screenshot)
+						 end
 					end							
 				end
 			end
 		end
 	end
-	return nil
+	return dascreens
 
 	-- or, return nil if no avatars were found in any of the permitted paths
 	--return pathos

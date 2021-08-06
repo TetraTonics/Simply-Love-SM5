@@ -24,17 +24,8 @@ local col = setup.col
 local TransitionTime = 0.5
 local songwheel_y_offset = -13
 
----------------------------------------------------------------------------
--- a table of params from this file that we pass into the InputHandler file
--- so that the code there can work with them easily
-local params_for_input = { GroupWheel=GroupWheel, SongWheel=SongWheel, OptionsWheel=OptionsWheel, OptionRows=OptionRows }
-
----------------------------------------------------------------------------
--- load the InputHandler and pass it the table of params
-local Input = LoadActor( "./Input.lua", params_for_input )
-
 -- metatables
-local group_mt = LoadActor("./GroupMT.lua", {GroupWheel,SongWheel,TransitionTime,steps_type,row,col,Input,setup.PruneSongsFromGroup})
+--local group_mt = LoadActor("./GroupMT.lua", {GroupWheel,SongWheel,TransitionTime,steps_type,row,col,Input,setup.PruneSongsFromGroup})
 local song_mt = LoadActor("./SongMT.lua", {SongWheel,TransitionTime,row,col})
 local optionrow_mt = LoadActor("./OptionRowMT.lua")
 local optionrow_item_mt = LoadActor("./OptionRowItemMT.lua")
@@ -43,8 +34,8 @@ local optionrow_item_mt = LoadActor("./OptionRowItemMT.lua")
 
 local t = Def.ActorFrame {
 	InitCommand=function(self)
-		GroupWheel:set_info_set(Groups, group_index)
-		self:GetChild("GroupWheel"):SetDrawByZPosition(true)
+		--GroupWheel:set_info_set(Groups, group_index)
+		--self:GetChild("GroupWheel"):SetDrawByZPosition(true)
 
 		self:queuecommand("Capture")
 	end,
@@ -78,17 +69,6 @@ local t = Def.ActorFrame {
 		else
 			self:sleep(0.5):queuecommand("Listen")
 		end
-	end,
-	CaptureCommand=function(self)
-
-		-- One element of the Input table is an internal function, Handler
-		SCREENMAN:GetTopScreen():AddInputCallback( Input.Handler )
-
-		-- set up initial variable states and the players' OptionRows
-		Input:Init()
-
-		-- It should be safe to enable input for players now
-		self:queuecommand("EnableInput")
 	end,
 	CodeMessageCommand=function(self, params)
 		-- I'm using Metrics-based code detection because the engine is already good at handling
@@ -132,36 +112,19 @@ local t = Def.ActorFrame {
 		Input.Enabled = true
 	end,
 
-
-	LoadActor("./PlayerOptionsShared.lua", {row, col, Input}),
-	LoadActor("./SongWheelShared.lua", {row, col, songwheel_y_offset}),
+	--LoadActor("./PlayerOptionsShared.lua", {row, col, Input}),
+	--LoadActor("./SongWheelShared.lua", {row, col, songwheel_y_offset}),
 
 	-- included, but unused for now
 	LoadActor("./GroupWheelShared.lua", {row, col, group_info}),
 
-	SongWheel:create_actors( "SongWheel", 12, song_mt, 0, songwheel_y_offset),
-
 	LoadActor("./Header.lua", row),
 
-	GroupWheel:create_actors( "GroupWheel", row.how_many * col.how_many, group_mt, 0, 0, true),
+--	GroupWheel:create_actors( "GroupWheel", row.how_many * col.how_many, group_mt, 0, 0, true),
+	LoadActor("./gallery.lua"),
 
 	LoadActor("FooterHelpText.lua"),
 }
-
--- Add player options ActorFrames to our primary ActorFrame
-for pn in ivalues( {PLAYER_1, PLAYER_2} ) do
-	local x_offset = (pn==PLAYER_1 and -1) or 1
-
-	-- create an optionswheel that has enough items to handle the number of optionrows necessary
-	t[#t+1] = OptionsWheel[pn]:create_actors("OptionsWheel"..ToEnumShortString(pn), #OptionRows, optionrow_mt, _screen.cx - 100 + 140 * x_offset, _screen.cy - 30)
-
-	for i=1,#OptionRows do
-		-- Create sub-wheels for each optionrow with 3 items each.
-		-- Regardless of how many items are actually in that row,
-		-- we only display 1 at a time.
-		t[#t+1] = OptionsWheel[pn][i]:create_actors(ToEnumShortString(pn).."OptionWheel"..i, 3, optionrow_item_mt, WideScale(30, 130) + 140 * x_offset, _screen.cy - 5 + i * 62)
-	end
-end
 
 -- FIXME: This is dumb.  Add the player option StartButton visual last so it
 --  draws over everything else and we can hide cursors behind it when needed...

@@ -20,7 +20,7 @@ local SwitchInputFocus = function(button)
 	if button == "Start" then
 
 		if t.WheelWithFocus == GroupWheel then
-			t.WheelWithFocus = SongWheel
+			t.WheelWithFocus = GroupWheel
 
 		elseif t.WheelWithFocus == SongWheel then
 			t.WheelWithFocus = OptionsWheel
@@ -32,7 +32,7 @@ local SwitchInputFocus = function(button)
 			t.WheelWithFocus = GroupWheel
 
 		elseif t.WheelWithFocus == OptionsWheel then
-			t.WheelWithFocus = SongWheel
+			t.WheelWithFocus = GroupWheel
 		end
 
 	end
@@ -89,7 +89,7 @@ t.Init = function()
 
 	-- initialize which wheel gets focus to start based on whether or not
 	-- GAMESTATE has a CurrentSong (it always should at screen init)
-	t.WheelWithFocus = GAMESTATE:GetCurrentSong() and SongWheel or GroupWheel
+	t.WheelWithFocus = GroupWheel
 
 	-- table that stores P1 and P2's currently active optionrow
 	ActiveOptionRow = {
@@ -113,7 +113,7 @@ t.Init = function()
 			t.WheelWithFocus[pn]:scroll_to_pos(1)
 		end
 		MESSAGEMAN:Broadcast("SingleSongCanceled")
-		t.WheelWithFocus = SongWheel
+		t.WheelWithFocus = GroupWheel
 		t.WheelWithFocus.container:queuecommand("Unhide")
 	end
 end

@@ -86,19 +86,22 @@ local item_mt = {
 
 
 				---- back of folder
-				--LoadActor("./img/folderBack.png")..{
-				--	Name="back",
-				--	InitCommand=function(subself) subself:zoom(0.75) end,
-				--	OnCommand=function(subself) subself:y(-10) end,
-				--	GainFocusCommand=function(subself) subself:diffuse(color("#c47215")) end,
-				--	LoseFocusCommand=function(subself) subself:diffuse(color("#4e4f54")) end
-				--},
+				LoadActor("./img/folderBack.png")..{
+					Name="back",
+					InitCommand=function(subself) self.banner = subself end,
+					OnCommand=function(subself) 
+						subself:y(-90):setsize(418*2.75,300*1.9):zoom(0.48)
+					end,
+				},
 
 				-- group banner
 				Def.Banner{
 					Name="Banner",
 					InitCommand=function(subself) self.banner = subself end,
-					OnCommand=function(subself) subself:y(-100):setsize(418*1.8,300*1.8):zoom(0.48) end,
+					OnCommand=function(subself) 
+						subself:y(-90):setsize(418*2.75,300*1.9):zoom(0.48)
+						
+					end,
 				},
 
 				-- front of folder
