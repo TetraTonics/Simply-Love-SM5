@@ -59,6 +59,15 @@ SL_CustomPrefs.Get = function()
 			},
 			Values = { "Casual", "ITG", "FA+" }
 		},
+		GalleryPlayer =
+		{
+			Default = PLAYER_1,
+			Choices = {
+				"P1",
+				"P2",
+			},
+			Values = {PLAYER_1, PLAYER_2}
+		},
 		AutoStyle =
 		{
 			Default = "none",
