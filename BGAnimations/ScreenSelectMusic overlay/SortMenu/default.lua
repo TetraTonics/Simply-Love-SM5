@@ -113,6 +113,7 @@ local t = Def.ActorFrame {
 			{"SortBy", "Genre"},
 			{"SortBy", "BPM"},
 			{"SortBy", "Length"},
+
 		}
 
 		-- the engine's MusicWheel has distinct items in the SortOrder enum for double
@@ -190,6 +191,10 @@ local t = Def.ActorFrame {
 		local game = GAMESTATE:GetCurrentGame():GetName()
 		if (game=="dance" or game=="pump" or game=="techno") and GAMESTATE:IsEventMode() then
 			table.insert(wheel_options, {"FeelingSalty", "TestInput"})
+		end
+
+		if (game=="dance" or game=="pump" or game=="techno") then
+			table.insert(wheel_options, {"View", "Gallery"})
 		end
 
 		-- Override sick_wheel's default focus_pos, which is math.floor(num_items / 2)

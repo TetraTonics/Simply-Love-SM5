@@ -76,6 +76,15 @@ local input = function(event)
 				if focus.new_overlay == "TestInput" then
 					sortmenu:queuecommand("DirectInputToTestInput")
 				end
+
+				if focus.new_overlay == "SelectProfile" then
+					screen:SetNextScreenName("ScreenSelectProfile")
+					screen:StartTransitioningScreen("SM_GoToNextScreen")
+				end
+				if focus.new_overlay == "Gallery" then
+					screen:SetNextScreenName("ScreenViewGallery")
+					screen:StartTransitioningScreen("SM_GoToNextScreen")
+				end
 			end
 
 		elseif event.GameButton == "Back" or event.GameButton == "Select" then
