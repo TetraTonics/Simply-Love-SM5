@@ -96,7 +96,6 @@ local wheel_item_mt2 = {
 			--local dir = GAMESTATE:GetCurrentSong():GetSongDir()
 			if PROFILEMAN:IsPersistentProfile(ThemePrefs.Get("GalleryPlayer")) then
 				local dir = split("/",character)
-				SM(dir)
 				local month = split("-",dir[8])[2]
 				local year = dir[7]
 				local day = split("_",split("-",dir[9])[3])[1]
