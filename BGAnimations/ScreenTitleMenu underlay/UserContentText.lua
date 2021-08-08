@@ -54,7 +54,7 @@ local text = ("%s%s\n%s\n%s"):format(
 return LoadFont("Common Normal")..{
 	Text=text,
 	InitCommand=function(self)
-		self:zoom(0.8):y(-150):diffusealpha(0)
+		self:zoom(0.8):y(-144):diffusealpha(0)
 		self:playcommand("UpdateColor")
 	end,
 	OnCommand=function(self) self:sleep(0.2):linear(0.4):diffusealpha(1) end,
@@ -64,11 +64,6 @@ return LoadFont("Common Normal")..{
 		if ThemePrefs.Get("RainbowMode") and not HolidayCheer() then
 			textColor = Color.Black
 		end
-		if ThemePrefs.Get("VisualStyle") == "SRPG5" then
-			textColor = color(SL.SRPG5.TextColor)
-			shadowLength = 0.4
-		end
-
 		self:diffuse(textColor):shadowlength(shadowLength)
 	end,
 	VisualStyleSelectedMessageCommand=function(self)

@@ -66,11 +66,11 @@ local EarnedPersonalRecord = ( HighScoreIndex.Personal ~= -1 ) and pss:GetPercen
 
 -- ---------------------------------------------
 
+-- this player earned some record and the ability to enter a high score name
+-- we'll check for this flag later in ./BGAnimations/ScreenNameEntryTradtional underlay/default.lua
 if EarnedMachineRecord or EarnedPersonalRecord then
-
-	-- this player earned some record and the ability to enter a high score name
-	-- we'll check for this flag later in ./BGAnimations/ScreenNameEntryTradtional underlay/default.lua
 	SL[pn].HighScores.EnteringName = true
+
 
 	local t = Def.ActorFrame{
 		InitCommand=function(self) self:zoom(0.225) end,

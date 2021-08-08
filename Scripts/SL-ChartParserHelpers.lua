@@ -23,19 +23,22 @@ GetStreamSequences = function(notesPerMeasure, notesThreshold)
 	end
 
 	local streamSequences = {}
-	-- Count every measure as stream/non-stream.
-	-- We can then later choose how we want to display the information.
-	local measureSequenceThreshold = 1
+
+	-- Count every "stream" measure.
+	local streamSequenceThreshold = 1
+	-- Ignore (1) breaks as those are implicitly determined already by virtue
+	-- of seeing two streams in sequence (instead of one combined larger sequence).
+	local breakSequenceThreshold = 2
 
 	local counter = 1
 	local streamEnd = nil
 
-	-- First add an initial break if it's larger than measureSequenceThreshold
+	-- First add an initial break if it's larger than breakSequenceThreshold
 	if #streamMeasures > 0 then
 		local breakStart = 0
 		local k, curVal = next(streamMeasures) -- first element of a table
 		local breakEnd = curVal - 1
-		if (breakEnd - breakStart >= measureSequenceThreshold) then
+		if (breakEnd - breakStart >= breakSequenceThreshold) then
 			table.insert(streamSequences,
 				{streamStart=breakStart, streamEnd=breakEnd, isBreak=true})
 		end
@@ -51,7 +54,7 @@ GetStreamSequences = function(notesPerMeasure, notesThreshold)
 			streamEnd = curVal + 1
 		else
 			-- Found the first section that counts as a stream
-			if(counter >= measureSequenceThreshold) then
+			if(counter >= streamSequenceThreshold) then
 				if streamEnd == nil then
 					streamEnd = curVal
 				end
@@ -61,10 +64,10 @@ GetStreamSequences = function(notesPerMeasure, notesThreshold)
 					{streamStart=streamStart, streamEnd=streamEnd, isBreak=false})
 			end
 
-			-- Add any trailing breaks if they're larger than measureSequenceThreshold
+			-- Add any trailing breaks if they're larger than breakSequenceThreshold
 			local breakStart = curVal
 			local breakEnd = (nextVal ~= -1) and nextVal - 1 or #notesPerMeasure
-			if (breakEnd - breakStart >= measureSequenceThreshold) then
+			if (breakEnd - breakStart >= breakSequenceThreshold) then
 				table.insert(streamSequences,
 					{streamStart=breakStart, streamEnd=breakEnd, isBreak=true})
 			end
@@ -76,6 +79,7 @@ GetStreamSequences = function(notesPerMeasure, notesThreshold)
 	return streamSequences
 end
 
+-- ----------------------------------------------------------------
 -- Generate Breakdown text using commonly known stream notation.
 -- We also include an option for compressing the output text based off of a
 -- 'minimization level'.
@@ -102,7 +106,7 @@ end
 -- minimization_level = 3  -> Aggregating total streams
 --    80 Total
 GenerateBreakdownText = function(pn, minimization_level)
-	if #SL[pn].Streams.NotesPerMeasure == 0 then return 'No Streams!' end
+	if #SL[pn].Streams.NotesPerMeasure == 0 then return 'Not available!' end
 
 	-- Assume 16ths for the breakdown text
 	local segments = GetStreamSequences(SL[pn].Streams.NotesPerMeasure, 16)
@@ -114,7 +118,7 @@ GenerateBreakdownText = function(pn, minimization_level)
 	local total_sum = 0
 
 	local AddNotationForSegment = function(
-			notation, segment_size, minimization_level, text_segments,segment_sum, is_broken, total_sum)
+			notation, segment_size, minimization_level, text_segments, segment_sum, is_broken, total_sum)
 		if minimization_level == 0 then
 			text_segments[#text_segments+1] = " (" .. tostring(segment_size) .. ") "
 		else
@@ -143,16 +147,9 @@ GenerateBreakdownText = function(pn, minimization_level)
 		if segment.isBreak then
 			-- Never include leading and trailing breaks.
 			if i ~= 1 and i ~= #segments then
-				if segment_size == 1 then
-					if minimization_level == 0 or minimization_level == 1 then
-						-- For very small breaks, don't display "( )" notation since it adds a lot of visual clutter.
-						text_segments[#text_segments+1] = "-"
-					else
-						-- Don't count this as a true "break"
-						is_broken = true
-						segment_sum = segment_sum + segment_size
-					end
-				elseif segment_size <= 4 then
+				-- Break segments of size 1 aren't handled here as they don't show up.
+				-- Instead we handle them below when we see two stream sequences in succession.
+				if segment_size <= 4 then
 					segment_sum, is_broken, total_sum = AddNotationForSegment(
 						"-", segment_size, minimization_level, text_segments, segment_sum, is_broken, total_sum)
 				elseif segment_size < 32 then
@@ -165,11 +162,24 @@ GenerateBreakdownText = function(pn, minimization_level)
 			end
 		else
 			if minimization_level == 2 or minimization_level == 3 then
+				if i > 1 and not segments[i-1].isBreak then
+					-- Don't count this as a true "break"
+					is_broken = true
+					-- For * notation, we want to add short breaks as part of the number.
+					if minimization_level == 2 then
+						segment_sum = segment_sum + 1
+					end
+				end
 				-- For minimization_level == 2, these segments get added to the text_segments table
 				-- when we encounter a large enough break. For minimization_level == 3, these segments
 				-- get summed up before reporting the total.
 				segment_sum = segment_sum + segment_size
 			else
+				-- If we find two streams in sequence, then there's an implicit (1) in between.
+				-- Make sure we still account for that for minimization levels 0 and 1.
+				if i > 1 and not segments[i-1].isBreak then
+					text_segments[#text_segments+1] = "-"
+				end
 				text_segments[#text_segments+1] = tostring(segment_size)
 			end
 		end
@@ -191,4 +201,23 @@ GenerateBreakdownText = function(pn, minimization_level)
 	else
 		return table.concat(text_segments, '')
 	end
+end
+
+-- ----------------------------------------------------------------
+-- Returns the total amount of stream and break measures in a chart.
+GetTotalStreamAndBreakMeasures = function(pn)
+	local totalStream, totalBreak = 0, 0
+
+	-- Assume 16ths for the breakdown text
+	local segments = GetStreamSequences(SL[pn].Streams.NotesPerMeasure, 16)
+	for i, segment in ipairs(segments) do
+		local segment_size = segment.streamEnd - segment.streamStart
+		if segment.isBreak then
+			totalBreak = totalBreak + segment_size
+		else
+			totalStream = totalStream + segment_size
+		end
+	end
+
+	return totalStream, totalBreak
 end

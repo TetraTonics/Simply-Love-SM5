@@ -34,7 +34,7 @@ af2.Name="SLInfo"
 
 -- the big blocky Wendy text that says SIMPLY LOVE (or SIMPLY THONK, or SIMPLY DUCKS, etc.)
 -- and the arrows graphic that appears between the two words
-af2[#af2+1] = LoadActor("./Logo.lua")
+af2[#af2+1] = LoadActor("./SimplySomething.lua")
 
 -- 3 lines of text:
 --    theme_name   theme_version
