@@ -39,7 +39,7 @@ end
 
 if not Branch then Branch = {} end
 
-Branch.AfterScreenRankingDouble = function()
+Branch.AfterScreenMoneyLegend = function()
 	return PREFSMAN:GetPreference("MemoryCards") and "ScreenMemoryCard" or "ScreenRainbow"
 end
 
@@ -269,5 +269,23 @@ Branch.AfterProfileSaveSummary = function()
 		return "ScreenGameOver"
 	else
 		return Branch.AfterInit()
+	end
+end
+
+Branch.AfterScreenAds = function()
+	local randomNum = math.random(0, 28)
+	if (AprilFools() and randomNum % 3 == 0) then
+		return "ScreenSponsors2"
+	else
+		return SL.Global.ScreenAfter.PlayerOptions
+	end
+end
+
+Branch.AfterCoronaLines = function()
+	local randomNum = math.random(0, 16)
+	if (AprilFools() and randomNum % 3 == 0) then
+		return "ScreenSponsors"
+	else
+		return Branch.AllowScreenSelectProfile()
 	end
 end

@@ -4,7 +4,7 @@ local profile_data = args.ProfileData
 local avatars = args.Avatars
 local scroller = args.Scroller
 local scroller_item_mt = LoadActor("./ScrollerItemMT.lua")
-
+local passes = false
 local LightenColor = function(c)
 	return { c[1]*1.25, c[2]*1.25, c[3]*1.25, c[4] }
 end
@@ -168,7 +168,7 @@ return Def.ActorFrame{
 			InitCommand=function(self)
 				self:x(15.5)
 			end,
-			OnCommand=function(self) self:playcommand("Set", profile_data[1]) end,
+			OnCommand=function(self) self:playcommand("Set", profile_data[0]) end,
 
 			-- semi-transparent Quad to the right of this colored frame to present profile stats and mods
 			Def.Quad {
@@ -299,6 +299,70 @@ return Def.ActorFrame{
 					end
 				},
 
+				Def.Sprite {
+					Texture="_ranks/medal 4x3.png",
+					Name="medal",
+					InitCommand=function(self)
+						self:zoom(0.15):visible(false):diffuseshift():xy(info.padding*11 + info.w*0.5, -10)
+							:animate(false):effectperiod(1.5):effectcolor1(1,1,1,1):effectcolor2(1,1,1,1)
+					end,
+					SetCommand=function(self, params)
+						if params then
+							-- Params.totalsongs returns the text "## Songs Played also so we need to split it
+							local numSongs = split(" ",params.totalsongs)
+							-- Now we need to conver the amount of songs played to an integer and check if it meets the criteria
+							if tonumber(numSongs[1]) > 10000 then
+								self:visible(true):setstate(11)
+							else
+								if tonumber(numSongs[1]) > 7500 then
+									self:visible(true):setstate(10)
+								else
+									if tonumber(numSongs[1]) > 5000 then
+										self:visible(true):setstate(9)
+									else
+										if tonumber(numSongs[1]) > 4000 then
+											self:visible(true):setstate(8)
+										else
+											if tonumber(numSongs[1]) > 3000 then
+												self:visible(true):setstate(7)
+											else
+												if tonumber(numSongs[1]) > 2000 then
+													self:visible(true):setstate(6)
+												else
+													if tonumber(numSongs[1]) > 1000 then
+														self:visible(true):setstate(5)
+													else
+														if tonumber(numSongs[1]) > 750 then
+															self:visible(true):setstate(4)
+														else
+															if tonumber(numSongs[1]) > 500 then
+																self:visible(true):setstate(3)
+															else
+																if tonumber(numSongs[1]) > 250 then
+																	self:visible(true):setstate(2)
+																else
+																	if tonumber(numSongs[1]) > 100 then
+																		self:visible(true):setstate(1)
+																	else
+																		if tonumber(numSongs[1]) > 50 then
+																			self:visible(true):setstate(0)
+																		else
+																			self:visible(false)
+																		end
+																	end
+																end
+															end
+														end
+													end
+												end
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+				},
 				-- (some of) the modifiers saved to this player's UserPrefs.ini file
 				-- if the list is long, it will line break and eventually be masked
 				-- to prevent it from visually spilling out of the FrameBackground

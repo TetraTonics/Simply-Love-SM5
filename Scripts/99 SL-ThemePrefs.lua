@@ -59,6 +59,15 @@ SL_CustomPrefs.Get = function()
 			},
 			Values = { "Casual", "ITG", "FA+" }
 		},
+		GalleryPlayer =
+		{
+			Default = PLAYER_1,
+			Choices = {
+				"P1",
+				"P2",
+			},
+			Values = {PLAYER_1, PLAYER_2}
+		},
 		AutoStyle =
 		{
 			Default = "none",
@@ -70,12 +79,20 @@ SL_CustomPrefs.Get = function()
 			},
 			Values = { "none", "single", "versus", "double" }
 		},
+		RandomVisualStyle = {
+			Default = false,
+			Choices = {
+				THEME:GetString("ThemePrefs", "On"),
+				THEME:GetString("ThemePrefs", "Off")
+			},
+			Values 	= { true , false }
+		},
 		VisualStyle =
 		{
-			Default = "Hearts",
+			Default = "PSU",
 			 -- emojis are our lingua franca for the 21st century
-			Choices = { "♡", "↖", "🐻", "🦆", "😺", "🎃", "🌈", "⭐", "🤔" },
-			Values  = { "Hearts", "Arrows", "Bears", "Ducks", "Cats", "Spooky", "Gay", "Stars", "Thonk" },
+			Choices = { "♡", "↖", "🐻", "🦆", "🎃", "🌈", "⭐", "🤔", "🏈", "😺", "🍀", "👌", "🍦", "♠", "🧋" },
+			Values  = {"Hearts", "Arrows", "Bears", "Ducks", "Spooky", "Gay", "Stars", "Thonk", "PSU", "Cats", "Lucky", "GotEm", "Ice_Cream", "Spades", "Boba"},
 		},
 		RainbowMode = {
 			Default = false,
@@ -117,6 +134,12 @@ SL_CustomPrefs.Get = function()
 			Default = 300,
 			Choices = map(SecondsToMSS, range(60, 450, 15)),
 			Values  = range(60, 450, 15),
+		},
+		ScreenViewGalleryMenuTimer =
+		{
+			Default = 90,
+			Choices = map(SecondsToMSS, range(30, 450, 15)),
+			Values  = range(30, 450, 15),
 		},
 		ScreenSelectMusicCasualMenuTimer =
 		{

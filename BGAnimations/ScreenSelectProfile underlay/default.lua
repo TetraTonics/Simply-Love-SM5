@@ -16,8 +16,7 @@ local profile_data = LoadActor("./PlayerProfileData.lua")
 local scrollers = {}
 scrollers[PLAYER_1] = setmetatable({disable_wrapping=true}, sick_wheel_mt)
 scrollers[PLAYER_2] = setmetatable({disable_wrapping=true}, sick_wheel_mt)
-
--- ----------------------------------------------------
+------------------------------------------------------
 
 local HandleStateChange = function(self, Player)
 	local frame = self:GetChild(ToEnumShortString(Player) .. 'Frame')
@@ -61,7 +60,11 @@ local invalid_count = 0
 
 local t = Def.ActorFrame {
 
-	InitCommand=function(self) self:queuecommand("Stall") end,
+	InitCommand=function(self)
+		 self:queuecommand("Stall") 
+		 scrollers[PLAYER_1]:scroll_by_amount( -scrollers[PLAYER_1]:get_info_at_focus_pos().index )
+		 scrollers[PLAYER_2]:scroll_by_amount( -scrollers[PLAYER_2]:get_info_at_focus_pos().index )
+		end,
 	StallCommand=function(self)
 		-- FIXME: Stall for 0.5 seconds so that the Lua InputCallback doesn't get immediately added to the screen.
 		-- It's otherwise possible to enter the screen with MenuLeft/MenuRight already held and firing off events,
@@ -254,7 +257,35 @@ local avatar_textures = LoadActor("./LoadAvatars.lua", {t, profile_data})
 if AutoStyle=="none" or AutoStyle=="versus" then
 	t[#t+1] = LoadActor("PlayerFrame.lua", {Player=PLAYER_1, Scroller=scrollers[PLAYER_1], ProfileData=profile_data, Avatars=avatar_textures})
 	t[#t+1] = LoadActor("PlayerFrame.lua", {Player=PLAYER_2, Scroller=scrollers[PLAYER_2], ProfileData=profile_data, Avatars=avatar_textures})
-
+		-- decorative arrows
+	t[#t+1] = LoadActor(THEME:GetPathG("", "EditMenu Right.png"))..{
+		InitCommand=function(self)
+			self:visible(false):Center():addx(-245):zoom(0.60)
+		end,
+		CursorMessageCommand=function(self, pn)
+			if pn.PlayerNumber == PLAYER_1 then self:visible(true) end
+		end,
+		StartButtonMessageCommand=function(self)
+			self:visible(false)
+		end,
+		BackButtonMessageCommand=function(self, pn)
+			self:visible(false)
+		end
+	}
+	t[#t+1] = LoadActor(THEME:GetPathG("", "EditMenu Right.png"))..{
+		InitCommand=function(self)
+			self:visible(false):Center():addx(55):zoom(0.60)
+		end,
+		CursorMessageCommand=function(self, pn)
+			if pn.PlayerNumber == PLAYER_2 then self:visible(true) end
+		end,
+		StartButtonMessageCommand=function(self)
+			self:visible(false)
+		end,
+		BackButtonMessageCommand=function(self, pn)
+			self:visible(false)
+		end
+	}
 -- load only for the MasterPlayerNumber
 else
 	t[#t+1] = LoadActor("PlayerFrame.lua", {Player=mpn, Scroller=scrollers[mpn], ProfileData=profile_data, Avatars=avatar_textures})

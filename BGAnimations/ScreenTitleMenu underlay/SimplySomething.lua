@@ -23,8 +23,14 @@ local af = Def.ActorFrame{}
 af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." (doubleres).png"))..{
 	Name="Simply Text",
 	InitCommand=function(self)
-		self:zoom(0.7):vertalign(top)
-		self:y(-102):shadowlength(0.75)
+		if (style == "PSU") then
+			self:x(2):zoom(0.8):shadowlength(0.75)
+			self:y(-47)
+		else
+			self:zoom(0.7):vertalign(top)
+			self:y(-102):shadowlength(0.75)
+		end
+
 	end,
 	OffCommand=function(self) self:linear(0.5):shadowlength(0) end
 }
@@ -32,7 +38,7 @@ af[#af+1] = LoadActor(THEME:GetPathG("", "_VisualStyles/"..style.."/"..image.." 
 -- decorative arrows
 af[#af+1] = LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
 	InitCommand=function(self)
-		self:y(-16)
+		self:y(style == "PSU" and -11 or -16)
 
 		-- get a reference to the SIMPLY [something] graphic
 		-- it's rasterized text in the Wendy font like "SIMPLY LOVE" or "SIMPLY THONK" or etc.

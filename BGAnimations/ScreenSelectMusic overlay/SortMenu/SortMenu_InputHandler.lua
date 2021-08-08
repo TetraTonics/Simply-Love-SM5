@@ -26,9 +26,15 @@ local input = function(event)
 			local focus = sort_wheel:get_actor_item_at_focus_pos()
 
 			if focus.kind == "SortBy" then
-				MESSAGEMAN:Broadcast('Sort',{order=focus.sort_by})
-				overlay:queuecommand("DirectInputToEngine")
-
+				if focus.sort_by == "Favorites" then
+					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+					SONGMAN:SetPreferredSongs("FavoriteSongs");
+					SCREENMAN:GetTopScreen():GetMusicWheel():SetOpenSection("P1 Favorites");
+					overlay:queuecommand("DirectInputToEngine")
+				elseif focus.kind == "SortBy" then
+					MESSAGEMAN:Broadcast('Sort',{order=focus.sort_by})
+					overlay:queuecommand("DirectInputToEngine")
+				end
 
 			-- the player wants to change modes, for example from ITG to FA+
 			elseif focus.kind == "ChangeMode" then
@@ -69,6 +75,16 @@ local input = function(event)
 			elseif focus.new_overlay then
 				if focus.new_overlay == "TestInput" then
 					sortmenu:queuecommand("DirectInputToTestInput")
+				end
+
+				if focus.new_overlay == "SelectProfile" then
+					screen:SetNextScreenName("ScreenSelectProfile")
+					screen:StartTransitioningScreen("SM_GoToNextScreen")
+				end
+				if focus.new_overlay == "Gallery" then
+					ThemePrefs.Set("GalleryPlayer", event.PlayerNumber)
+					screen:SetNextScreenName("ScreenViewGallery")
+					screen:StartTransitioningScreen("SM_GoToNextScreen")
 				end
 			end
 
