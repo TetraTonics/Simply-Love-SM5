@@ -254,7 +254,7 @@ GetScreenshotsPath = function(profileDirectory, displayName)
 end
 
 GetPlayerScreenshotsPath = function(player)
-	if not player then return end
+	if not player then	return end
 	local profile_slot = {
 		[PLAYER_1] = "ProfileSlot_Player1",
 		[PLAYER_2] = "ProfileSlot_Player2"
@@ -264,6 +264,5 @@ GetPlayerScreenshotsPath = function(player)
 
 	local dir  = PROFILEMAN:GetProfileDir(profile_slot[player])
 	local name = PROFILEMAN:GetProfile(player):GetDisplayName()
-
 	return GetScreenshotsPath(dir, name)
 end

@@ -12,7 +12,8 @@ local GalleryScreenshotWheels = {}
 
 
 local Screenshots = GetPlayerScreenshotsPath(ThemePrefs.Get("GalleryPlayer"))
-local duration_between_frames = 0.15
+--SM(Screenshots)
+local duration_between_frames = 0.2
 
 -- the metatable for the fullbody character in the wheel
 local wheel_item_mt2 = {
@@ -93,15 +94,27 @@ local wheel_item_mt2 = {
 			--SM(character)
 
 			--local dir = GAMESTATE:GetCurrentSong():GetSongDir()
-			local dir = split("/",character)
-			local month = split("-",dir[8])[2]
-			local year = dir[7]
-			local day = split("_",split("-",dir[9])[3])[1]
-			self.character = character
-			self.bmt:settext( month.. " "..day..", "..year )
-			self.sprite:Load(character)
-			self.sprite:setsize(418*2.8,300*1.95):zoom(0.11)
+			if PROFILEMAN:IsPersistentProfile(ThemePrefs.Get("GalleryPlayer")) then
+				local dir = split("/",character)
+				SM(dir)
+				local month = split("-",dir[8])[2]
+				local year = dir[7]
+				local day = split("_",split("-",dir[9])[3])[1]
+				self.character = character
+				self.bmt:settext( month.. " "..day..", "..year )
+				self.sprite:Load(character)
+				self.sprite:setsize(418*2.8,300*1.95):zoom(0.11)
+			else
+				local dir = split("/",character)
+				local month = split("-",dir[5])[2]
+				local year = dir[4]
+				local day = split("_",split("-",dir[6])[3])[1]
+				self.character = character
+				self.bmt:settext( month.. " "..day..", "..year )
+				self.sprite:Load(character)
+				self.sprite:setsize(418*2.8,300*1.95):zoom(0.11)
 			--self.sprite:SetStateProperties( frames.Down )
+			end
 		end
 	}
 }
@@ -126,9 +139,11 @@ local InputHandler = function(event)
 	if event.type == "InputEventType_FirstPress" then
 
 		if event.GameButton == "MenuRight" then
+			SOUND:PlayOnce( THEME:GetPathS("MusicWheel", "change.ogg") )
 			GalleryScreenshotWheels:scroll_by_amount(1)
 			
 		elseif event.GameButton == "MenuLeft" then
+			SOUND:PlayOnce( THEME:GetPathS("MusicWheel", "change.ogg") )
 			GalleryScreenshotWheels:scroll_by_amount(-1)
 			
 		elseif event.GameButton == "Start" then

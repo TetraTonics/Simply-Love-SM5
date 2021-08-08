@@ -1,6 +1,5 @@
 local row = ...
-local text = "Viewing"
-
+local name = PROFILEMAN:IsPersistentProfile(ThemePrefs.Get("GalleryPlayer")) and PROFILEMAN:GetProfile(ThemePrefs.Get("GalleryPlayer")):GetDisplayName() or "Cabby"
 local af = Def.ActorFrame{
 
 	Def.Quad{
@@ -18,7 +17,7 @@ local af = Def.ActorFrame{
 	Def.BitmapText{
 		Name="HeaderText",
 		Font="Wendy/_wendy small",
-		Text=text,
+		Text="Viewing",
 		InitCommand=function(self) self:diffuse(1,1,1,1):zoom(WideScale(0.5,0.6)):xy(_screen.cx, 15)  end,
 		OffCommand=function(self) self:accelerate(0.33):diffusealpha(0) end,
 		SwitchFocusToSongsMessageCommand=function(self) self:linear(0.1):diffusealpha(0) end,
@@ -28,7 +27,7 @@ local af = Def.ActorFrame{
 		Def.BitmapText{
 			Name="HeaderText",
 			Font="Wendy/_wendy small",
-			Text=PROFILEMAN:GetProfile(ThemePrefs.Get("GalleryPlayer")):GetDisplayName().."\'s Gallery",
+			Text=name.."\'s Gallery",
 			InitCommand=function(self) self:diffuse(1,1,1,1):zoom(WideScale(0.5,0.6)):xy(_screen.cx, 45) end,
 			OffCommand=function(self) self:accelerate(0.33):diffusealpha(0) end,
 			SwitchFocusToSongsMessageCommand=function(self) self:linear(0.1):diffusealpha(0) end,
