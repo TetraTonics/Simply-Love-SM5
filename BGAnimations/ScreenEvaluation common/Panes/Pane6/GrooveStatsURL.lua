@@ -19,7 +19,7 @@ if steps then
 	difficulty = ToEnumShortString(difficulty)
 end
 
--- will need to update this to not be hardcoded to dance if GrooveStats supports other games in the future
+-- Will need to update this to not be hardcoded to dance if GrooveStats supports other games in the future
 local style = ""
 if GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides" then
 	style = "dance-double"
